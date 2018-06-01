@@ -1,7 +1,7 @@
 /*******************************************************************************
 * File: tests_main.cpp
 *
-* Description: Tests main is the entry point for our unit tests application. 
+* Description: test_main is the entry point for the catch2 unit test framework
                To reduce compilation time, compile this file first, then link 
                its object file onto the unit tests source file. 
 *
