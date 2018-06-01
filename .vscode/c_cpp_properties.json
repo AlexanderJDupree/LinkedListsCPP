@@ -10,7 +10,8 @@
             },
             "includePath": [
                 "${workspaceFolder}",
-                "${workspaceFolder}/tests/third_party"
+                "${workspaceFolder}/tests/third_party",
+                "${workspaceFolder}/src"
             ],
             "defines": [
                 "_DEBUG",
