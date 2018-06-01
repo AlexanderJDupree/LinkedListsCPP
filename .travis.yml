@@ -15,54 +15,6 @@ common_sources: &all_sources
   - llvm-toolchain-trusty-4.0
   - llvm-toolchain-trusty-5.0
 
-matrix:
-  include:
-
-- os: linux
-      compiler: gcc
-      addons:
-        apt:
-         sources: ['ubuntu-toolchain-r-test']
-         packages: ['valgrind', 'lcov', 'g++-4.8']
-      env: COMPILER='g++-4.8' VALGRIND=1
-
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-4.9']
-      env: COMPILER='g++-4.9' VALGRIND=1
-
-    - os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-5']
-      env: COMPILER='g++-5' VALGRIND=1
-
-    - os: linux
-      compiler: gcc
-      addons: &gcc6
-        apt:
-          sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-6']
-      env: COMPILER='g++-6' VALGRIND=1
-
-    - os: linux
-      compiler: gcc
-      addons: &gcc7
-        apt:
-          sources: *all_sources
-          packages: ['valgrind', 'lcov', 'g++-7']
-      env: COMPILER='g++-7' VALGRIND=1
-      
-    - os: linux
-      compiler: gcc
-      addons: *gcc7
-      env: COMPILER='g++-7' CPP17=1
-
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
   - mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
@@ -82,7 +34,6 @@ before_script:
   - cmake -H. -BBuild-Debug -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DUSE_CPP14=${CPP14} -DUSE_CPP17=${CPP17}
     # Don't bother with release build for coverage build
   - cmake -H. -BBuild-Release -DCMAKE_BUILD_TYPE=Release
-
 
 script:
   - cd Build-Debug
