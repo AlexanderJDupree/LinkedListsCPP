@@ -14,6 +14,6 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
 
 script: 
-  - g++ -std=c++11 -g -I tests/third_party -I src tests/tests_main.cpp tests/linkedListTests.cpp -o tests/debug/runTests -Wall
+  - g++ -std=c++11 -g -I tests/third_party -I src tests/tests_main.cpp tests/linkedListTest.cpp -o tests/debug/runTests -Wall
   - cd tests/debug
   - ./runTests
