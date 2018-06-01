@@ -29,7 +29,7 @@
                       "-I", "${workspaceFolder}/src",
                       "${workspaceFolder}/tests/bin/tests_main.o", 
                       "${workspaceFolder}/tests/linkedListTest.cpp", 
-                      "-o", "${workspaceFolder}/tests/debug/testMain", "-Wall",
+                      "-o", "${workspaceFolder}/tests/debug/runTests", "-Wall",
                       ],
             "group" : {
                 "kind" : "build",
