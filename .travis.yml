@@ -8,6 +8,54 @@ before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
 
+matrix:
+  include:
+
+- os: linux
+      compiler: gcc
+      addons:
+        apt:
+         sources: ['ubuntu-toolchain-r-test']
+         packages: ['valgrind', 'lcov', 'g++-4.8']
+      env: COMPILER='g++-4.8' VALGRIND=1
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: *all_sources
+          packages: ['valgrind', 'lcov', 'g++-4.9']
+      env: COMPILER='g++-4.9' VALGRIND=1
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: *all_sources
+          packages: ['valgrind', 'lcov', 'g++-5']
+      env: COMPILER='g++-5' VALGRIND=1
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc6
+        apt:
+          sources: *all_sources
+          packages: ['valgrind', 'lcov', 'g++-6']
+      env: COMPILER='g++-6' VALGRIND=1
+
+    - os: linux
+      compiler: gcc
+      addons: &gcc7
+        apt:
+          sources: *all_sources
+          packages: ['valgrind', 'lcov', 'g++-7']
+      env: COMPILER='g++-7' VALGRIND=1
+      
+    - os: linux
+      compiler: gcc
+      addons: *gcc7
+      env: COMPILER='g++-7' CPP17=1
+
 install: 
   # C++11
   - sudo apt-get install -qq g++-5
