@@ -1,8 +1,22 @@
+
+
 # Project Title
 
 C++ Template Library for Linked Lists Data Structures
 
 TODO Description on linked lists qualities, time and space complexity. 
+
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Execute unit tests](#execute-unit-tests)
+- [Deployment](#deployment)
+- [Built With](#built-with)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+- [Authors](#authors)
+- [License](#license)
 
 ## Getting Started
 
@@ -16,7 +30,7 @@ TODO Required software, links, and installation instruction.
 Give examples
 ```
 
-### Installing
+### Installation
 
 TODO Step by Step instructions for including this repo into a C++ project
 
@@ -32,7 +46,7 @@ TODO Instructions on basic usage of linkedLists library
 Code Example
 ```
 
-## Running the tests
+## Execute Unit Tests
 
 TODO explain how to build and run the unit tests
 
