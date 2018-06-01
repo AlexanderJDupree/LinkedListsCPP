@@ -1,6 +1,6 @@
 
 
-# Project Title
+# LinkedListsCPP
 
 C++ Template Library for Linked Lists Data Structures
 
@@ -83,4 +83,4 @@ See also the list of [contributors](https://github.com/AlexanderJDupree/LinkedLi
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/AlexanderJDupree/LinkedListsCPP/blob/master/LICENSE) file for details
