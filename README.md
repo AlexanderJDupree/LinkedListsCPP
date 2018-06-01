@@ -2,6 +2,8 @@
 
 # LinkedListsCPP
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c24f1655cc534243b8ab5bcd60c8302c)](https://www.codacy.com/app/AlexanderJDupree/LinkedListsCPP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AlexanderJDupree/LinkedListsCPP&amp;utm_campaign=Badge_Grade)
+
 C++ Template Library for Linked Lists Data Structures
 
 TODO Description on linked lists qualities, time and space complexity. 
