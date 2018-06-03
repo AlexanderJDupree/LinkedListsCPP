@@ -9,6 +9,10 @@ template <typename T>
 Node<T>::Node() : data(new T()), next(nullptr) {}
 
 template <typename T>
+Node<T>::Node(const Node& origin)
+    : data(new T(*origin.data)), next(origin.next) {}
+
+template <typename T>
 Node<T>::Node(const T& value) : data(new T(value)), next (nullptr) {}
 
 template <typename T>
@@ -44,6 +48,6 @@ Node<T>* Node<T>::Next(Node* node)
 {
     next = node;
     return this;
-}
+};
 
 #endif // NODE_TPP

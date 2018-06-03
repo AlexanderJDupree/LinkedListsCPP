@@ -28,6 +28,14 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
         REQUIRE(*node.Data() == 'n');
         REQUIRE(node.Next() == nullptr);
     }
+    SECTION("Copy construction")
+    {
+        Node<int> node1(5);
+        Node<int> node2(node1);
+
+        REQUIRE(*node2.Data() == 5);
+        REQUIRE(node2.Next() == nullptr);
+    }
     
 }
 
