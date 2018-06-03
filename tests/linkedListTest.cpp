@@ -10,17 +10,15 @@
 *******************************************************************************/
 
 #include "catch.hpp"
-#include "linkedList.h"
+#include "node.hpp"
 
-TEST_CASE("Build and Run", "[build], [runtime]")
+TEST_CASE("Constructing Nodes", "[node], [constructors]")
 {
-    REQUIRE(0 == 0);
-}
+    SECTION("Default Construction")
+    {
+        Node<int> node;
 
-TEST_CASE("Instantiate Dummy Linked List object", "[list], [constructors]")
-{
-    LinkedList list;
-
-    // DUMMY TEST
-    REQUIRE(0 == 0);
+        REQUIRE(node.Data() == nullptr);
+        REQUIRE(node.Next() == nullptr);
+    }
 }
