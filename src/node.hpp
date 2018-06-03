@@ -19,6 +19,7 @@ class Node
 public:
 
     Node();
+    Node(const T& value);
     ~Node();
 
     // Inspectors
@@ -26,7 +27,7 @@ public:
     Node* Next();
 
     // Mutators
-    Node* Data(const T& data);
+    Node* Data(const T& value);
     Node* Next(Node* node);
 
 private:

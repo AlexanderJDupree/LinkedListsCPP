@@ -6,7 +6,10 @@
 #include "node.hpp"
 
 template <typename T>
-Node<T>::Node() : data(nullptr), next(nullptr) {}
+Node<T>::Node() : data(new T()), next(nullptr) {}
+
+template <typename T>
+Node<T>::Node(const T& value) : data(new T(value)), next (nullptr) {}
 
 template <typename T>
 Node<T>::~Node()
@@ -29,10 +32,10 @@ Node<T>* Node<T>::Next()
 
 // Mutators
 template <typename T>
-Node<T>* Node<T>::Data(const T& data)
+Node<T>* Node<T>::Data(const T& value)
 {
-    delete this->data;
-    *this->data = data;
+    delete data;
+    this->data = new T(value);
     return this;
 }
 
