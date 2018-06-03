@@ -48,6 +48,6 @@ Node<T>* Node<T>::Next(Node* node)
 {
     next = node;
     return this;
-};
+}
 
 #endif // NODE_TPP
