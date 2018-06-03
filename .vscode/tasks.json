@@ -28,6 +28,7 @@
                       "-I", "${workspaceFolder}/tests/third_party",
                       "-I", "${workspaceFolder}/src",
                       "${workspaceFolder}/tests/bin/tests_main.o", 
+                      "${workspaceFolder}/src/node.cpp", 
                       "${workspaceFolder}/tests/linkedListTest.cpp", 
                       "-o", "${workspaceFolder}/tests/debug/runTests", "-Wall",
                       ],

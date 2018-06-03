@@ -11,7 +11,8 @@
             "includePath": [
                 "${workspaceFolder}",
                 "${workspaceFolder}/tests/third_party",
-                "${workspaceFolder}/src"
+                "${workspaceFolder}/src",
+                "/usr/include/python2.7"
             ],
             "defines": [
                 "_DEBUG",
