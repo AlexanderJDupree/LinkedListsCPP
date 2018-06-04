@@ -11,17 +11,23 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include "node.hpp"
+
 template<typename T>
 class LinkedList
 {
 public:
-    LinkedList() {}
+    LinkedList();
     ~LinkedList() {}
+
 
 private:
 
+    Node<T>* head;
+    Node<T>* tail;
 
 };
 
+#include "linkedList.cpp"
 
 #endif // LINKED_LIST_H
