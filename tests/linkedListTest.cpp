@@ -11,6 +11,7 @@
 
 #include "catch.hpp"
 #include "node.hpp"
+#include "linkedList.hpp"
 
 TEST_CASE("Constructing Nodes", "[node], [constructors]")
 {
@@ -77,4 +78,13 @@ TEST_CASE("Link Nodes and access linked data members", "[node], [linked]")
 
         REQUIRE(*node1.Next()->Data() == 7);
     }
-} 
+}
+
+TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]")
+{
+    SECTION("Default Construction")
+    {
+        LinkedList<int> list;
+
+    }
+}
