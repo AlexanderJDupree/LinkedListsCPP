@@ -12,7 +12,8 @@
                 "${workspaceFolder}",
                 "${workspaceFolder}/tests/third_party",
                 "${workspaceFolder}/src",
-                "/usr/include/python2.7"
+                "/usr/include/python2.7",
+                "${workspaceFolder}/src"
             ],
             "defines": [
                 "_DEBUG",
