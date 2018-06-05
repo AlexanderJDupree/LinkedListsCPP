@@ -86,5 +86,29 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
     {
         LinkedList<int> list;
 
+        REQUIRE(list.empty() == true);
+    }
+}
+
+TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifiers], [iterators]")
+{
+    SECTION("Push one element")
+    {
+        LinkedList<int> list;
+
+        list.push_front(9);
+
+        REQUIRE(*list.begin() == 9);
+
+    }
+    SECTION("Push multiple elements")
+    {
+        LinkedList<char> list;
+
+        list.push_front('A');
+        list.push_front('B');
+        list.push_front('C');
+
+        REQUIRE(*list.begin() == 'C');
     }
 }
