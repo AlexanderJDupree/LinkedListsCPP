@@ -10,7 +10,7 @@ LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
 // Iterator Class
 template <typename T>
-LinkedList<T>::iterator::iterator(pointer ptr) : node(ptr) {}
+LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}
 
 // Operator Overloads
 template <typename T>
@@ -47,15 +47,70 @@ typename LinkedList<T>::iterator::reference LinkedList<T>::iterator::operator*()
 }
 // End Iterator Class
 
+// const_iterator Class
+template <typename T>
+LinkedList<T>::const_iterator::const_iterator(const pointer ptr) : node(ptr) {}
+
+// Operator Overloads
+template <typename T>
+bool LinkedList<T>::const_iterator::operator==(const self_type& rhs) const
+{
+    return node == rhs.node;
+}
+
+template <typename T>
+bool LinkedList<T>::const_iterator::operator!=(const self_type& rhs) const
+{
+    return !(*this == rhs);
+}
+
+template <typename T>
+typename LinkedList<T>::const_iterator::self_type& 
+LinkedList<T>::const_iterator::operator++()
+{
+    node = node->Next();
+    return *this;
+}
+
+template <typename T>
+typename LinkedList<T>::const_iterator::self_type 
+LinkedList<T>::const_iterator::operator++(int)
+{
+    iterator copy = iterator(*this);
+    ++(*this);
+    return copy;
+}
+
+template <typename T>
+typename LinkedList<T>::const_iterator::reference 
+LinkedList<T>::const_iterator::operator*() const
+{
+    return *node->Data();
+}
+// End const_iterator Class
+
+
 // Iterators
 template <typename T>
-typename LinkedList<T>::iterator LinkedList<T>::begin() const
+typename LinkedList<T>::const_iterator LinkedList<T>::begin() const
+{
+    return const_iterator(head);
+}
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::begin()
 {
     return iterator(head);
 } 
 
 template <typename T>
-typename LinkedList<T>::iterator LinkedList<T>::end() const
+typename LinkedList<T>::const_iterator LinkedList<T>::end() const
+{
+    return const_iterator(tail->Next());
+} 
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::end()
 {
     return iterator(tail->Next());
 } 

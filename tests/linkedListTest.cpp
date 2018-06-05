@@ -113,7 +113,7 @@ TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifier
     }
 }
 
-TEST_CASE("Using iterators to loop through the list", "[linkedLists], [iterators]")
+TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
 {
     SECTION("Standard for loop with prefix increment")
     {
@@ -166,3 +166,5 @@ TEST_CASE("Using iterators to loop through the list", "[linkedLists], [iterators
         }
     }
 }
+
+// TODO Write tests for const_iterators once a const linkedlist can be constructed
