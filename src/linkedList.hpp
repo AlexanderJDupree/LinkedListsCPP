@@ -85,6 +85,7 @@ public:
 
     // Capacity functions
     bool empty() const;
+    size_t size() const;
 
 
 private:
