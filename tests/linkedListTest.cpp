@@ -167,4 +167,25 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
     }
 }
 
+TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
+{
+    SECTION("Empty linked list")
+    {
+        LinkedList<int> list;
+
+        REQUIRE(list.size() == 0);
+    }
+    SECTION("A populated linked list")
+    {
+        LinkedList<char> list;
+
+        list.push_front('A');
+        list.push_front('B');
+        list.push_front('C');
+
+        REQUIRE(list.size() == 3);
+    }
+   
+}
+
 // TODO Write tests for const_iterators once a const linkedlist can be constructed

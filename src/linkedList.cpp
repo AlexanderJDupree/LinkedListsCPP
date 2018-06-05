@@ -139,4 +139,17 @@ bool LinkedList<T>::empty() const
     return !(head);
 }
 
+template <typename T>
+size_t LinkedList<T>::size() const
+{
+    size_t SIZE = 0;
+    Node<T>* temp = head;
+    while (temp != nullptr)
+    {
+        ++SIZE;
+        temp = temp->Next();
+    }
+    return SIZE;
+}
+
 #endif // LINKED_LIST_TPP
