@@ -69,7 +69,7 @@ TEST_CASE("Using Mutators to manipulate members", "[node], [mutators]")
 
 TEST_CASE("Link Nodes and access linked data members", "[node], [linked]")
 {
-    SECTION("Traverse a link to acces a different Nodes data")
+    SECTION("Traverse a link to access a different Nodes data")
     {
         Node<int> node1(1);
         Node<int> node2(7);
@@ -110,5 +110,59 @@ TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifier
         list.push_front('C');
 
         REQUIRE(*list.begin() == 'C');
+    }
+}
+
+TEST_CASE("Using iterators to loop through the list", "[linkedLists], [iterators]")
+{
+    SECTION("Standard for loop with prefix increment")
+    {
+        LinkedList<int> list;
+
+        list.push_front(2);
+        list.push_front(1);
+        list.push_front(0);
+
+        int i = 0;
+        LinkedList<int>::iterator it;
+
+        for (it = list.begin(); it != list.end(); ++it)
+        {
+            REQUIRE(*it == i);
+            ++i;
+        }
+       
+    }
+    SECTION("Standard for loop with postfix increment")
+    {
+        LinkedList<int> list;
+
+        list.push_front(2);
+        list.push_front(1);
+        list.push_front(0);
+
+        int i = 0;
+        LinkedList<int>::iterator it;
+
+        for (it = list.begin(); it != list.end(); it++)
+        {
+            REQUIRE(*it == i);
+            ++i;
+        }
+    }
+    SECTION("Ranged based for loop")
+    {
+        LinkedList<int> list;
+
+        list.push_front(2);
+        list.push_front(1);
+        list.push_front(0);
+
+        int i = 0;
+        for(auto iter : list)
+        {
+            REQUIRE(iter == i);
+            ++i;
+        }
     }
 }
