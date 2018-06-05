@@ -11,6 +11,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <iterator>
 #include "node.hpp"
 
 template<typename T>
@@ -19,6 +20,28 @@ class LinkedList
 public:
     LinkedList();
     ~LinkedList() {}
+
+    class iterator
+    {
+    public:
+
+        iterator(Node<T>* ptr);
+
+        T& operator*();
+
+    private:
+       Node<T>* node;
+    };
+
+    // Iterators
+    iterator begin() const;
+    iterator end() const;
+
+    // Modifiers
+    void push_front(const T& data);
+
+    // Capacity functions
+    bool empty() const;
 
 
 private:
