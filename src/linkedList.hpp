@@ -34,7 +34,7 @@ public:
     
         // Constructors
         iterator() : node(nullptr) {}
-        iterator(pointer ptr);
+        explicit iterator(pointer ptr);
 
         // Operator overloads
         bool operator==(const self_type& rhs) const;
@@ -60,7 +60,7 @@ public:
     
         // Constructors
         const_iterator() : node(nullptr) {}
-        const_iterator(pointer ptr);
+        explicit const_iterator(pointer ptr);
 
         // Operator overloads
         bool operator==(const self_type& rhs) const;
