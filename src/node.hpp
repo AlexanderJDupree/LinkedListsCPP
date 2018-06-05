@@ -24,8 +24,8 @@ public:
     ~Node();
 
     // Inspectors
-    const T* Data() const;
-    Node* Next();
+    T* Data() const;
+    Node* Next() const;
 
     // Mutators
     Node* Data(const T& value);
