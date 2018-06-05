@@ -24,13 +24,27 @@ public:
     class iterator
     {
     public:
+        // Typedefs to make iterator STL friendly
+        typedef iterator self_type;
+        typedef T value_type;
+        typedef T& reference;
+        typedef Node<T>* pointer;
+        typedef std::forward_iterator_tag iterator_category;
+        typedef std::ptrdiff_t difference_type;
+    
+        // Constructors
+        iterator() : node(nullptr) {}
+        iterator(pointer ptr);
 
-        iterator(Node<T>* ptr);
-
-        T& operator*();
+        // Operator overloads
+        bool operator==(const self_type& rhs) const;
+        bool operator!=(const self_type& rhs) const;
+        self_type& operator++(); // Prefix ++ 
+        self_type operator++(int); // Postfix ++
+        reference operator*();
 
     private:
-       Node<T>* node;
+       pointer node;
     };
 
     // Iterators
