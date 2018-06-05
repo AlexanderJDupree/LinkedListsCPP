@@ -23,13 +23,13 @@ Node<T>::~Node()
 
 // Inspectors
 template <typename T>
-const T* Node<T>::Data() const
+T* Node<T>::Data() const
 {
     return data;
 }
 
 template <typename T>
-Node<T>* Node<T>::Next() 
+Node<T>* Node<T>::Next() const
 {
     return next;
 }
