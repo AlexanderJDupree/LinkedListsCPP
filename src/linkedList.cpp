@@ -135,11 +135,15 @@ void LinkedList<T>::push_front(const T& data)
 template <typename T>
 void LinkedList<T>::push_back(const T& data)
 {
+    if (this->empty())
+    {
+        push_front(data);
+        return;
+    }
+
     Node<T>* temp = new Node<T>(data);
 
-    temp->Next(nullptr);
-    tail->Next = temp;
-
+    tail->Next(temp);
     tail = temp;
 
     return;
