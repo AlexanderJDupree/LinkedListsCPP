@@ -133,10 +133,31 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
         list.push_back('Y');
         list.push_back('Z');
 
-        LinkedList<char>::iterator It = list.begin();
-        ++It;
-        ++It;
-        REQUIRE(*It == 'Z');
+        char character = 'X';
+        for (auto& element : list)
+        {
+            REQUIRE(element == character);
+            character++;
+        }
+    }
+}
+
+TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [iterators]")
+{
+    SECTION("push back and push front")
+    {
+        LinkedList<int> list;
+
+        list.push_back(2);
+        list.push_back(3);
+        list.push_front(1);
+
+        int i = 1;
+        for (auto& it : list)
+        {
+            REQUIRE(it == i);
+            ++i;
+        }
     }
 }
 
