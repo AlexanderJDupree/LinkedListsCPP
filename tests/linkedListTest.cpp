@@ -113,6 +113,33 @@ TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifier
     }
 }
 
+TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers], [iterators]")
+{
+    SECTION("Push one element")
+    {
+        LinkedList<int> list;
+
+        list.push_back(5);
+
+        REQUIRE(*list.begin() == 5);
+        
+    }
+
+    SECTION("Push Multiple elements")
+    {
+        LinkedList<char> list;
+        
+        list.push_back('X');
+        list.push_back('Y');
+        list.push_back('Z');
+
+        LinkedList<char>::iterator It = list.begin();
+        ++It;
+        ++It;
+        REQUIRE(*It == 'Z');
+    }
+}
+
 TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
 {
     SECTION("Standard for loop with prefix increment")

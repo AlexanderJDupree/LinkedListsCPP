@@ -82,6 +82,7 @@ public:
 
     // Modifiers
     void push_front(const T& data);
+    void push_back(const T& data);
 
     // Capacity functions
     bool empty() const;
