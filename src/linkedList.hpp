@@ -80,10 +80,10 @@ public:
     };
 
     // Iterators
-    const_iterator begin() const;
+    const_iterator cbegin() const;
     iterator begin();
 
-    const_iterator end() const;
+    const_iterator cend() const;
     iterator end();
 
     // Modifiers
