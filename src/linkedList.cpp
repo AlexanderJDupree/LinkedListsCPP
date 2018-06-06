@@ -8,6 +8,16 @@
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
+template <typename T>
+LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
+{
+    while (count > 0)
+    {
+        push_front(data);
+        --count;
+    }
+}
+
 // Iterator Class
 template <typename T>
 LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}
@@ -76,7 +86,7 @@ template <typename T>
 typename LinkedList<T>::const_iterator::self_type 
 LinkedList<T>::const_iterator::operator++(int)
 {
-    iterator copy = iterator(*this);
+    const_iterator copy = const_iterator(*this);
     ++(*this);
     return copy;
 }
@@ -92,7 +102,7 @@ LinkedList<T>::const_iterator::operator*() const
 
 // Iterators
 template <typename T>
-typename LinkedList<T>::const_iterator LinkedList<T>::begin() const
+typename LinkedList<T>::const_iterator LinkedList<T>::cbegin() const
 {
     return const_iterator(head);
 }
@@ -104,7 +114,7 @@ typename LinkedList<T>::iterator LinkedList<T>::begin()
 } 
 
 template <typename T>
-typename LinkedList<T>::const_iterator LinkedList<T>::end() const
+typename LinkedList<T>::const_iterator LinkedList<T>::cend() const
 {
     return const_iterator(tail->Next());
 } 

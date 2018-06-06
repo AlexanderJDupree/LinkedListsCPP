@@ -88,6 +88,16 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
 
         REQUIRE(list.empty() == true);
     }
+    SECTION("Fill Construction")
+    {
+        LinkedList<int> list(4, 100);
+
+        REQUIRE(list.size() == 4);
+        for (auto& element : list)
+        {
+            REQUIRE(element == 100);
+        }
+    }
 }
 
 TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifiers], [iterators]")
@@ -213,6 +223,28 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
             ++i;
         }
     }
+    SECTION("Using const_iterator in standard for loop with prefix increment")
+    {
+        const LinkedList<int> list(4, 100);
+
+        LinkedList<int>::const_iterator it = list.cbegin();
+
+        for (it = list.cbegin(); it != list.cend(); ++it)
+        {
+            REQUIRE(*it == 100);
+        }
+    }
+    SECTION("Using const_iterator in standard for loop with postfix increment")
+    {
+        const LinkedList<int> list(4, 100);
+
+        LinkedList<int>::const_iterator it = list.cbegin();
+
+        for (it = list.cbegin(); it != list.cend(); it++)
+        {
+            REQUIRE(*it == 100);
+        }
+    }
 }
 
 TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
@@ -236,4 +268,3 @@ TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
    
 }
 
-// TODO Write tests for const_iterators once a const linkedlist can be constructed
