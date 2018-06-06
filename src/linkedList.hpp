@@ -18,7 +18,13 @@ template<typename T>
 class LinkedList
 {
 public:
+    // Constructors
     LinkedList();
+
+    LinkedList(size_t count, const T& data);
+
+
+    // TODO Clear and delete each node in the destructor
     ~LinkedList() {}
 
     class iterator

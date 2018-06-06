@@ -8,6 +8,16 @@
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
+template <typename T>
+LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
+{
+    while (count > 0)
+    {
+        push_front(data);
+        --count;
+    }
+}
+
 // Iterator Class
 template <typename T>
 LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}

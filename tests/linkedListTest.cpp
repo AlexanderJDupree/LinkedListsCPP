@@ -88,6 +88,16 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
 
         REQUIRE(list.empty() == true);
     }
+    SECTION("Fill Construction")
+    {
+        LinkedList<int> list(4, 100);
+
+        REQUIRE(list.size() == 4);
+        for (auto& element : list)
+        {
+            REQUIRE(element == 100);
+        }
+    }
 }
 
 TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifiers], [iterators]")
