@@ -132,6 +132,19 @@ void LinkedList<T>::push_front(const T& data)
     return;
 }
 
+template <typename T>
+void LinkedList<T>::push_back(const T& data)
+{
+    Node<T>* temp = new Node<T>(data);
+
+    temp->Next(nullptr);
+    tail->Next = temp;
+
+    tail = temp;
+
+    return;
+}
+
 // Capacity functions
 template <typename T>
 bool LinkedList<T>::empty() const
