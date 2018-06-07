@@ -159,6 +159,53 @@ void LinkedList<T>::push_back(const T& data)
     return;
 }
 
+template<typename T>
+void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint, 
+                           const T& data)
+{
+    if (insertionPoint == begin())
+    {
+        push_front(data);
+        return;
+    }
+
+    Node<T>* newNode = new Node<T>(data);
+    Node<T>* current = head;
+    Node<T>* previous = head;
+    
+    LinkedList<T>::iterator It;
+    for (It = begin(); It != insertionPoint; ++It)
+    {
+        previous = current;
+        current = current->Next();
+    }
+
+    newNode->Next(previous->Next());
+    previous->Next(newNode);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::clear()
+{
+    if (head == nullptr)
+    {
+        return;
+    }
+
+    Node<T>* previous = head;
+
+    while (head != nullptr)
+    {
+        previous = head;
+        head = head->Next();
+        delete previous;
+    }
+
+    return;
+}
+
 // Capacity functions
 template <typename T>
 bool LinkedList<T>::empty() const

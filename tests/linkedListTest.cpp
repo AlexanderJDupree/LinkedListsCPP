@@ -152,6 +152,70 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
     }
 }
 
+TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iterators]")
+{
+    SECTION("Inserting in the middle (at index 2) of a populated list")
+    {
+        LinkedList<int> list;
+
+        list.push_back(2);
+        list.push_back(9);
+        list.push_back(6);
+        list.push_back(10);
+        
+        LinkedList<int>::iterator It = list.begin();
+        ++It;
+        ++It;
+
+        list.insert(It, 5);
+        It = list.begin();
+        ++It;
+        ++It;
+        
+        REQUIRE(*It == 5);
+    }
+    SECTION("Inserting at LinkedList::end() of a populated list")
+    {
+        LinkedList<int> list;
+
+        list.push_back(2);
+        list.push_back(9);
+        
+        LinkedList<int>::iterator It = list.end();
+
+        list.insert(It, 5);
+        It = list.begin();
+        ++It;
+        ++It;
+
+        REQUIRE(*It == 5);
+    }
+    SECTION("Inserting at the LinkedList::begin() of a populated list")
+    {
+        LinkedList<int> list;
+
+        list.push_back(2);
+        list.push_back(3); 
+        list.push_back(4);
+
+        LinkedList<int>::iterator It = list.begin();
+
+        list.insert(It, 1);
+
+        REQUIRE(*list.begin() == 1);
+    }
+    SECTION("Inserting into an empty list")
+    {
+        LinkedList<char> list;
+
+        LinkedList<char>::iterator It = list.begin();
+
+        list.insert(It, 'Z');
+
+        REQUIRE(*list.begin() == 'Z');
+    }
+}
+
 TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [iterators]")
 {
     SECTION("push back and push front")
@@ -168,6 +232,37 @@ TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [it
             REQUIRE(it == i);
             ++i;
         }
+    }
+}
+
+TEST_CASE("Clearing the list", "[linkedLists], [modifiers]")
+{
+    SECTION("Clearing a populated list")
+    {
+        LinkedList<int> list;
+
+        list.push_back(1);
+        list.push_back(2);
+        list.push_back(3);
+
+        list.clear();
+        REQUIRE(list.empty());
+    }
+    SECTION("Clearing a list with one element")
+    {
+        LinkedList<int> list;
+
+        list.push_back(1);
+
+        list.clear();
+        REQUIRE(list.empty());
+    }
+    SECTION("Clearing an empty list")
+    {
+        LinkedList<int> list;
+
+        list.clear();
+        REQUIRE(list.empty());
     }
 }
 

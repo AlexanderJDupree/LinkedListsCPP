@@ -89,6 +89,8 @@ public:
     // Modifiers
     void push_front(const T& data);
     void push_back(const T& data);
+    void insert(const LinkedList<T>::iterator& insertionPoint, const T& data);
+    void clear();
 
     // Capacity functions
     bool empty() const;
