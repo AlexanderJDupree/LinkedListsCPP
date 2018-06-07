@@ -159,6 +159,40 @@ void LinkedList<T>::push_back(const T& data)
     return;
 }
 
+template<typename T>
+void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint, 
+                           const T& data)
+{
+    if (insertionPoint == begin())
+    {
+        push_back(data);
+        return;
+    }
+
+    // Element before Iterator must now point to new node
+    // New node must point to previous element's pointer
+    
+    Node<T>* newNode = new Node<T>(data);
+    
+    LinkedList<T>::iterator previous; 
+    LinkedList<T>::iterator current = begin();
+    
+    for (current; current != insertionPoint; current++)
+        previous = current;
+
+    newNode.Next(previous.Next());
+    previous.Next(newNode);
+
+    // Uncomment if the for loop does not work
+    //do
+    //{
+        //previous = current;
+        //current++;
+    //} while (current != insertionPoint);
+    
+    return;
+}
+
 template <typename T>
 void LinkedList<T>::clear()
 {
