@@ -195,13 +195,13 @@ void LinkedList<T>::clear()
     }
 
     Node<T>* previous;
-    do
+
+    while (head != nullptr)
     {
         previous = head;
         head = head->Next();
         delete previous;
-    } while (head != nullptr);
-    
+    }
 
     return;
 }
