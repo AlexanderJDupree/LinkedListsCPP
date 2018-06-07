@@ -296,7 +296,7 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         list.erase(It);
 
         REQUIRE(list.empty());
-        REQUIRE(It == list.begin());
+        REQUIRE(It == nullptr);
     }
     SECTION("Erase multiple elements of a populated list")
     {
