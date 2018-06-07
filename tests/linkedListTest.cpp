@@ -171,6 +171,37 @@ TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [it
     }
 }
 
+TEST_CASE("Clearing the list", "[linkedLists], [modifiers]")
+{
+    SECTION("Clearing a populated list")
+    {
+        LinkedList<int> list;
+
+        list.push_back(1);
+        list.push_back(2);
+        list.push_back(3);
+
+        list.clear();
+        REQUIRE(list.empty());
+    }
+    SECTION("Clearing a list with one element")
+    {
+        LinkedList<int> list;
+
+        list.push_back(1);
+
+        list.clear();
+        REQUIRE(list.empty());
+    }
+    SECTION("Clearing an empty list")
+    {
+        LinkedList<int> list;
+
+        list.clear();
+        REQUIRE(list.empty());
+    }
+}
+
 TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
 {
     SECTION("Standard for loop with prefix increment")

@@ -159,6 +159,26 @@ void LinkedList<T>::push_back(const T& data)
     return;
 }
 
+template <typename T>
+void LinkedList<T>::clear()
+{
+    if (head == nullptr)
+    {
+        return;
+    }
+
+    Node<T>* previous;
+    do
+    {
+        previous = head;
+        head = head->Next();
+        delete previous;
+    } while (head != nullptr);
+    
+
+    return;
+}
+
 // Capacity functions
 template <typename T>
 bool LinkedList<T>::empty() const
