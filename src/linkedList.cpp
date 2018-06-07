@@ -171,7 +171,7 @@ void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint,
 
     Node<T>* newNode = new Node<T>(data);
     Node<T>* current = head;
-    Node<T>* previous;
+    Node<T>* previous = head;
     
     LinkedList<T>::iterator It;
     for (It = begin(); It != insertionPoint; It++)
