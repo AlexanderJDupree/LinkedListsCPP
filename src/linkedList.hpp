@@ -19,9 +19,14 @@ class LinkedList
 {
 public:
     // Constructors
+    /* Default */
     LinkedList();
 
+    /* Fill */
     LinkedList(size_t count, const T& data);
+
+    /* Copy */
+    explicit LinkedList(const LinkedList<T>& origin);
 
 
     // TODO Clear and delete each node in the destructor

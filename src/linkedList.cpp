@@ -18,6 +18,16 @@ LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
     }
 }
 
+template <typename T>
+LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
+{
+    LinkedList<T>::const_iterator it;
+    for (it = origin.cbegin(); it != origin.cend(); ++it)
+    {
+        push_back(*it);
+    }
+}
+
 // Iterator Class
 template <typename T>
 LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}
@@ -116,13 +126,16 @@ typename LinkedList<T>::iterator LinkedList<T>::begin()
 template <typename T>
 typename LinkedList<T>::const_iterator LinkedList<T>::cend() const
 {
-    return const_iterator(tail->Next());
+    // Prevents segmentation fault if attempt to get tails next node if tail is
+    // is a nullptr. Since tail will always point to a nullptr we can just 
+    // return an iterator to a nullptr
+    return const_iterator(nullptr);
 } 
 
 template <typename T>
 typename LinkedList<T>::iterator LinkedList<T>::end()
 {
-    return iterator(tail->Next());
+    return iterator(nullptr);
 } 
 
 // Modifiers

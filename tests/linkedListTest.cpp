@@ -98,6 +98,23 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
             REQUIRE(element == 100);
         }
     }
+    SECTION("Copy construction")
+    {
+        LinkedList<int> origin(4, 100);
+        LinkedList<int> copy(origin);
+
+        for (auto& element : copy)
+        {
+            REQUIRE(element == 100);
+        }
+    }
+    SECTION("Copy construction on empty list")
+    {
+        LinkedList<int> origin;
+        LinkedList<int> copy(origin);
+
+        REQUIRE(copy.empty() == true);
+    }
 }
 
 TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifiers], [iterators]")
