@@ -168,8 +168,11 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         It++;
 
         list.insert(It, 5);
+        It = list.begin();
+        It++;
+        It++;
         
-        REQUIRE(It == 5);
+        REQUIRE(*It == 5);
     }
     SECTION("Inserting at LinkedList::end() of a populated list")
     {
@@ -177,13 +180,15 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.push_back(2);
         list.push_back(9);
-        list.push_back(6);
         
         LinkedList<int>::iterator It = list.end();
 
         list.insert(It, 5);
-        
-        REQUIRE(It == 5);
+        It = list.begin();
+        It++;
+        It++;
+
+        REQUIRE(*It == 5);
     }
     SECTION("Inserting at the LinkedList::begin() of a populated list")
     {
@@ -197,7 +202,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 1);
 
-        REQUIRE(list.begin() == 1);
+        REQUIRE(*list.begin() == 1);
     }
     SECTION("Inserting into an empty list")
     {
@@ -207,7 +212,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 'Z');
 
-        REQUIRE(list.begin() == 'Z');
+        REQUIRE(*list.begin() == 'Z');
     }
 }
 

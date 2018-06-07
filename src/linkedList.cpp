@@ -165,31 +165,24 @@ void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint,
 {
     if (insertionPoint == begin())
     {
-        push_back(data);
+        push_front(data);
         return;
     }
 
-    // Element before Iterator must now point to new node
-    // New node must point to previous element's pointer
-    
     Node<T>* newNode = new Node<T>(data);
+    Node<T>* current = head;
+    Node<T>* previous;
     
-    LinkedList<T>::iterator previous; 
-    LinkedList<T>::iterator current = begin();
-    
-    for (current; current != insertionPoint; current++)
+    LinkedList<T>::iterator It;
+    for (It = begin(); It != insertionPoint; It++)
+    {
         previous = current;
+        current = current->Next();
+    }
 
-    newNode.Next(previous.Next());
-    previous.Next(newNode);
+    newNode->Next(previous->Next());
+    previous->Next(newNode);
 
-    // Uncomment if the for loop does not work
-    //do
-    //{
-        //previous = current;
-        //current++;
-    //} while (current != insertionPoint);
-    
     return;
 }
 
