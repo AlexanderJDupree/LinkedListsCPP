@@ -24,7 +24,7 @@
             "label" : "Build Tests",
             "type" : "shell",
             "command" : "g++",
-            "args" : ["-std=c++11", "-g", 
+            "args" : ["-std=c++11", "-g", "-Werror", 
                       "-I", "${workspaceFolder}/tests/third_party",
                       "-I", "${workspaceFolder}/src",
                       "${workspaceFolder}/tests/bin/tests_main.o", 
