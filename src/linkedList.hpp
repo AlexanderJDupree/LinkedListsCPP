@@ -101,6 +101,9 @@ public:
     bool empty() const;
     size_t size() const;
 
+    // Operator overloads
+    inline bool operator==(const LinkedList<T>& rhs) const;
+    inline bool operator!=(const LinkedList<T>& rhs) const;
 
 private:
 

@@ -239,4 +239,30 @@ size_t LinkedList<T>::size() const
     return SIZE;
 }
 
+// Operator Overloads
+template <typename T>
+bool LinkedList<T>::operator==(const LinkedList<T>& rhs) const
+{
+    if (size() != rhs.size()) { return false; }
+
+    LinkedList<T>::const_iterator left = cbegin();
+    LinkedList<T>::const_iterator right = rhs.cbegin();
+
+    while(left != cend() && right != rhs.cend())
+    {
+        if (*left != *right) { return false; }
+        ++left;
+        ++right;
+    }
+
+    return true;
+}
+
+template <typename T>
+bool LinkedList<T>::operator!=(const LinkedList<T>& rhs) const
+{
+    return !(*this == rhs);
+}
+
+
 #endif // LINKED_LIST_TPP
