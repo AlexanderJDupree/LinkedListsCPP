@@ -103,10 +103,7 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
         LinkedList<int> origin(4, 100);
         LinkedList<int> copy(origin);
 
-        for (auto& element : copy)
-        {
-            REQUIRE(element == 100);
-        }
+        REQUIRE(origin == copy);
     }
     SECTION("Copy construction on empty list")
     {
@@ -378,5 +375,23 @@ TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
         REQUIRE(list.size() == 3);
     }
    
+}
+
+TEST_CASE("Test comparison operators", "[linkedLists], [comparison], [operators]")
+{
+    SECTION("Two identical linked lists")
+    {
+        LinkedList<int> left(5, 20);
+        LinkedList<int> right(5, 20);
+
+        REQUIRE(left == right);
+    }
+    SECTION("Two different linked lists")
+    {
+        LinkedList<int> left(5, 20);
+        LinkedList<int> right;
+
+        REQUIRE(left != right);
+    }
 }
 
