@@ -164,13 +164,13 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         list.push_back(10);
         
         LinkedList<int>::iterator It = list.begin();
-        It++;
-        It++;
+        ++It;
+        ++It;
 
         list.insert(It, 5);
         It = list.begin();
-        It++;
-        It++;
+        ++It;
+        ++It;
         
         REQUIRE(*It == 5);
     }
@@ -185,8 +185,8 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 5);
         It = list.begin();
-        It++;
-        It++;
+        ++It;
+        ++It;
 
         REQUIRE(*It == 5);
     }
