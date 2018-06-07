@@ -194,7 +194,7 @@ void LinkedList<T>::clear()
         return;
     }
 
-    Node<T>* previous;
+    Node<T>* previous = head;
 
     while (head != nullptr)
     {
