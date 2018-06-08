@@ -354,6 +354,17 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
             REQUIRE(*it == 100);
         }
     }
+/* SEE Issue https://github.com/AlexanderJDupree/LinkedListsCPP/issues/32
+    SECTION("Using ranged based for loop on const linkedlist")
+    {
+        const LinkedList<int> list(5,25);
+
+        for (const auto& element : list)
+        {
+            REQUIRE(element == 25);
+        }
+    }
+*/
 }
 
 TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
