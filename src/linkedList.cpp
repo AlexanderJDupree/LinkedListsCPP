@@ -202,10 +202,7 @@ void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint,
 template<typename T>
 void LinkedList<T>::erase(LinkedList<T>::iterator& position)
 {
-    if (empty())
-    {
-        return;
-    }
+    if (empty()) { return; }
 
     LinkedList<T>::iterator it;
     Node<T>* current = head;
@@ -231,11 +228,53 @@ void LinkedList<T>::erase(LinkedList<T>::iterator& position)
 }
 
 template<typename T>
-void LinkedList::(LinkedList<T>::iterator& first,
-                  LinkedList<T>::iterator& last)
+void LinkedList<T>::erase(LinkedList<T>::iterator& first,
+                          LinkedList<T>::iterator& last)
 {
-    // By the end of it, first and last should be the same iterator
+    if (first == begin() && last == end())
+    {
+        // Dumb way, but it'll work for now
+        clear();
+        first = last;
+        return;
+    }
+    else if (first == last)
+    {
+        erase(first);
+        ++last;
+        return;
+    }
 
+    LinkedList<T>::iterator it;
+    Node<T>* current = head;
+    Node<T>* beforeFirst = head;
+    Node<T>* previous= head;
+
+    for (it = begin(); it != first; ++it)
+    {
+        beforeFirst = current;
+        current = current->Next();
+    }
+
+    while (first != last)
+    {
+        previous = current;
+        current = current->Next();
+        delete previous;
+        ++first;
+    }
+
+    // Other words, deleting from beginning to middle of list
+    if (beforeFirst == head)
+    {
+        head = current;
+    }
+    else 
+    {
+        beforeFirst->Next(current);
+    }
+
+    return;
 }
 
 
