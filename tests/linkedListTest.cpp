@@ -296,7 +296,16 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         list.erase(It);
 
         REQUIRE(list.empty());
-        REQUIRE(It == nullptr);
+        REQUIRE(It == list.end());
+    }
+    SECTION("Erase an empty list")
+    {
+        LinkedList<char> list;
+
+        LinkedList<char>::iterator it = list.begin();
+        list.erase(it);
+
+        REQUIRE(list.empty());
     }
     SECTION("Erase multiple elements of a populated list")
     {
@@ -317,8 +326,8 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         list.erase(It1, It2);
 
         REQUIRE(list.size() == 2);
-        REQUIRE(*It1 = 'C');
-        REQUIRE(*It2 = 'C');
+        REQUIRE(*It1 == 'C');
+        REQUIRE(*It2 == 'C');
     }
     SECTION("Erase the entire list")
     {
@@ -335,8 +344,48 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         list.erase(It1, It2);
 
         REQUIRE(list.empty());
-        REQUIRE(It1 = nullptr);
-        REQUIRE(It2 = nullptr);
+        REQUIRE(It1 == list.end());
+        REQUIRE(It2 == list.end());
+    }
+    SECTION("Erase a portion of list with two of the same iterator")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator it1,
+                                   it2,
+                                   itAssert;
+
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+        list.push_back('D');
+        
+        it1 = list.begin();
+        ++it1;
+        
+        it2 = list.begin();
+        ++it2;
+
+        list.erase(it1, it2);
+        itAssert = list.begin();
+        ++itAssert;
+        ++itAssert;
+
+        REQUIRE(*it1 == 'C');
+        REQUIRE(*it2 == 'C');
+        REQUIRE(*itAssert == 'D');
+
+    }
+    SECTION("Erase an empty list with iterators begin() and end()")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator first,
+                                  last;
+        first = list.begin();
+        last = list.end();
+
+        list.erase(first, last);
+
+        REQUIRE(list.empty());
     }
 }
 
