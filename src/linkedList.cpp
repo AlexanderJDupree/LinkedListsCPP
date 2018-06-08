@@ -233,7 +233,6 @@ void LinkedList<T>::erase(LinkedList<T>::iterator& first,
 {
     if (first == begin() && last == end())
     {
-        // Dumb way, but it'll work for now
         clear();
         first = last;
         return;
@@ -264,7 +263,6 @@ void LinkedList<T>::erase(LinkedList<T>::iterator& first,
         ++first;
     }
 
-    // Other words, deleting from beginning to middle of list
     if (beforeFirst == head)
     {
         head = current;
