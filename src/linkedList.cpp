@@ -9,6 +9,12 @@ template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
 template <typename T>
+LinkedList<T>::~LinkedList() 
+{
+    clear();
+}
+
+template <typename T>
 LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
 {
     while (count > 0)
@@ -27,88 +33,6 @@ LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
         push_back(*it);
     }
 }
-
-// Iterator Class
-template <typename T>
-LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}
-
-// Operator Overloads
-template <typename T>
-bool LinkedList<T>::iterator::operator==(const self_type& rhs) const
-{
-    return node == rhs.node;
-}
-
-template <typename T>
-bool LinkedList<T>::iterator::operator!=(const self_type& rhs) const
-{
-    return !(*this == rhs);
-}
-
-template <typename T>
-typename LinkedList<T>::iterator::self_type& LinkedList<T>::iterator::operator++()
-{
-    node = node->Next();
-    return *this;
-}
-
-template <typename T>
-typename LinkedList<T>::iterator::self_type LinkedList<T>::iterator::operator++(int)
-{
-    iterator copy = iterator(*this);
-    ++(*this);
-    return copy;
-}
-
-template <typename T>
-typename LinkedList<T>::iterator::reference LinkedList<T>::iterator::operator*()
-{
-    return *node->Data();
-}
-// End Iterator Class
-
-// const_iterator Class
-template <typename T>
-LinkedList<T>::const_iterator::const_iterator(const pointer ptr) : node(ptr) {}
-
-// Operator Overloads
-template <typename T>
-bool LinkedList<T>::const_iterator::operator==(const self_type& rhs) const
-{
-    return node == rhs.node;
-}
-
-template <typename T>
-bool LinkedList<T>::const_iterator::operator!=(const self_type& rhs) const
-{
-    return !(*this == rhs);
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::self_type& 
-LinkedList<T>::const_iterator::operator++()
-{
-    node = node->Next();
-    return *this;
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::self_type 
-LinkedList<T>::const_iterator::operator++(int)
-{
-    const_iterator copy = const_iterator(*this);
-    ++(*this);
-    return copy;
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::reference 
-LinkedList<T>::const_iterator::operator*() const
-{
-    return *node->Data();
-}
-// End const_iterator Class
-
 
 // Iterators
 template <typename T>
