@@ -25,36 +25,36 @@ public:
 
     /* Constructors */
 
-    /* Default */
+    // Default
     LinkedList();
 
-    /* Fill */
+    // Fill
     LinkedList(size_t count, const T& data);
 
-    /* Copy */
+    // Copy
     explicit LinkedList(const LinkedList<T>& origin);
 
-    // TODO Clear and delete each node in the destructor
+    // Destructor
     ~LinkedList();
 
-    // Iterators
+    /* Iterators */
     const_iterator cbegin() const;
     iterator begin();
 
     const_iterator cend() const;
     iterator end();
 
-    // Modifiers
+    /* Modifiers */
     void push_front(const T& data);
     void push_back(const T& data);
-    void insert(const LinkedList<T>::iterator& insertionPoint, const T& data);
+    void insert(LinkedList<T>::iterator pos, const T& data);
     void clear();
 
-    // Capacity functions
+    /* Capacity */
     bool empty() const;
     size_t size() const;
 
-    // Operator overloads
+    /* Operator Overloads */
     inline bool operator==(const LinkedList<T>& rhs) const;
     inline bool operator!=(const LinkedList<T>& rhs) const;
 

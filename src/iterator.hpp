@@ -38,7 +38,7 @@ public:
     bool operator==(const self_type& rhs) const;
     bool operator!=(const self_type& rhs) const;
 
-protected:
+public:
     pointer node;
 };
 

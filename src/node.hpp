@@ -18,16 +18,25 @@ class Node
 {
 public:
 
+    /* Constructors */
+    
+    // Default
     Node();
+
+    // Copy
     Node(const Node& origin);
+
+    // Value
     explicit Node(const T& value);
+
+    // Destructor
     ~Node();
 
-    // Inspectors
+    /* Inspectors */
     T* Data() const;
     Node* Next() const;
 
-    // Mutators
+    /* Mutators */
     Node* Data(const T& value);
     Node* Next(Node* node);
 
