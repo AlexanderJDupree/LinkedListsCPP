@@ -9,6 +9,7 @@
 *
 *******************************************************************************/
 
+#include <iostream>
 #include "catch.hpp"
 #include "node.hpp"
 #include "linkedList.hpp"
@@ -185,26 +186,28 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         It = list.begin();
         ++It;
         ++It;
-        
+        ++It;
+       
         REQUIRE(*It == 5);
     }
-    SECTION("Inserting at LinkedList::end() of a populated list")
+    SECTION("Inserting at the end of a populated list")
     {
         LinkedList<int> list;
 
         list.push_back(2);
         list.push_back(9);
         
-        LinkedList<int>::iterator It = list.end();
+        LinkedList<int>::iterator It = list.begin();
+
+        ++It;
 
         list.insert(It, 5);
-        It = list.begin();
-        ++It;
+
         ++It;
 
         REQUIRE(*It == 5);
     }
-    SECTION("Inserting at the LinkedList::begin() of a populated list")
+    SECTION("Inserting at the beginning of a populated list")
     {
         LinkedList<int> list;
 
@@ -216,7 +219,9 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 1);
 
-        REQUIRE(*list.begin() == 1);
+        ++It;
+
+        REQUIRE(*It == 1);
     }
     SECTION("Inserting into an empty list")
     {
