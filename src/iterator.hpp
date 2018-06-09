@@ -43,7 +43,7 @@ public:
 
     friend class LinkedList<T>;
 
-private:
+protected:
 
     pointer node;
 };
@@ -61,6 +61,8 @@ public:
 
     const_forward_iterator() : iterator_base<T>() {}
     explicit const_forward_iterator(pointer ptr) : iterator_base<T>(ptr) {}
+
+    self_type& operator+=(size_t n);
 
 };
 
