@@ -5,7 +5,9 @@
 
 #include "iterator.hpp"
 
-
+/*******************************************************************************
+iterator_base
+*******************************************************************************/
 
 template <typename T>
 iterator_base<T>::iterator_base(pointer ptr) : node(ptr) {}
@@ -41,6 +43,22 @@ template <typename T>
 bool iterator_base<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
+}
+
+/*******************************************************************************
+const_forward_iterator
+*******************************************************************************/
+
+template <typename T>
+typename const_forward_iterator<T>::self_type&
+const_forward_iterator<T>::operator+=(size_t n)
+{
+    while (n > 0 &&  this->node != nullptr)
+    {
+        ++(*this);
+        --n;
+    }
+    return *this;
 }
 
 #endif // ITERATOR_TPP

@@ -179,14 +179,13 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         list.push_back(10);
         
         LinkedList<int>::iterator It = list.begin();
-        ++It;
-        ++It;
+        
+        It += 2;
 
         list.insert(It, 5);
         It = list.begin();
-        ++It;
-        ++It;
-        ++It;
+
+        It += 3;
        
         REQUIRE(*It == 5);
     }
@@ -370,6 +369,24 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
         }
     }
 */
+}
+
+TEST_CASE("Using iterator arithmetic on iterators", "[iterators]")
+{
+    SECTION("Using the += operator to for incrementation")
+    {
+        LinkedList<int> list;
+        
+        list.push_front(3);
+        list.push_front(2);
+        list.push_front(1);
+
+        LinkedList<int>::iterator it = list.begin();
+
+        it += 2;
+
+        REQUIRE(*it == 3);
+    }
 }
 
 TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
