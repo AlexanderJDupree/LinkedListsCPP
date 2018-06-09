@@ -14,6 +14,9 @@
 #include <iterator>
 #include "node.hpp"
 
+// Forward Declaration
+template <typename T> class LinkedList;
+
 template <typename T>
 class iterator_base
 {
@@ -38,7 +41,10 @@ public:
     bool operator==(const self_type& rhs) const;
     bool operator!=(const self_type& rhs) const;
 
-public:
+    friend class LinkedList<T>;
+
+private:
+
     pointer node;
 };
 
@@ -55,6 +61,7 @@ public:
 
     const_forward_iterator() : iterator_base<T>() {}
     explicit const_forward_iterator(pointer ptr) : iterator_base<T>(ptr) {}
+
 };
 
 
@@ -72,6 +79,7 @@ public:
     forward_iterator() : const_forward_iterator<T>() {}
     explicit forward_iterator(pointer ptr) 
         : const_forward_iterator<T>(ptr) {}
+
 };
 
 
