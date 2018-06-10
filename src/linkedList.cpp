@@ -5,9 +5,15 @@
 
 #include "linkedList.hpp"
 
+/*******************************************************************************
+CONSTRUCTORS
+*******************************************************************************/
+
+// Default
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
+// Fill
 template <typename T>
 LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
 {
@@ -18,6 +24,7 @@ LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
     }
 }
 
+// Copy
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
 {
@@ -28,89 +35,17 @@ LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
     }
 }
 
-// Iterator Class
+// Destructor
 template <typename T>
-LinkedList<T>::iterator::iterator(const pointer ptr) : node(ptr) {}
-
-// Operator Overloads
-template <typename T>
-bool LinkedList<T>::iterator::operator==(const self_type& rhs) const
+LinkedList<T>::~LinkedList() 
 {
-    return node == rhs.node;
+    clear();
 }
 
-template <typename T>
-bool LinkedList<T>::iterator::operator!=(const self_type& rhs) const
-{
-    return !(*this == rhs);
-}
+/*******************************************************************************
+ITERATORS
+*******************************************************************************/
 
-template <typename T>
-typename LinkedList<T>::iterator::self_type& LinkedList<T>::iterator::operator++()
-{
-    node = node->Next();
-    return *this;
-}
-
-template <typename T>
-typename LinkedList<T>::iterator::self_type LinkedList<T>::iterator::operator++(int)
-{
-    iterator copy = iterator(*this);
-    ++(*this);
-    return copy;
-}
-
-template <typename T>
-typename LinkedList<T>::iterator::reference LinkedList<T>::iterator::operator*()
-{
-    return *node->Data();
-}
-// End Iterator Class
-
-// const_iterator Class
-template <typename T>
-LinkedList<T>::const_iterator::const_iterator(const pointer ptr) : node(ptr) {}
-
-// Operator Overloads
-template <typename T>
-bool LinkedList<T>::const_iterator::operator==(const self_type& rhs) const
-{
-    return node == rhs.node;
-}
-
-template <typename T>
-bool LinkedList<T>::const_iterator::operator!=(const self_type& rhs) const
-{
-    return !(*this == rhs);
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::self_type& 
-LinkedList<T>::const_iterator::operator++()
-{
-    node = node->Next();
-    return *this;
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::self_type 
-LinkedList<T>::const_iterator::operator++(int)
-{
-    const_iterator copy = const_iterator(*this);
-    ++(*this);
-    return copy;
-}
-
-template <typename T>
-typename LinkedList<T>::const_iterator::reference 
-LinkedList<T>::const_iterator::operator*() const
-{
-    return *node->Data();
-}
-// End const_iterator Class
-
-
-// Iterators
 template <typename T>
 typename LinkedList<T>::const_iterator LinkedList<T>::cbegin() const
 {
@@ -138,7 +73,10 @@ typename LinkedList<T>::iterator LinkedList<T>::end()
     return iterator(nullptr);
 } 
 
-// Modifiers
+/*******************************************************************************
+MODIFIERS
+*******************************************************************************/
+
 template <typename T>
 void LinkedList<T>::push_front(const T& data)
 {
@@ -173,29 +111,24 @@ void LinkedList<T>::push_back(const T& data)
 }
 
 template<typename T>
-void LinkedList<T>::insert(const LinkedList<T>::iterator &insertionPoint, 
-                           const T& data)
+void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
 {
-    if (insertionPoint == begin())
+    if(empty())
     {
         push_front(data);
         return;
     }
 
     Node<T>* newNode = new Node<T>(data);
-    Node<T>* current = head;
-    Node<T>* previous = head;
-    
-    LinkedList<T>::iterator It;
-    for (It = begin(); It != insertionPoint; ++It)
+    newNode->Next(pos.node->Next());
+
+    pos.node->Next(newNode);
+
+    if(tail->Next() == newNode)
     {
-        previous = current;
-        current = current->Next();
+        tail = newNode;
     }
-
-    newNode->Next(previous->Next());
-    previous->Next(newNode);
-
+ 
     return;
 }
 
@@ -279,7 +212,7 @@ void LinkedList<T>::erase(LinkedList<T>::iterator& first,
 template <typename T>
 void LinkedList<T>::clear()
 {
-    if (head == nullptr)
+    if (empty())
     {
         return;
     }
@@ -296,7 +229,10 @@ void LinkedList<T>::clear()
     return;
 }
 
-// Capacity functions
+/*******************************************************************************
+CAPACITY
+*******************************************************************************/ 
+
 template <typename T>
 bool LinkedList<T>::empty() const
 {
@@ -315,5 +251,34 @@ size_t LinkedList<T>::size() const
     }
     return SIZE;
 }
+
+/*******************************************************************************
+OPERATOR OVERLOADS
+*******************************************************************************/
+
+template <typename T>
+bool LinkedList<T>::operator==(const LinkedList<T>& rhs) const
+{
+    if (size() != rhs.size()) { return false; }
+
+    LinkedList<T>::const_iterator left = cbegin();
+    LinkedList<T>::const_iterator right = rhs.cbegin();
+
+    while(left != cend() && right != rhs.cend())
+    {
+        if (*left != *right) { return false; }
+        ++left;
+        ++right;
+    }
+
+    return true;
+}
+
+template <typename T>
+bool LinkedList<T>::operator!=(const LinkedList<T>& rhs) const
+{
+    return !(*this == rhs);
+}
+
 
 #endif // LINKED_LIST_TPP

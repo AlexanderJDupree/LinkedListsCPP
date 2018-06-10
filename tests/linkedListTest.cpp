@@ -9,6 +9,7 @@
 *
 *******************************************************************************/
 
+#include <iostream>
 #include "catch.hpp"
 #include "node.hpp"
 #include "linkedList.hpp"
@@ -103,10 +104,7 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
         LinkedList<int> origin(4, 100);
         LinkedList<int> copy(origin);
 
-        for (auto& element : copy)
-        {
-            REQUIRE(element == 100);
-        }
+        REQUIRE(origin == copy);
     }
     SECTION("Copy construction on empty list")
     {
@@ -181,33 +179,34 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         list.push_back(10);
         
         LinkedList<int>::iterator It = list.begin();
-        ++It;
-        ++It;
+        
+        It += 2;
 
         list.insert(It, 5);
         It = list.begin();
-        ++It;
-        ++It;
-        
+
+        It += 3;
+       
         REQUIRE(*It == 5);
     }
-    SECTION("Inserting at LinkedList::end() of a populated list")
+    SECTION("Inserting at the end of a populated list")
     {
         LinkedList<int> list;
 
         list.push_back(2);
         list.push_back(9);
         
-        LinkedList<int>::iterator It = list.end();
+        LinkedList<int>::iterator It = list.begin();
+
+        ++It;
 
         list.insert(It, 5);
-        It = list.begin();
-        ++It;
+
         ++It;
 
         REQUIRE(*It == 5);
     }
-    SECTION("Inserting at the LinkedList::begin() of a populated list")
+    SECTION("Inserting at the beginning of a populated list")
     {
         LinkedList<int> list;
 
@@ -219,7 +218,9 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 1);
 
-        REQUIRE(*list.begin() == 1);
+        ++It;
+
+        REQUIRE(*It == 1);
     }
     SECTION("Inserting into an empty list")
     {
@@ -494,6 +495,35 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
             REQUIRE(*it == 100);
         }
     }
+/* SEE Issue https://github.com/AlexanderJDupree/LinkedListsCPP/issues/32
+    SECTION("Using ranged based for loop on const linkedlist")
+    {
+        const LinkedList<int> list(5,25);
+
+        for (const auto& element : list)
+        {
+            REQUIRE(element == 25);
+        }
+    }
+*/
+}
+
+TEST_CASE("Using iterator arithmetic on iterators", "[iterators]")
+{
+    SECTION("Using the += operator to for incrementation")
+    {
+        LinkedList<int> list;
+        
+        list.push_front(3);
+        list.push_front(2);
+        list.push_front(1);
+
+        LinkedList<int>::iterator it = list.begin();
+
+        it += 2;
+
+        REQUIRE(*it == 3);
+    }
 }
 
 TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
@@ -515,5 +545,23 @@ TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
         REQUIRE(list.size() == 3);
     }
    
+}
+
+TEST_CASE("Test comparison operators", "[linkedLists], [comparison], [operators]")
+{
+    SECTION("Two identical linked lists")
+    {
+        LinkedList<int> left(5, 20);
+        LinkedList<int> right(5, 20);
+
+        REQUIRE(left == right);
+    }
+    SECTION("Two different linked lists")
+    {
+        LinkedList<int> left(5, 20);
+        LinkedList<int> right;
+
+        REQUIRE(left != right);
+    }
 }
 

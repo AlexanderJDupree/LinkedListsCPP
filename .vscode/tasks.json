@@ -29,6 +29,7 @@
                       "-I", "${workspaceFolder}/src",
                       "${workspaceFolder}/tests/bin/tests_main.o", 
                       "${workspaceFolder}/src/node.cpp", 
+                      "${workspaceFolder}/src/iterator.cpp", 
                       "${workspaceFolder}/src/linkedList.cpp", 
                       "${workspaceFolder}/tests/linkedListTest.cpp", 
                       "-o", "${workspaceFolder}/tests/debug/runTests", "-Wall",
