@@ -132,6 +132,51 @@ void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
     return;
 }
 
+template<typename T>
+typename LinkedList<T>::iterator 
+LinkedList<T>::erase(LinkedList<T>::iterator& position)
+{
+    if (empty()) { return position; }
+
+    Node<T>* previous = head;
+
+    if (previous != position.node)
+    {
+        while (previous->Next() != position.node)
+        {
+            previous = previous->Next();
+        }
+    }
+
+    previous->Next(position.node->Next());
+
+    Node<T>* temp = position.node;
+
+    if (temp == head)
+    {
+        head = head->Next();
+    }
+
+    position = iterator(previous->Next());
+
+    delete temp;
+
+    return position;
+}
+
+template<typename T>
+typename LinkedList<T>::iterator 
+LinkedList<T>::erase(LinkedList<T>::iterator& first, LinkedList<T>::iterator& last)
+{
+    while (first != last)
+    {
+        first = erase(first);
+    }
+
+    return first;
+}
+
+
 template <typename T>
 void LinkedList<T>::clear()
 {

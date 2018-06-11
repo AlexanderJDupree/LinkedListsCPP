@@ -1,5 +1,5 @@
 /*******************************************************************************
-* File: linkedList.h
+* File: linkedList.hpp
 *
 * Description: 
 * 
@@ -48,6 +48,8 @@ public:
     void push_front(const T& data);
     void push_back(const T& data);
     void insert(LinkedList<T>::iterator pos, const T& data);
+    iterator erase(LinkedList<T>::iterator& position);
+    iterator erase(LinkedList<T>::iterator& first, LinkedList<T>::iterator& last);
     void clear();
 
     /* Capacity */

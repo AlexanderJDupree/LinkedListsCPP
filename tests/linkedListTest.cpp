@@ -253,6 +253,144 @@ TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [it
     }
 }
 
+TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]")
+{
+    SECTION("Erase one element of a populated list")
+    {
+        LinkedList<char> list;
+
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+        list.push_back('D');
+
+        LinkedList<char>::iterator It = list.begin();
+
+        ++It;
+
+        It = list.erase(It);
+
+        REQUIRE(list.size() == 3);
+        REQUIRE(*It == 'C');
+    }
+    SECTION("Erase the last element of a populated list")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator It;
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+
+        It = list.begin();
+        ++It;
+        ++It;
+        list.erase(It);
+
+        REQUIRE(list.size() == 2);
+        REQUIRE(It == list.end());
+    }
+    SECTION("Erase the only element in a list")
+    {
+        LinkedList<char> list;
+
+        list.push_back('A');
+
+        LinkedList<char>::iterator It = list.begin();
+
+        It = list.erase(It);
+
+        REQUIRE(list.empty());
+        REQUIRE(It == list.end());
+    }
+    SECTION("Erase an empty list")
+    {
+        LinkedList<char> list;
+
+        LinkedList<char>::iterator it = list.begin();
+        list.erase(it);
+
+        REQUIRE(list.empty());
+    }
+    SECTION("Erase multiple elements of a populated list")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator It1,
+                                   It2;
+
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+        list.push_back('D');
+
+        It1 = list.begin();
+        It2 = list.begin();
+        ++It2;
+        ++It2;
+
+        It1 = list.erase(It1, It2);
+
+        REQUIRE(list.size() == 2);
+        REQUIRE(*It1 == 'C');
+        REQUIRE(*It2 == 'C');
+    }
+    SECTION("Erase the entire list")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator It1,
+                                   It2;
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+
+        It1 = list.begin();
+        It2 = list.end();
+
+        list.erase(It1, It2);
+
+        REQUIRE(list.empty());
+        REQUIRE(It1 == list.end());
+        REQUIRE(It2 == list.end());
+    }
+    SECTION("Erase a portion of list with two of the same iterator")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator it1,
+                                   it2,
+                                   itAssert;
+
+        list.push_back('A');
+        list.push_back('B');
+        list.push_back('C');
+        list.push_back('D');
+        
+        it1 = list.begin();
+        ++it1;
+        
+        it2 = list.begin();
+        ++it2;
+
+        it1 = list.erase(it1, it2);
+        itAssert = list.begin();
+        ++itAssert;
+        ++itAssert;
+
+        REQUIRE(*it1 == 'B');
+        REQUIRE(*it2 == 'B');
+    }
+    SECTION("Erase an empty list with iterators begin() and end()")
+    {
+        LinkedList<char> list;
+        LinkedList<char>::iterator first,
+                                  last;
+        first = list.begin();
+        last = list.end();
+
+        list.erase(first, last);
+
+        REQUIRE(list.empty());
+    }
+}
+
 TEST_CASE("Clearing the list", "[linkedLists], [modifiers]")
 {
     SECTION("Clearing a populated list")
