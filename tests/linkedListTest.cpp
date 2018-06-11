@@ -327,7 +327,7 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         ++It2;
         ++It2;
 
-        list.erase(It1, It2);
+        It1 = list.erase(It1, It2);
 
         REQUIRE(list.size() == 2);
         REQUIRE(*It1 == 'C');
@@ -369,7 +369,7 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         it2 = list.begin();
         ++it2;
 
-        list.erase(it1, it2);
+        it1 = list.erase(it1, it2);
         itAssert = list.begin();
         ++itAssert;
         ++itAssert;
