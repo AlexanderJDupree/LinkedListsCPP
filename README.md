@@ -83,6 +83,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Alexander DuPree** - *Initial work* - [GitHub](https://github.com/alexanderjdupree)
+* **Jacob Bickle** - *Co-Author* - [GitHub](https://github.com/jake-bickle)
 
 See also the list of [contributors](https://github.com/AlexanderJDupree/LinkedListsCPP/graphs/contributors) who participated in this project.
 
