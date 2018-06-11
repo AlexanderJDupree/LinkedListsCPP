@@ -11,6 +11,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <initializer_list>
 #include "node.hpp"
 #include "iterator.hpp"
 
@@ -33,6 +34,10 @@ public:
 
     // Copy
     explicit LinkedList(const LinkedList<T>& origin);
+
+    // Initializer List
+    LinkedList(std::initializer_list<T> init);
+
 
     // Destructor
     ~LinkedList();

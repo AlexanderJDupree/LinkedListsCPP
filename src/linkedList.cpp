@@ -35,6 +35,18 @@ LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
     }
 }
 
+// Initializer List
+template <typename T>
+LinkedList<T>::LinkedList(std::initializer_list<T> init)
+    : head(nullptr), tail(nullptr)
+{
+    typename std::initializer_list<T>::iterator it;
+    for(it = init.begin(); it != init.end(); ++it)
+    {
+        push_back(*it);
+    }
+}
+
 // Destructor
 template <typename T>
 LinkedList<T>::~LinkedList() 
