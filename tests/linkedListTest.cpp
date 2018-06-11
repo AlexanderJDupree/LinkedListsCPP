@@ -9,7 +9,7 @@
 *
 *******************************************************************************/
 
-#include <iostream>
+#include <vector>
 #include "catch.hpp"
 #include "node.hpp"
 #include "linkedList.hpp"
@@ -37,6 +37,16 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
 
         REQUIRE(*node2.Data() == 5);
         REQUIRE(node2.Next() == nullptr);
+    }
+    SECTION("Fill construction")
+    {
+        std::vector<int> nums(5, 100);
+        LinkedList<int> list(nums.begin(), nums.end());
+
+        for (auto& element : list)
+        {
+            REQUIRE(element == 100);
+        }
     }
 }
 
