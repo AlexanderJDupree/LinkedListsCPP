@@ -133,79 +133,47 @@ void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
 }
 
 template<typename T>
-void LinkedList<T>::erase(LinkedList<T>::iterator& position)
+typename LinkedList<T>::iterator 
+LinkedList<T>::erase(LinkedList<T>::iterator& position)
 {
-    if (empty()) { return; }
+    if (empty()) { return position; }
 
-    LinkedList<T>::iterator it;
-    Node<T>* current = head;
     Node<T>* previous = head;
 
-    for (it = begin(); it != position; ++it)
+    if (previous != position.node)
     {
-        previous = current;
-        current = current->Next();
+        while (previous->Next() != position.node)
+        {
+            previous = previous->Next();
+        }
     }
 
-    ++position;
-    previous->Next(current->Next());
+    previous->Next(position.node->Next());
 
-    delete current;
+    Node<T>* temp = position.node;
 
-    if (current == head)
+    if (temp == head)
     {
-        head = nullptr;
+        head = head->Next();
     }
 
-    return;
+    position = iterator(previous->Next());
+
+    delete temp;
+
+    return position;
 }
 
 template<typename T>
-void LinkedList<T>::erase(LinkedList<T>::iterator& first,
-                          LinkedList<T>::iterator& last)
+typename LinkedList<T>::iterator 
+LinkedList<T>::erase(LinkedList<T>::iterator& first, LinkedList<T>::iterator& last)
 {
-    if (first == begin() && last == end())
-    {
-        clear();
-        first = last;
-        return;
-    }
-    else if (first == last)
-    {
-        erase(first);
-        ++last;
-        return;
-    }
-
-    LinkedList<T>::iterator it;
-    Node<T>* current = head;
-    Node<T>* beforeFirst = head;
-    Node<T>* previous= head;
-
-    for (it = begin(); it != first; ++it)
-    {
-        beforeFirst = current;
-        current = current->Next();
-    }
-
     while (first != last)
     {
-        previous = current;
-        current = current->Next();
-        delete previous;
-        ++first;
+        first = erase(first);
     }
 
-    if (beforeFirst == head)
-    {
-        head = current;
-    }
-    else 
-    {
-        beforeFirst->Next(current);
-    }
-
-    return;
+    return first;
 }
 
 

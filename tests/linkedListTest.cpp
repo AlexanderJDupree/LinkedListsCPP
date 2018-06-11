@@ -258,15 +258,17 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     SECTION("Erase one element of a populated list")
     {
         LinkedList<char> list;
-        LinkedList<char>::iterator It;
+
         list.push_back('A');
         list.push_back('B');
         list.push_back('C');
         list.push_back('D');
 
-        It = list.begin();
+        LinkedList<char>::iterator It = list.begin();
+
         ++It;
-        list.erase(It);
+
+        It = list.erase(It);
 
         REQUIRE(list.size() == 3);
         REQUIRE(*It == 'C');
@@ -290,11 +292,12 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     SECTION("Erase the only element in a list")
     {
         LinkedList<char> list;
-        LinkedList<char>::iterator It;
+
         list.push_back('A');
 
-        It = list.begin();
-        list.erase(It);
+        LinkedList<char>::iterator It = list.begin();
+
+        It = list.erase(It);
 
         REQUIRE(list.empty());
         REQUIRE(It == list.end());
@@ -371,10 +374,8 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         ++itAssert;
         ++itAssert;
 
-        REQUIRE(*it1 == 'C');
-        REQUIRE(*it2 == 'C');
-        REQUIRE(*itAssert == 'D');
-
+        REQUIRE(*it1 == 'B');
+        REQUIRE(*it2 == 'B');
     }
     SECTION("Erase an empty list with iterators begin() and end()")
     {
