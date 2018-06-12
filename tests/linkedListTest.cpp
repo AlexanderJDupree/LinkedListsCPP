@@ -129,7 +129,7 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
 
         REQUIRE(list.empty());
     }
-    SECTION("Fill construction")
+    SECTION("Range based construction")
     {
         std::vector<int> nums = { 1, 2, 3, 4, 5 };
         LinkedList<int> list(nums.begin(), nums.end());
@@ -141,7 +141,7 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
             ++i;
         }
     }
-    SECTION("Fill construction on empty vector")
+    SECTION("Ranged based construction on empty vector")
     {
         std::vector<int> nums;
         LinkedList<int> list(nums.begin(), nums.end());
