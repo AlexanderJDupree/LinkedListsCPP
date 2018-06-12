@@ -48,7 +48,7 @@ public:
     explicit LinkedList(const LinkedList<T>& origin);
 
     // Initializer List
-    LinkedList(std::initializer_list<T> init);
+    explicit LinkedList(std::initializer_list<T> init);
 
 
 
