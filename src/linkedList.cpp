@@ -24,6 +24,26 @@ LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
     }
 }
 
+// Range
+template <typename T>
+template <typename InputIterator,
+        typename ::std::enable_if<
+            ::std::is_constructible<
+                T,
+                decltype(*::std::declval<InputIterator>())
+            >::value
+        >::type*
+>
+LinkedList<T>::LinkedList(InputIterator begin, InputIterator end) : LinkedList()
+{
+    for (;begin != end; ++begin)
+    {
+        push_back(*begin);
+    }
+}
+
+
+
 // Copy
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()

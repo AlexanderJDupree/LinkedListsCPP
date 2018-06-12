@@ -42,13 +42,7 @@ public:
               >::value
           >::type* = nullptr
     >
-    LinkedList(InputIterator begin, InputIterator end) : LinkedList()
-    {
-        for (;begin != end; ++begin)
-        {
-            push_back(*begin);
-        }
-    }
+    LinkedList(InputIterator begin, InputIterator end);
 
     // Copy
     explicit LinkedList(const LinkedList<T>& origin);
