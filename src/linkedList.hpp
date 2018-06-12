@@ -34,14 +34,8 @@ public:
     LinkedList(size_t count, const T& data);
 
     // Range
-    template <typename InputIterator,
-          typename ::std::enable_if<
-              ::std::is_constructible<
-                  T,
-                  decltype(*::std::declval<InputIterator>())
-              >::value
-          >::type* = nullptr
-    >
+    template <typename InputIterator, typename ::std::enable_if< ::std::is_constructible
+             < T, decltype(*::std::declval<InputIterator>()) >::value >::type* = nullptr >
     LinkedList(InputIterator begin, InputIterator end);
 
     // Copy

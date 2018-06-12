@@ -123,6 +123,12 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
             ++i;
         }
     }
+    SECTION("Empty initializer list")
+    {
+        LinkedList<int> list {};
+
+        REQUIRE(list.empty());
+    }
     SECTION("Fill construction")
     {
         std::vector<int> nums = { 1, 2, 3, 4, 5 };
@@ -134,6 +140,13 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
             REQUIRE(element == i);
             ++i;
         }
+    }
+    SECTION("Fill construction on empty vector")
+    {
+        std::vector<int> nums;
+        LinkedList<int> list(nums.begin(), nums.end());
+
+        REQUIRE(list.empty());
     }
 }
 
