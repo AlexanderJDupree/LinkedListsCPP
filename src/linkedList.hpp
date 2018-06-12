@@ -42,7 +42,7 @@ public:
               >::value
           >::type* = nullptr
     >
-    LinkedList(InputIterator begin, InputIterator end)
+    LinkedList(InputIterator begin, InputIterator end) : LinkedList()
     {
         for (;begin != end; ++begin)
         {

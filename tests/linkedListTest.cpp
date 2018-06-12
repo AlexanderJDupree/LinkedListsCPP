@@ -38,18 +38,6 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
         REQUIRE(*node2.Data() == 5);
         REQUIRE(node2.Next() == nullptr);
     }
-    SECTION("Fill construction")
-    {
-        LinkedList<int> nums{ 1, 2, 3, 4, 5 };
-        LinkedList<int> list(nums.begin(), nums.end());
-
-        int i = 1;
-        for (auto& element : list)
-        {
-            REQUIRE(element == i);
-            ++i;
-        }
-    }
 }
 
 TEST_CASE("Using Mutators to manipulate members", "[node], [mutators]")
@@ -127,6 +115,18 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
     SECTION("Initializer List construction")
     {
         LinkedList<int> list {1, 2, 3, 4, 5};
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("Fill construction")
+    {
+        std::vector<int> nums = { 1, 2, 3, 4, 5 };
+        LinkedList<int> list(nums.begin(), nums.end());
 
         int i = 1;
         for (auto& element : list)
