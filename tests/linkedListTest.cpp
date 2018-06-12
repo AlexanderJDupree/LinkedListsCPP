@@ -40,12 +40,14 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
     }
     SECTION("Fill construction")
     {
-        std::vector<int> nums(5, 100);
+        std::vector<int> nums = { 1, 2, 3, 4, 5 };
         LinkedList<int> list(nums.begin(), nums.end());
 
+        int i = 1;
         for (auto& element : list)
         {
-            REQUIRE(element == 100);
+            REQUIRE(element == i);
+            ++i;
         }
     }
 }
