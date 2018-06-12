@@ -40,7 +40,7 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
     }
     SECTION("Fill construction")
     {
-        std::vector<int> nums = { 1, 2, 3, 4, 5 };
+        LinkedList<int> nums{ 1, 2, 3, 4, 5 };
         LinkedList<int> list(nums.begin(), nums.end());
 
         int i = 1;
