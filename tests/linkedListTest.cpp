@@ -539,3 +539,25 @@ TEST_CASE("Test comparison operators", "[linkedLists], [comparison], [operators]
         REQUIRE(left != right);
     }
 }
+
+TEST_CASE("Test assignment operator", "[linkedLists], [comparison], [operators]")
+{
+    SECTION("Two unique lists")
+    {
+        LinkedList<int> origin { 1, 2, 3, 4, 5 };
+        LinkedList<int> copy { 6, 7, 8 };
+
+        copy = origin;
+
+        REQUIRE(copy == origin); 
+    }
+    SECTION("Two empty lists")
+    {
+        LinkedList<int> origin;
+        LinkedList<int> copy;
+
+        copy = origin;
+
+        REQUIRE(copy == origin);
+    }
+}

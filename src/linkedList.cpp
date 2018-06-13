@@ -273,5 +273,28 @@ bool LinkedList<T>::operator!=(const LinkedList<value_type>& rhs) const
     return !(*this == rhs);
 }
 
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator=(LinkedList<value_type> list)
+{
+    swap(*this, list);
+
+    return *this;
+}
+
+/*******************************************************************************
+*******************************************************************************/
+
+template <typename T>
+void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcept
+{
+    // Enables ADL
+    using std::swap;
+    
+    // Swap pointers, reassigns ownership
+    swap(newList.head, oldList.head);
+    swap(newList.tail, oldList.tail);
+    return;
+}
+
 
 #endif // LINKED_LIST_TPP

@@ -13,6 +13,7 @@
 
 #include <initializer_list>
 #include <type_traits>
+#include <algorithm>
 #include "node.hpp"
 #include "iterator.hpp"
 
@@ -46,7 +47,7 @@ public:
     LinkedList(InputIterator begin, InputIterator end);
 
     // Copy
-    explicit LinkedList(const LinkedList<value_type>& origin);
+    LinkedList(const LinkedList<value_type>& origin);
 
     // Initializer List
     explicit LinkedList(std::initializer_list<value_type> init);
@@ -76,6 +77,10 @@ public:
     /* Operator Overloads */
     inline bool operator==(const LinkedList<value_type>& rhs) const;
     inline bool operator!=(const LinkedList<value_type>& rhs) const;
+    LinkedList<value_type>& operator=(LinkedList<value_type> list);
+
+    /* Swap */
+    void swap(LinkedList<value_type>& newList, LinkedList<value_type>& oldList) noexcept;
 
 
 
