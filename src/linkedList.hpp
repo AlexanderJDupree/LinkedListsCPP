@@ -22,8 +22,15 @@ class LinkedList : public forward_iterator<T>
 public:
 
     /* Type Defs */
+    typedef size_t size_type;
+    typedef T value_type;
+    typedef T& reference;
+    typedef const T& const_reference;
+    typedef T* pointer;
+    typedef const T* const_pointer;
     typedef forward_iterator<T> iterator;
     typedef const_forward_iterator<T> const_iterator;
+    typedef Node<T>* node_pointer;
 
     /* Constructors */
 
@@ -31,7 +38,7 @@ public:
     LinkedList();
 
     // Fill
-    LinkedList(size_t count, const T& data);
+    LinkedList(size_type count, const_reference data);
 
     // Range
     template <typename InputIterator, typename ::std::enable_if< ::std::is_constructible
@@ -39,12 +46,10 @@ public:
     LinkedList(InputIterator begin, InputIterator end);
 
     // Copy
-    explicit LinkedList(const LinkedList<T>& origin);
+    explicit LinkedList(const LinkedList<value_type>& origin);
 
     // Initializer List
-    explicit LinkedList(std::initializer_list<T> init);
-
-
+    explicit LinkedList(std::initializer_list<value_type> init);
 
     // Destructor
     ~LinkedList();
@@ -57,25 +62,27 @@ public:
     iterator end();
 
     /* Modifiers */
-    void push_front(const T& data);
-    void push_back(const T& data);
-    void insert(LinkedList<T>::iterator pos, const T& data);
-    iterator erase(LinkedList<T>::iterator& position);
-    iterator erase(LinkedList<T>::iterator& first, LinkedList<T>::iterator& last);
+    void push_front(const_reference data);
+    void push_back(const_reference data);
+    void insert(iterator position, const_reference data);
+    iterator erase(iterator& position);
+    iterator erase(iterator& first, iterator& last);
     void clear();
 
     /* Capacity */
     bool empty() const;
-    size_t size() const;
+    size_type size() const;
 
     /* Operator Overloads */
-    inline bool operator==(const LinkedList<T>& rhs) const;
-    inline bool operator!=(const LinkedList<T>& rhs) const;
+    inline bool operator==(const LinkedList<value_type>& rhs) const;
+    inline bool operator!=(const LinkedList<value_type>& rhs) const;
+
+
 
 private:
 
-    Node<T>* head;
-    Node<T>* tail;
+    node_pointer head;
+    node_pointer tail;
 
 };
 

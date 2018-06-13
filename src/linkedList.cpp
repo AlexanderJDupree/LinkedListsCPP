@@ -15,7 +15,7 @@ LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
 
 // Fill
 template <typename T>
-LinkedList<T>::LinkedList(size_t count, const T& data) : LinkedList()
+LinkedList<T>::LinkedList(size_type count, const_reference data) : LinkedList()
 {
     while (count > 0)
     {
@@ -40,7 +40,7 @@ LinkedList<T>::LinkedList(InputIterator begin, InputIterator end) : LinkedList()
 
 // Copy
 template <typename T>
-LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
+LinkedList<T>::LinkedList(const LinkedList<value_type>& origin) : LinkedList()
 {
     LinkedList<T>::const_iterator it;
     for (it = origin.cbegin(); it != origin.cend(); ++it)
@@ -51,7 +51,7 @@ LinkedList<T>::LinkedList(const LinkedList<T>& origin) : LinkedList()
 
 // Initializer List
 template <typename T>
-LinkedList<T>::LinkedList(std::initializer_list<T> init) : LinkedList()
+LinkedList<T>::LinkedList(std::initializer_list<value_type> init) : LinkedList()
 {
     typename std::initializer_list<T>::iterator it;
     for(it = init.begin(); it != init.end(); ++it)
@@ -103,9 +103,9 @@ MODIFIERS
 *******************************************************************************/
 
 template <typename T>
-void LinkedList<T>::push_front(const T& data)
+void LinkedList<T>::push_front(const_reference data)
 {
-    Node<T>* temp = new Node<T>(data);
+    node_pointer temp = new Node<T>(data);
 
     temp->Next(head);
     head = temp;
@@ -119,7 +119,7 @@ void LinkedList<T>::push_front(const T& data)
 }
 
 template <typename T>
-void LinkedList<T>::push_back(const T& data)
+void LinkedList<T>::push_back(const_reference data)
 {
     if (this->empty())
     {
@@ -127,7 +127,7 @@ void LinkedList<T>::push_back(const T& data)
         return;
     }
 
-    Node<T>* temp = new Node<T>(data);
+    node_pointer temp = new Node<T>(data);
 
     tail->Next(temp);
     tail = temp;
@@ -136,7 +136,7 @@ void LinkedList<T>::push_back(const T& data)
 }
 
 template<typename T>
-void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
+void LinkedList<T>::insert(iterator position, const_reference data)
 {
     if(empty())
     {
@@ -144,10 +144,10 @@ void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
         return;
     }
 
-    Node<T>* newNode = new Node<T>(data);
-    newNode->Next(pos.node->Next());
+    node_pointer newNode = new Node<T>(data);
+    newNode->Next(position.node->Next());
 
-    pos.node->Next(newNode);
+    position.node->Next(newNode);
 
     if(tail->Next() == newNode)
     {
@@ -159,11 +159,11 @@ void LinkedList<T>::insert(LinkedList<T>::iterator pos, const T& data)
 
 template<typename T>
 typename LinkedList<T>::iterator 
-LinkedList<T>::erase(LinkedList<T>::iterator& position)
+LinkedList<T>::erase(iterator& position)
 {
     if (empty()) { return position; }
 
-    Node<T>* previous = head;
+    node_pointer previous = head;
 
     if (previous != position.node)
     {
@@ -175,7 +175,7 @@ LinkedList<T>::erase(LinkedList<T>::iterator& position)
 
     previous->Next(position.node->Next());
 
-    Node<T>* temp = position.node;
+    node_pointer temp = position.node;
 
     if (temp == head)
     {
@@ -191,7 +191,7 @@ LinkedList<T>::erase(LinkedList<T>::iterator& position)
 
 template<typename T>
 typename LinkedList<T>::iterator 
-LinkedList<T>::erase(LinkedList<T>::iterator& first, LinkedList<T>::iterator& last)
+LinkedList<T>::erase(iterator& first, iterator& last)
 {
     while (first != last)
     {
@@ -210,7 +210,7 @@ void LinkedList<T>::clear()
         return;
     }
 
-    Node<T>* previous = head;
+    node_pointer previous = head;
 
     while (head != nullptr)
     {
@@ -235,13 +235,13 @@ bool LinkedList<T>::empty() const
 template <typename T>
 size_t LinkedList<T>::size() const
 {
-    size_t SIZE = 0;
-    Node<T>* temp = head;
-    while (temp != nullptr)
+    size_type SIZE = 0;
+
+    for(const_iterator it = cbegin(); it != cend(); ++it)
     {
         ++SIZE;
-        temp = temp->Next();
     }
+
     return SIZE;
 }
 
@@ -250,7 +250,7 @@ OPERATOR OVERLOADS
 *******************************************************************************/
 
 template <typename T>
-bool LinkedList<T>::operator==(const LinkedList<T>& rhs) const
+bool LinkedList<T>::operator==(const LinkedList<value_type>& rhs) const
 {
     if (size() != rhs.size()) { return false; }
 
@@ -268,7 +268,7 @@ bool LinkedList<T>::operator==(const LinkedList<T>& rhs) const
 }
 
 template <typename T>
-bool LinkedList<T>::operator!=(const LinkedList<T>& rhs) const
+bool LinkedList<T>::operator!=(const LinkedList<value_type>& rhs) const
 {
     return !(*this == rhs);
 }
