@@ -77,6 +77,9 @@ public:
     bool empty() const;
     size_type size() const;
 
+    /* Operations */
+    void reverse() noexcept;
+
     /* Operator Overloads */
     inline bool operator==(const LinkedList<value_type>& rhs) const;
     inline bool operator!=(const LinkedList<value_type>& rhs) const;
@@ -91,6 +94,9 @@ private:
 
     node_pointer head;
     node_pointer tail;
+
+    /* Helper functions */
+    void reverseLinks(node_pointer current, node_pointer previous) noexcept;
 
 };
 

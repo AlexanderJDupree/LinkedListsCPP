@@ -586,3 +586,29 @@ TEST_CASE("Test assignment operator", "[linkedLists], [comparison], [operators]"
         REQUIRE(copy == origin);
     }
 }
+
+TEST_CASE("Reversing the order of a list")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 5, 4, 3, 2, 1 };
+
+        list.reverse();
+
+        int i = 1;
+
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.reverse();
+
+        REQUIRE(list.empty());
+    }
+}

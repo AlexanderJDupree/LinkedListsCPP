@@ -273,6 +273,22 @@ size_t LinkedList<T>::size() const
 }
 
 /*******************************************************************************
+Operations
+*******************************************************************************/ 
+
+template <typename T>
+void LinkedList<T>::reverse() noexcept
+{
+    if (empty()) { return; }
+
+    reverseLinks(head, nullptr);
+
+    std::swap(head, tail);
+
+    return;
+}
+
+/*******************************************************************************
 OPERATOR OVERLOADS
 *******************************************************************************/
 
@@ -320,6 +336,19 @@ void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcep
     // Swap pointers, reassigns ownership
     swap(newList.head, oldList.head);
     swap(newList.tail, oldList.tail);
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::reverseLinks(node_pointer current, node_pointer previous) noexcept
+{
+    if (current->Next() != nullptr)
+    {
+        reverseLinks(current->Next(), current);
+    }
+
+    current->Next(previous);
+
     return;
 }
 
