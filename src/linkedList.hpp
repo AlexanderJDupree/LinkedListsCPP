@@ -11,6 +11,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <initializer_list>
+#include <type_traits>
 #include "node.hpp"
 #include "iterator.hpp"
 
@@ -31,8 +33,18 @@ public:
     // Fill
     LinkedList(size_t count, const T& data);
 
+    // Range
+    template <typename InputIterator, typename ::std::enable_if< ::std::is_constructible
+             < T, decltype(*::std::declval<InputIterator>()) >::value >::type* = nullptr >
+    LinkedList(InputIterator begin, InputIterator end);
+
     // Copy
     explicit LinkedList(const LinkedList<T>& origin);
+
+    // Initializer List
+    explicit LinkedList(std::initializer_list<T> init);
+
+
 
     // Destructor
     ~LinkedList();

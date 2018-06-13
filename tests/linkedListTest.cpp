@@ -9,7 +9,7 @@
 *
 *******************************************************************************/
 
-#include <iostream>
+#include <vector>
 #include "catch.hpp"
 #include "node.hpp"
 #include "linkedList.hpp"
@@ -38,7 +38,6 @@ TEST_CASE("Constructing Nodes", "[node], [constructors]")
         REQUIRE(*node2.Data() == 5);
         REQUIRE(node2.Next() == nullptr);
     }
-    
 }
 
 TEST_CASE("Using Mutators to manipulate members", "[node], [mutators]")
@@ -113,6 +112,42 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
 
         REQUIRE(copy.empty() == true);
     }
+    SECTION("Initializer List construction")
+    {
+        LinkedList<int> list {1, 2, 3, 4, 5};
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("Empty initializer list")
+    {
+        LinkedList<int> list {};
+
+        REQUIRE(list.empty());
+    }
+    SECTION("Range based construction")
+    {
+        std::vector<int> nums = { 1, 2, 3, 4, 5 };
+        LinkedList<int> list(nums.begin(), nums.end());
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("Ranged based construction on empty vector")
+    {
+        std::vector<int> nums;
+        LinkedList<int> list(nums.begin(), nums.end());
+
+        REQUIRE(list.empty());
+    }
 }
 
 TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifiers], [iterators]")
@@ -171,13 +206,8 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 {
     SECTION("Inserting in the middle (at index 2) of a populated list")
     {
-        LinkedList<int> list;
+        LinkedList<int> list {2, 9, 6, 10};
 
-        list.push_back(2);
-        list.push_back(9);
-        list.push_back(6);
-        list.push_back(10);
-        
         LinkedList<int>::iterator It = list.begin();
         
         It += 2;
@@ -191,10 +221,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
     }
     SECTION("Inserting at the end of a populated list")
     {
-        LinkedList<int> list;
-
-        list.push_back(2);
-        list.push_back(9);
+        LinkedList<int> list {2, 9};
         
         LinkedList<int>::iterator It = list.begin();
 
@@ -208,11 +235,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
     }
     SECTION("Inserting at the beginning of a populated list")
     {
-        LinkedList<int> list;
-
-        list.push_back(2);
-        list.push_back(3); 
-        list.push_back(4);
+        LinkedList<int> list {2, 3, 4};
 
         LinkedList<int>::iterator It = list.begin();
 
@@ -257,12 +280,7 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
 {
     SECTION("Erase one element of a populated list")
     {
-        LinkedList<char> list;
-
-        list.push_back('A');
-        list.push_back('B');
-        list.push_back('C');
-        list.push_back('D');
+        LinkedList<char> list { 'A', 'B', 'C', 'D'};
 
         LinkedList<char>::iterator It = list.begin();
 
@@ -275,11 +293,8 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     }
     SECTION("Erase the last element of a populated list")
     {
-        LinkedList<char> list;
+        LinkedList<char> list { 'A', 'B', 'C'};
         LinkedList<char>::iterator It;
-        list.push_back('A');
-        list.push_back('B');
-        list.push_back('C');
 
         It = list.begin();
         ++It;
@@ -313,14 +328,9 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     }
     SECTION("Erase multiple elements of a populated list")
     {
-        LinkedList<char> list;
+        LinkedList<char> list { 'A', 'B', 'C', 'D'};
         LinkedList<char>::iterator It1,
                                    It2;
-
-        list.push_back('A');
-        list.push_back('B');
-        list.push_back('C');
-        list.push_back('D');
 
         It1 = list.begin();
         It2 = list.begin();
@@ -335,12 +345,9 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     }
     SECTION("Erase the entire list")
     {
-        LinkedList<char> list;
+        LinkedList<char> list { 'A', 'B', 'C'};
         LinkedList<char>::iterator It1,
                                    It2;
-        list.push_back('A');
-        list.push_back('B');
-        list.push_back('C');
 
         It1 = list.begin();
         It2 = list.end();
@@ -353,15 +360,9 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
     }
     SECTION("Erase a portion of list with two of the same iterator")
     {
-        LinkedList<char> list;
+        LinkedList<char> list { 'A', 'B', 'C', 'D'};
         LinkedList<char>::iterator it1,
-                                   it2,
-                                   itAssert;
-
-        list.push_back('A');
-        list.push_back('B');
-        list.push_back('C');
-        list.push_back('D');
+                                   it2;
         
         it1 = list.begin();
         ++it1;
@@ -370,9 +371,6 @@ TEST_CASE("Erasing portions of a list", "[linkedLists], [modifiers], [iterators]
         ++it2;
 
         it1 = list.erase(it1, it2);
-        itAssert = list.begin();
-        ++itAssert;
-        ++itAssert;
 
         REQUIRE(*it1 == 'B');
         REQUIRE(*it2 == 'B');
@@ -395,11 +393,7 @@ TEST_CASE("Clearing the list", "[linkedLists], [modifiers]")
 {
     SECTION("Clearing a populated list")
     {
-        LinkedList<int> list;
-
-        list.push_back(1);
-        list.push_back(2);
-        list.push_back(3);
+        LinkedList<int> list {1, 2, 3};
 
         list.clear();
         REQUIRE(list.empty());
@@ -426,11 +420,7 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
 {
     SECTION("Standard for loop with prefix increment")
     {
-        LinkedList<int> list;
-
-        list.push_front(2);
-        list.push_front(1);
-        list.push_front(0);
+        LinkedList<int> list { 0, 1, 2 };
 
         int i = 0;
         LinkedList<int>::iterator it;
@@ -444,11 +434,7 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
     }
     SECTION("Standard for loop with postfix increment")
     {
-        LinkedList<int> list;
-
-        list.push_front(2);
-        list.push_front(1);
-        list.push_front(0);
+        LinkedList<int> list { 0, 1, 2 };
 
         int i = 0;
         LinkedList<int>::iterator it;
@@ -461,11 +447,7 @@ TEST_CASE("Using iterators for iteration", "[linkedLists], [iterators]")
     }
     SECTION("Ranged based for loop")
     {
-        LinkedList<int> list;
-
-        list.push_front(2);
-        list.push_front(1);
-        list.push_front(0);
+        LinkedList<int> list { 0, 1, 2 };
 
         int i = 0;
         for(auto iter : list)
@@ -513,12 +495,8 @@ TEST_CASE("Using iterator arithmetic on iterators", "[iterators]")
 {
     SECTION("Using the += operator to for incrementation")
     {
-        LinkedList<int> list;
+        LinkedList<int> list { 1, 2, 3 };
         
-        list.push_front(3);
-        list.push_front(2);
-        list.push_front(1);
-
         LinkedList<int>::iterator it = list.begin();
 
         it += 2;
@@ -537,11 +515,7 @@ TEST_CASE("Test size() function", "[linkedLists], [size], [capacity]")
     }
     SECTION("A populated linked list")
     {
-        LinkedList<char> list;
-
-        list.push_front('A');
-        list.push_front('B');
-        list.push_front('C');
+        LinkedList<char> list { 'A', 'B', 'C' };
 
         REQUIRE(list.size() == 3);
     }
@@ -565,4 +539,3 @@ TEST_CASE("Test comparison operators", "[linkedLists], [comparison], [operators]
         REQUIRE(left != right);
     }
 }
-
