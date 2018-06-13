@@ -255,6 +255,31 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         REQUIRE(*list.begin() == 'Z');
     }
+    SECTION("Inserting using a ranged based iterator")
+    {
+        std::vector<int> nums { 2, 3, 4 };
+        LinkedList<int> list { 1, 5 };
+
+        list.insert(list.cbegin(), nums.begin(), nums.end());
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+
+    }
+    SECTION("Inserting using fill method")
+    {
+        LinkedList<char> list;
+        list.insert(list.cbegin(), 4, 'Z');
+
+        for(auto& element : list)
+        {
+            REQUIRE(element == 'Z');
+        }
+    }
 }
 
 TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [iterators]")

@@ -65,7 +65,10 @@ public:
     /* Modifiers */
     void push_front(const_reference data);
     void push_back(const_reference data);
-    void insert(iterator position, const_reference data);
+    void insert(const_iterator& position, const_reference data);
+    void insert(const_iterator position, size_type n, const_reference data);
+    template <typename InputIterator>
+    void insert(const_iterator position, InputIterator begin, InputIterator end);
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
     void clear();

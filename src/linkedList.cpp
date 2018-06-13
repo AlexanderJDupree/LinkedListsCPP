@@ -136,11 +136,12 @@ void LinkedList<T>::push_back(const_reference data)
 }
 
 template<typename T>
-void LinkedList<T>::insert(iterator position, const_reference data)
+void LinkedList<T>::insert(const_iterator& position, const_reference data)
 {
     if(empty())
     {
         push_front(data);
+        position = iterator(head); 
         return;
     }
 
@@ -154,6 +155,32 @@ void LinkedList<T>::insert(iterator position, const_reference data)
         tail = newNode;
     }
  
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::insert(const_iterator position, size_type n, const_reference data)
+{
+    LinkedList<value_type> temp(n, data);
+    insert(position, temp.begin(), temp.end());
+    return;
+}
+
+template <typename T>
+template <typename InputIterator>
+void LinkedList<T>::insert(const_iterator position, InputIterator begin, InputIterator end)
+{
+    if (empty())
+    {
+        push_front(*begin++);
+        position = iterator(head);
+    }
+
+    for(;begin != end; ++begin)
+    {
+        insert(position, *begin);
+        ++position;
+    }
     return;
 }
 
