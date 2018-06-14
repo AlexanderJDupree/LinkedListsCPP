@@ -53,16 +53,29 @@ Code Example
 
 ## Execute Unit Tests
 
-TODO explain how to build and run the unit tests
+To execute Unit Tests, you must first build the project. Once built, the resulting executeable will reside in **tests/debug/runTests**
 
-```
-Code Example
-```
-### Test output
+- Command Line
 
+Building and executing from the command line is simple!
+To build, navigate to the project's home directory (where you cloned it) and enter the following:
 ```
-Test case output
+make
 ```
+Afterwards, execute by entering the following:
+```
+./tests/debug/runTests
+```
+
+The first time you enter _make_ may take a minute, as it must build the [catch2 framework](https://github.com/catchorg/Catch2). However, _make_ will keep all of the resulting obj files in the _tests/bin/_ directory. Afterwards, _make_ will only build files you have updated, and link them together again.
+
+If you find it necessary, you may **remove** the obj files from _tests/bin/_ by entering the following
+```
+make clean
+```
+Of course, the next time you use _make_ it will take a minute to build everything again.
+
+- TODO Visual Studio Code
 
 ## Deployment
 

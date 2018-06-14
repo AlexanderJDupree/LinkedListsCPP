@@ -13,6 +13,8 @@
 
 #include <initializer_list>
 #include <type_traits>
+#include <algorithm>
+#include <unordered_set>
 #include "node.hpp"
 #include "iterator.hpp"
 
@@ -46,7 +48,7 @@ public:
     LinkedList(InputIterator begin, InputIterator end);
 
     // Copy
-    explicit LinkedList(const LinkedList<value_type>& origin);
+    LinkedList(const LinkedList<value_type>& origin);
 
     // Initializer List
     explicit LinkedList(std::initializer_list<value_type> init);
@@ -64,22 +66,40 @@ public:
     /* Modifiers */
     void push_front(const_reference data);
     void push_back(const_reference data);
+    
     void pop_front();
     void pop_front(T& overwright);
     void pop_back();
     void pop_back(T& overwright);
-    void insert(iterator position, const_reference data);
+    
+    void insert(const_iterator& position, const_reference data);
+    void insert(const_iterator position, size_type n, const_reference data);
+    template <typename InputIterator>
+    void insert(const_iterator position, InputIterator begin, InputIterator end);
+    
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
+    
     void clear();
 
     /* Capacity */
     bool empty() const;
     size_type size() const;
 
+    /* Operations */
+    void reverse() noexcept;
+    void remove(const T& target);
+    template <class Predicate>
+    void remove_if(Predicate pred);
+    void unique();
+
     /* Operator Overloads */
     inline bool operator==(const LinkedList<value_type>& rhs) const;
     inline bool operator!=(const LinkedList<value_type>& rhs) const;
+    LinkedList<value_type>& operator=(LinkedList<value_type> list);
+
+    /* Swap */
+    void swap(LinkedList<value_type>& newList, LinkedList<value_type>& oldList) noexcept;
 
 
 
@@ -87,6 +107,9 @@ private:
 
     node_pointer head;
     node_pointer tail;
+
+    /* Helper functions */
+    void reverseLinks(node_pointer current, node_pointer previous) noexcept;
 
 };
 

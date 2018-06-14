@@ -347,6 +347,31 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         REQUIRE(*list.begin() == 'Z');
     }
+    SECTION("Inserting using a ranged based iterator")
+    {
+        std::vector<int> nums { 2, 3, 4 };
+        LinkedList<int> list { 1, 5 };
+
+        list.insert(list.cbegin(), nums.begin(), nums.end());
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+
+    }
+    SECTION("Inserting using fill method")
+    {
+        LinkedList<char> list;
+        list.insert(list.cbegin(), 4, 'Z');
+
+        for(auto& element : list)
+        {
+            REQUIRE(element == 'Z');
+        }
+    }
 }
 
 TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [iterators]")
@@ -629,5 +654,140 @@ TEST_CASE("Test comparison operators", "[linkedLists], [comparison], [operators]
         LinkedList<int> right;
 
         REQUIRE(left != right);
+    }
+}
+
+TEST_CASE("Test assignment operator", "[linkedLists], [comparison], [operators]")
+{
+    SECTION("Two unique lists")
+    {
+        LinkedList<int> origin { 1, 2, 3, 4, 5 };
+        LinkedList<int> copy { 6, 7, 8 };
+
+        copy = origin;
+
+        REQUIRE(copy == origin); 
+    }
+    SECTION("Two empty lists")
+    {
+        LinkedList<int> origin;
+        LinkedList<int> copy;
+
+        copy = origin;
+
+        REQUIRE(copy == origin);
+    }
+}
+
+TEST_CASE("Reversing the order of a list", "[linkedLists], [operations], [reverse]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 5, 4, 3, 2, 1 };
+
+        list.reverse();
+
+        int i = 1;
+
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("A list with one element")
+    {
+        LinkedList<int> list {1};
+
+        list.reverse();
+
+        for (auto& element : list)
+        {
+            REQUIRE(element == 1);
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.reverse();
+
+        REQUIRE(list.empty());
+    }
+}
+
+TEST_CASE("Using unique() to remove duplicate elements", "[linkedLists], [operations], [unique]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 2, 1, 3, 3, 4, 5, 4, 6, 5, 5 };
+
+        list.unique();
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.unique();
+
+        REQUIRE(list.empty());
+    }
+}
+
+TEST_CASE("Using remove to erase specific elements", "[linkedLists], [operations], [remove]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<char> list { 'A', 'Z', 'Z', 'B', 'Z', 'C', 'Z' };
+
+        list.remove('Z');
+
+        char letter = 'A';
+        for (auto& element : list)
+        {
+            REQUIRE(element == letter);
+            ++letter;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.remove(0);
+
+        REQUIRE(list.empty());
+    }
+}
+
+TEST_CASE("Using remove_if to erase elements fulfilling a predicate", "[linkedLists], [operations], [remove]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 7, 2, 3, 9, 10, 6, 6, 4, 5 };
+
+        list.remove_if([](const int& value) { return value > 5; });
+
+        int i = 1;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.remove_if([](const int& value) { return value > 5; });
+
+        REQUIRE(list.empty());
     }
 }

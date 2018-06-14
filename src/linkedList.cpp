@@ -200,11 +200,12 @@ void LinkedList<T>::pop_back(T& overwright)
 }
 
 template<typename T>
-void LinkedList<T>::insert(iterator position, const_reference data)
+void LinkedList<T>::insert(const_iterator& position, const_reference data)
 {
     if(empty())
     {
         push_front(data);
+        position = iterator(head); 
         return;
     }
 
@@ -218,6 +219,32 @@ void LinkedList<T>::insert(iterator position, const_reference data)
         tail = newNode;
     }
  
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::insert(const_iterator position, size_type n, const_reference data)
+{
+    LinkedList<value_type> temp(n, data);
+    insert(position, temp.begin(), temp.end());
+    return;
+}
+
+template <typename T>
+template <typename InputIterator>
+void LinkedList<T>::insert(const_iterator position, InputIterator begin, InputIterator end)
+{
+    if (empty())
+    {
+        push_front(*begin++);
+        position = iterator(head);
+    }
+
+    for(;begin != end; ++begin)
+    {
+        insert(position, *begin);
+        ++position;
+    }
     return;
 }
 
@@ -310,6 +337,61 @@ size_t LinkedList<T>::size() const
 }
 
 /*******************************************************************************
+Operations
+*******************************************************************************/ 
+
+template <typename T>
+void LinkedList<T>::reverse() noexcept
+{
+    if (empty()) { return; }
+
+    reverseLinks(head, nullptr);
+
+    std::swap(head, tail);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::remove(const T& target)
+{
+    remove_if([&target] (const T& value) { return value == target; });
+    return;
+}
+
+template <typename T>
+template <class Predicate>
+void LinkedList<T>::remove_if(Predicate pred)
+{
+    iterator it = begin();
+    while(it != end())
+    {
+        pred(*it) ? erase(it) : ++it;
+    }
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::unique()
+{
+    std::unordered_set<T> uniqueElements;
+    iterator it = begin();
+    while(it != end())
+    {
+        if (uniqueElements.find(*it) == uniqueElements.end())
+        {
+            uniqueElements.insert(*it);
+            ++it;
+        }
+        else
+        {
+            it = erase(it);
+        }
+    }
+    return;
+}
+
+/*******************************************************************************
 OPERATOR OVERLOADS
 *******************************************************************************/
 
@@ -335,6 +417,42 @@ template <typename T>
 bool LinkedList<T>::operator!=(const LinkedList<value_type>& rhs) const
 {
     return !(*this == rhs);
+}
+
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator=(LinkedList<value_type> list)
+{
+    swap(*this, list);
+
+    return *this;
+}
+
+/*******************************************************************************
+*******************************************************************************/
+
+template <typename T>
+void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcept
+{
+    // Enables ADL
+    using std::swap;
+    
+    // Swap pointers, reassigns ownership
+    swap(newList.head, oldList.head);
+    swap(newList.tail, oldList.tail);
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::reverseLinks(node_pointer current, node_pointer previous) noexcept
+{
+    if (current->Next() != nullptr)
+    {
+        reverseLinks(current->Next(), current);
+    }
+
+    current->Next(previous);
+
+    return;
 }
 
 
