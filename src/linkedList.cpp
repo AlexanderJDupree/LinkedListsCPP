@@ -288,6 +288,26 @@ void LinkedList<T>::reverse() noexcept
     return;
 }
 
+template <typename T>
+void LinkedList<T>::unique()
+{
+    std::unordered_set<T> uniqueElements;
+    iterator it = begin();
+    while(it != end())
+    {
+        if (uniqueElements.find(*it) == uniqueElements.end())
+        {
+            uniqueElements.insert(*it);
+            ++it;
+        }
+        else
+        {
+            it = erase(it);
+        }
+    }
+    return;
+}
+
 /*******************************************************************************
 OPERATOR OVERLOADS
 *******************************************************************************/

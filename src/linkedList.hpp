@@ -14,6 +14,7 @@
 #include <initializer_list>
 #include <type_traits>
 #include <algorithm>
+#include <unordered_set>
 #include "node.hpp"
 #include "iterator.hpp"
 
@@ -79,6 +80,7 @@ public:
 
     /* Operations */
     void reverse() noexcept;
+    void unique();
 
     /* Operator Overloads */
     inline bool operator==(const LinkedList<value_type>& rhs) const;

@@ -587,7 +587,7 @@ TEST_CASE("Test assignment operator", "[linkedLists], [comparison], [operators]"
     }
 }
 
-TEST_CASE("Reversing the order of a list")
+TEST_CASE("Reversing the order of a list", "[linkedLists], [operations], [reverse]")
 {
     SECTION("A populated list")
     {
@@ -608,6 +608,31 @@ TEST_CASE("Reversing the order of a list")
         LinkedList<int> list;
 
         list.reverse();
+
+        REQUIRE(list.empty());
+    }
+}
+
+TEST_CASE("Using unique() to remove duplicate elements", "[linkedLists], [operations], [unique]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 2, 1, 3, 3, 4, 5, 4, 6, 5, 5 };
+
+        list.unique();
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.unique();
 
         REQUIRE(list.empty());
     }
