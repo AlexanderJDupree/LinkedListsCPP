@@ -151,12 +151,52 @@ void LinkedList<T>::pop_front(T& overwright)
     if (this->empty())
         return;
 
-    Node<T>* newHead = head->Next();
+    node_pointer newHead = head->Next();
     overwright = *head->Data();
     delete head;
     head = newHead;
 
     return;
+}
+
+template<typename T>
+void LinkedList<T>::pop_back()
+{
+    if (this->empty())
+        return;
+
+    node_pointer beforeTail = head; 
+
+    while (beforeTail->Next() != tail)
+    {
+        beforeTail = beforeTail->Next();
+    }
+    delete tail;
+    beforeTail->Next(nullptr);
+    tail = beforeTail;
+
+    return; 
+
+}
+
+template<typename T>
+void LinkedList<T>::pop_back(T& overwright)
+{
+    if (this->empty())
+        return;
+
+    node_pointer beforeTail = head; 
+
+    while (beforeTail->Next() != tail)
+    {
+        beforeTail = beforeTail->Next();
+    }
+    overwright = *tail->Data();
+    delete tail;
+    beforeTail->Next(nullptr);
+    tail = beforeTail;
+
+    return; 
 }
 
 template<typename T>
