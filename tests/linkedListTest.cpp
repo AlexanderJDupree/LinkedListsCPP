@@ -662,3 +662,21 @@ TEST_CASE("Using remove to erase specific elements", "[linkedLists], [operations
         REQUIRE(list.empty());
     }
 }
+
+TEST_CASE("Using remove_if to erase elements fulfilling a predicate", "[linkedLists], [operations], [remove]")
+{
+    SECTION("A populate list")
+    {
+        LinkedList<int> list { 1, 7, 2, 3, 9, 10, 6, 6, 4, 5 };
+
+        list.remove_if([](const int& value) { return value > 5; });
+
+        int i = 1;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+
+    }
+}

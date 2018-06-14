@@ -81,6 +81,8 @@ public:
     /* Operations */
     void reverse() noexcept;
     void remove(const T& target);
+    template <class Predicate>
+    void remove_if(Predicate pred);
     void unique();
 
     /* Operator Overloads */

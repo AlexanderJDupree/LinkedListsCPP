@@ -291,10 +291,18 @@ void LinkedList<T>::reverse() noexcept
 template <typename T>
 void LinkedList<T>::remove(const T& target)
 {
+    remove_if([&target] (const T& value) { return value == target; });
+    return;
+}
+
+template <typename T>
+template <class Predicate>
+void LinkedList<T>::remove_if(Predicate pred)
+{
     iterator it = begin();
-    while (it != end())
+    while(it != end())
     {
-        *it == target ? erase(it) : ++it;
+        pred(*it) ? erase(it) : ++it;
     }
     return;
 }
