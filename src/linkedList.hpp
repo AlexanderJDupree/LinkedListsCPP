@@ -66,12 +66,15 @@ public:
     /* Modifiers */
     void push_front(const_reference data);
     void push_back(const_reference data);
+
     void insert(const_iterator& position, const_reference data);
     void insert(const_iterator position, size_type n, const_reference data);
     template <typename InputIterator>
     void insert(const_iterator position, InputIterator begin, InputIterator end);
+
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
+
     void clear();
 
     /* Capacity */
@@ -80,9 +83,15 @@ public:
 
     /* Operations */
     void reverse() noexcept;
-    void remove(const T& target);
+
+    void remove(const_reference target);
     template <class Predicate>
     void remove_if(Predicate pred);
+
+    iterator find(const_reference target);
+    template <class Predicate>
+    iterator find_if(Predicate pred);
+
     void unique();
 
     /* Operator Overloads */

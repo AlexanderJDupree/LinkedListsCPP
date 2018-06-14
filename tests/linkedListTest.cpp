@@ -699,3 +699,39 @@ TEST_CASE("Using remove_if to erase elements fulfilling a predicate", "[linkedLi
         REQUIRE(list.empty());
     }
 }
+
+TEST_CASE("Using find to locate a specific element", "[linkedLists], [operations], [find]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 2, 3, 4, 5 };
+
+        REQUIRE(*list.find(3) == 3);
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        REQUIRE(list.find(3) == list.end());
+    }
+}
+
+TEST_CASE("Using find_if to locate specific elements fulfilling a predicate", "[linkedLists], [operations], [find]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<char> list { 'A', 'B', 'C', 'Z', 'E' };
+
+        auto lambda = [](const char& letter){ return letter == 'Z'; };
+
+        REQUIRE(*list.find_if(lambda) == 'Z');
+    }
+    SECTION("An empty lsit")
+    {
+        LinkedList<char> list;
+
+        auto lambda = [](const char& letter){ return letter == 'Z'; };
+
+        REQUIRE(list.find_if(lambda) == list.end());
+    }
+}
