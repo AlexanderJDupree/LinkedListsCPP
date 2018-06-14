@@ -10,9 +10,9 @@
 *******************************************************************************/
 
 #include <vector>
-#include "catch.hpp"
-#include "node.hpp"
-#include "linkedList.hpp"
+#include "third_party/catch.hpp"
+#include "../src/node.hpp"
+#include "../src/linkedList.hpp"
 
 TEST_CASE("Constructing Nodes", "[node], [constructors]")
 {
@@ -199,6 +199,52 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
             REQUIRE(element == character);
             character++;
         }
+    }
+}
+
+TEST_CASE("Popping front elements")
+{
+    SECTION("Pop front of populated list")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+        list.pop_front();
+
+        int i = 2;
+        for (auto& element : list)
+        {
+            REQUIRE(i == element);
+            ++i;
+        }
+
+    }
+    SECTION("Pop front of populated list with argument")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+        int x;
+        list.pop_front(x);
+
+        REQUIRE(x == 1);
+        
+        int i = 2;
+        for (auto& element : list)
+        {
+            REQUIRE(i == element);
+            ++i;
+        }
+    }
+    SECTION("Pop front of empty list")
+    {
+        LinkedList<int> list;
+        list.pop_front();
+        REQUIRE(list.empty());
+    }
+    SECTION("Pop front of empty list with arguement")
+    {
+        LinkedList<int> list;
+        int x = 2;
+        list.pop_front(x);
+        REQUIRE(list.empty());
+        REQUIRE(x == 2);
     }
 }
 
