@@ -12,10 +12,10 @@ $(TEST_DIR)/debug/runTests: $(OBJ) $(TEST_DIR)/bin/tests_main.o $(TEST_DIR)/bin/
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(CPPFLAGS) -c -o $@ $<
 
-$(TEST_DIR)/bin/tests_main.o: $(TEST_DIR)/tests_main.cpp $(TEST_DIR)/third_party/catch.hpp
+$(OBJ_DIR)/tests_main.o: $(TEST_DIR)/tests_main.cpp $(TEST_DIR)/third_party/catch.hpp
 	$(CC) $(CPPFLAGS) -c -o $@ $<  
 
-$(TEST_DIR)/bin/linkedListTest.o: $(TEST_DIR)/linkedListTest.cpp
+$(OBJ_DIR)/linkedListTest.o: $(TEST_DIR)/linkedListTest.cpp
 	$(CC) $(CPPFLAGS) -c -o $@ $<
 
 .PHONEY: clean
