@@ -30,5 +30,11 @@
 *.exe
 *.out
 *.app
+tests/debug/runTests
 
 # VS Code files
+
+# Swp files
+*.sw?
+
+ 
