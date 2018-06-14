@@ -64,6 +64,10 @@ public:
     /* Modifiers */
     void push_front(const_reference data);
     void push_back(const_reference data);
+    void pop_front();
+    void pop_front(T& overwright);
+    void pop_back();
+    void pop_back(T& overwright);
     void insert(iterator position, const_reference data);
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
