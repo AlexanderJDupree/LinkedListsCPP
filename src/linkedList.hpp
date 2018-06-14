@@ -80,6 +80,7 @@ public:
 
     /* Operations */
     void reverse() noexcept;
+    void remove(const T& target);
     void unique();
 
     /* Operator Overloads */

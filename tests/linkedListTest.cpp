@@ -637,3 +637,28 @@ TEST_CASE("Using unique() to remove duplicate elements", "[linkedLists], [operat
         REQUIRE(list.empty());
     }
 }
+
+TEST_CASE("Using remove to erase specific elements", "[linkedLists], [operations], [remove]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<char> list { 'A', 'Z', 'Z', 'B', 'Z', 'C', 'Z' };
+
+        list.remove('Z');
+
+        char letter = 'A';
+        for (auto& element : list)
+        {
+            REQUIRE(element == letter);
+            ++letter;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.remove(0);
+
+        REQUIRE(list.empty());
+    }
+}

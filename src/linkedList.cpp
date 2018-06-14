@@ -289,6 +289,17 @@ void LinkedList<T>::reverse() noexcept
 }
 
 template <typename T>
+void LinkedList<T>::remove(const T& target)
+{
+    iterator it = begin();
+    while (it != end())
+    {
+        *it == target ? erase(it) : ++it;
+    }
+    return;
+}
+
+template <typename T>
 void LinkedList<T>::unique()
 {
     std::unordered_set<T> uniqueElements;
