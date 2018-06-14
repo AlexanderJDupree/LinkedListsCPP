@@ -6,7 +6,7 @@ OBJ_DIR := $(TEST_DIR)/bin
 SRC := $(wildcard $(SRC_DIR)/*.cpp) 
 OBJ := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC)) 
 
-$(TEST_DIR)/debug/runTests: $(OBJ) $(TEST_DIR)/bin/tests_main.o $(TEST_DIR)/bin/linkedListTest.o
+$(TEST_DIR)/debug/runTests: $(OBJ) $(OBJ_DIR)/tests_main.o $(OBJ_DIR)/linkedListTest.o
 	$(CC) $(OBJ) $(TEST_DIR)/bin/tests_main.o $(TEST_DIR)/bin/linkedListTest.o -o $@ 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
