@@ -10,9 +10,9 @@
 *******************************************************************************/
 
 #include <vector>
-#include "catch.hpp"
-#include "node.hpp"
-#include "linkedList.hpp"
+#include "third_party/catch.hpp"
+#include "../src/node.hpp"
+#include "../src/linkedList.hpp"
 
 TEST_CASE("Constructing Nodes", "[node], [constructors]")
 {
