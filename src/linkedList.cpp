@@ -4,15 +4,12 @@
 #define LINKED_LIST_TPP
 
 #include "linkedList.hpp"
-
 /*******************************************************************************
 CONSTRUCTORS
 *******************************************************************************/
-
 // Default
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
-
 // Fill
 template <typename T>
 LinkedList<T>::LinkedList(size_type count, const_reference data) : LinkedList()
@@ -131,6 +128,33 @@ void LinkedList<T>::push_back(const_reference data)
 
     tail->Next(temp);
     tail = temp;
+
+    return;
+}
+
+template<typename T>
+void LinkedList<T>::pop_front()
+{
+    if (this->empty())
+        return;
+
+    Node<T>* newHead = head->Next();
+    delete head;
+    head = newHead;
+
+    return;
+}
+
+template<typename T>
+void LinkedList<T>::pop_front(T& overwright)
+{
+    if (this->empty())
+        return;
+
+    Node<T>* newHead = head->Next();
+    overwright = *head->Data();
+    delete head;
+    head = newHead;
 
     return;
 }
