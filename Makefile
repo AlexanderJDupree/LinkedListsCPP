@@ -1,5 +1,5 @@
 CC := g++
-CPPFLAGS := -g -Wall -Werror -std=c++11
+CPPFLAGS := -g -Wall -Werror -std=c++11 -I src -I tests/third_party
 SRC_DIR := src
 OBJ_DIR := obj
 TEST_DIR := tests
