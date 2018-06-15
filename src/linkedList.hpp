@@ -84,10 +84,14 @@ public:
     /* Operations */
     void reverse() noexcept;
 
-    void remove(const T& target);
+    void remove(const_reference target);
     template <class Predicate>
     void remove_if(Predicate pred);
 
+    iterator find(const_reference target);
+    template <class Predicate>
+    iterator find_if(Predicate pred);
+    
     void unique();
 
     template <class Comparator>

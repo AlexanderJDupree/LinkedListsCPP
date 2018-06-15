@@ -289,9 +289,9 @@ void LinkedList<T>::reverse() noexcept
 }
 
 template <typename T>
-void LinkedList<T>::remove(const T& target)
+void LinkedList<T>::remove(const_reference target)
 {
-    remove_if([&target] (const T& value) { return value == target; });
+    remove_if([&target] (const_reference value) { return value == target; });
     return;
 }
 
@@ -305,6 +305,28 @@ void LinkedList<T>::remove_if(Predicate pred)
         pred(*it) ? erase(it) : ++it;
     }
     return;
+}
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::find(const_reference target)
+{
+    return find_if([&target](const_reference value){return value == target;});
+}
+
+template <typename T>
+template <class Predicate>
+typename LinkedList<T>::iterator LinkedList<T>::find_if(Predicate pred)
+{
+    iterator it = begin();
+    while(it != end())
+    {
+        if(pred(*it))
+        {
+            return it;
+        }
+        ++it;
+    }
+    return it;
 }
 
 template <typename T>

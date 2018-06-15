@@ -700,6 +700,21 @@ TEST_CASE("Using remove_if to erase elements fulfilling a predicate", "[linkedLi
     }
 }
 
+TEST_CASE("Using find to locate a specific element", "[linkedLists], [operations], [find]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 2, 3, 4, 5 };
+
+        REQUIRE(*list.find(3) == 3);
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+        REQUIRE(list.find(3) == list.end());
+    }
+}
+
 TEST_CASE("Sorting a list", "[linkedLists], [operations], [sort]")
 {
     SECTION("A sorted list")
@@ -731,9 +746,7 @@ TEST_CASE("Sorting a list", "[linkedLists], [operations], [sort]")
     SECTION("An empty list")
     {
         LinkedList<int> list;
-
         list.sort();
-
         REQUIRE(list.empty());
     }
 }
