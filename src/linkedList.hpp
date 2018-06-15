@@ -66,7 +66,12 @@ public:
     /* Modifiers */
     void push_front(const_reference data);
     void push_back(const_reference data);
-
+    
+    void pop_front();
+    reference pop_front(reference out_data);
+    void pop_back();
+    reference pop_back(reference out_data);
+    
     void insert(const_iterator& position, const_reference data);
     void insert(const_iterator position, size_type n, const_reference data);
     template <typename InputIterator>
@@ -74,7 +79,7 @@ public:
 
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
-
+    
     void clear();
 
     /* Capacity */

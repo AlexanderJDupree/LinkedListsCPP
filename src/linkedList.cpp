@@ -4,15 +4,12 @@
 #define LINKED_LIST_TPP
 
 #include "linkedList.hpp"
-
 /*******************************************************************************
 CONSTRUCTORS
 *******************************************************************************/
-
 // Default
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
-
 // Fill
 template <typename T>
 LinkedList<T>::LinkedList(size_type count, const_reference data) : LinkedList()
@@ -133,6 +130,73 @@ void LinkedList<T>::push_back(const_reference data)
     tail = temp;
 
     return;
+}
+
+template<typename T>
+void LinkedList<T>::pop_front()
+{
+    if (empty()) { return; }
+
+    node_pointer next = head->Next();
+
+    delete head;
+    head = next;
+
+    return;
+}
+
+template<typename T>
+T& LinkedList<T>::pop_front(reference out_data)
+{
+    if (empty()) { return out_data; }
+
+    node_pointer next = head->Next();
+    out_data = *head->Data();
+
+    delete head;
+    head = next;
+
+    return out_data;
+}
+
+template<typename T>
+void LinkedList<T>::pop_back()
+{
+    if (empty()) { return; }
+
+    node_pointer previous = head; 
+
+    while (previous->Next() != tail)
+    {
+        previous = previous->Next();
+    }
+    delete tail;
+
+    previous->Next(nullptr);
+    tail = previous;
+
+    return; 
+
+}
+
+template<typename T>
+T& LinkedList<T>::pop_back(reference out_data)
+{
+    if (empty()) { return out_data; }
+
+    node_pointer previous = head; 
+
+    while (previous->Next() != tail)
+    {
+        previous = previous->Next();
+    }
+    out_data = *tail->Data();
+    delete tail;
+
+    previous->Next(nullptr);
+    tail = previous;
+
+    return out_data; 
 }
 
 template<typename T>

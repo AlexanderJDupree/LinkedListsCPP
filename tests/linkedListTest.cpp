@@ -202,6 +202,109 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
     }
 }
 
+TEST_CASE("Popping front elements")
+{
+    SECTION("Pop front of populated list")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+        list.pop_front();
+
+        int i = 2;
+        for (auto& element : list)
+        {
+            REQUIRE(i == element);
+            ++i;
+        }
+
+    }
+    SECTION("Pop front of populated list with argument")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+
+        int x(0);
+        list.pop_front(x);
+
+        REQUIRE(x == 1);
+        
+        x = 2;
+        for (auto& element : list)
+        {
+            REQUIRE(x == element);
+            ++x;
+        }
+    }
+    SECTION("Pop front of empty list")
+    {
+        LinkedList<int> list;
+
+        list.pop_front();
+
+        REQUIRE(list.empty());
+    }
+    SECTION("Pop front of empty list with arguement")
+    {
+        LinkedList<int> list;
+
+        int x = 2;
+        list.pop_front(x);
+
+        REQUIRE(list.empty());
+        REQUIRE(x == 2);
+    }
+}
+
+TEST_CASE("Popping back elements")
+{
+    SECTION("Pop back of populated list")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+        list.pop_back();
+
+        int i = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(i == element);
+            ++i;
+        }
+        REQUIRE(i != 5);
+
+    }
+    SECTION("Pop back of populated list with argument")
+    {
+        LinkedList<int> list {1, 2, 3, 4};
+
+        int x(0);
+        list.pop_back(x);
+
+        REQUIRE(x == 4);
+        
+        x = 1;
+        for (auto& element : list)
+        {
+            REQUIRE(x == element);
+            ++x;
+        }
+    }
+    SECTION("Pop back of empty list")
+    {
+        LinkedList<int> list;
+
+        list.pop_back();
+
+        REQUIRE(list.empty());
+    }
+    SECTION("Pop back of empty list with arguement")
+    {
+        LinkedList<int> list;
+
+        int x = 2;
+        list.pop_back(x);
+
+        REQUIRE(list.empty());
+        REQUIRE(x == 2);
+    }
+}
+
 TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iterators]")
 {
     SECTION("Inserting in the middle (at index 2) of a populated list")
