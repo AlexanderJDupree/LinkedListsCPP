@@ -34,7 +34,7 @@ All releases are header only, meaning all you need to do to get started is drop 
 
 ```c++
 #include <iostream>
-#include "LinkedList.hpp"
+#include "linkedList.hpp"
 
 int main()
 {
