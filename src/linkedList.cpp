@@ -281,7 +281,7 @@ void LinkedList<T>::reverse() noexcept
 {
     if (empty()) { return; }
 
-    reverseLinks(head, nullptr);
+    reverse_links(head, nullptr);
 
     std::swap(head, tail);
 
@@ -325,6 +325,21 @@ void LinkedList<T>::unique()
         }
     }
     return;
+}
+
+template <typename T>
+template <class Comparator>
+void LinkedList<T>::sort(Comparator compare)
+{
+    merge_sort(head, compare);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::sort()
+{
+    sort([](const_reference val1, const_reference val2){return val1 < val2;});
 }
 
 /*******************************************************************************
@@ -379,16 +394,78 @@ void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcep
 }
 
 template <typename T>
-void LinkedList<T>::reverseLinks(node_pointer current, node_pointer previous) noexcept
+void LinkedList<T>::reverse_links(node_pointer current, node_pointer previous) noexcept
 {
     if (current->Next() != nullptr)
     {
-        reverseLinks(current->Next(), current);
+        reverse_links(current->Next(), current);
     }
 
     current->Next(previous);
 
     return;
+}
+
+template <typename T>
+template <class Comparator>
+void LinkedList<T>::merge_sort(node_pointer& begin, Comparator compare)
+{
+    // Base case
+    if(begin == nullptr || begin->Next() == nullptr)
+    {
+        return;
+    }
+
+    node_pointer left = begin;
+    node_pointer right = begin->Next();
+
+    split(left, right);
+
+    left = begin;
+
+    merge_sort(left, compare);
+    merge_sort(right, compare);
+
+    begin = merge(left, right, compare);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::split(node_pointer& left, node_pointer& right)
+{
+    while((right = right->Next()) != nullptr)
+    {
+        if (right->Next() != nullptr)
+        {
+            left = left->Next();
+            right = right->Next();
+        }
+    }
+    right = left->Next();
+    left->Next(nullptr);
+}
+
+template <typename T>
+template <class Comparator>
+Node<T>* LinkedList<T>::merge(node_pointer left, node_pointer right, Comparator compare)
+{
+    node_pointer begin = nullptr;
+
+    if(left == nullptr) { return right; }
+    else if (right == nullptr) { return left; }
+
+    if(compare(*left->Data(), *right->Data()))
+    {
+        begin = left;
+        begin->Next(merge(left->Next(), right, compare));
+    }
+    else
+    {
+        begin = right;
+        begin->Next(merge(left, right->Next(), compare));
+    }
+    return begin;
 }
 
 
