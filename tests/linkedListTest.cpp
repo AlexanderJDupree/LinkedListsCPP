@@ -14,7 +14,6 @@ https://github.com/AlexanderJDupree/LinkedListsCPP
 
 #include <vector>
 #include "catch.hpp"
-#include "node.hpp"
 #include "linkedList.hpp"
 
 TEST_CASE("Constructing Nodes", "[node], [constructors]")

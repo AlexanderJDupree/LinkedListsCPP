@@ -5,8 +5,8 @@ project (LinkedListsCPP)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0") # debug, no optimisation
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage") # enabling coverage
 
-set(SOURCE_FILES tests/tests_main.cpp tests/linkedListTest.cpp src/node.cpp src/linkedList.cpp src/iterator.cpp)
-include_directories(include tests/third_party src/)
+set(SOURCE_FILES tests/tests_main.cpp tests/linkedListTest.cpp release/linkedList.hpp)
+include_directories(include tests/third_party release/)
 add_executable(runTests ${SOURCE_FILES})
 
 if(USE_CPP14)
