@@ -441,13 +441,16 @@ void LinkedList<T>::merge_sort(node_pointer& begin, Comparator compare)
     node_pointer left = begin;
     node_pointer right = begin->Next();
 
+    // Split the list in half, break the links from left -> right
     split(left, right);
 
     left = begin;
 
+    // Recursively break the links and split the list in half
     merge_sort(left, compare);
     merge_sort(right, compare);
 
+    // Relink the list together in sorted order
     begin = merge(left, right, compare);
 
     return;
@@ -456,14 +459,17 @@ void LinkedList<T>::merge_sort(node_pointer& begin, Comparator compare)
 template <typename T>
 void LinkedList<T>::split(node_pointer& left, node_pointer& right)
 {
+    // right travels through the list two links at a time
     while((right = right->Next()) != nullptr)
     {
         if (right->Next() != nullptr)
         {
+            // left travels through the list only one link at a time
             left = left->Next();
             right = right->Next();
         }
     }
+    // Left is at the midpoint of the list
     right = left->Next();
     left->Next(nullptr);
 }
