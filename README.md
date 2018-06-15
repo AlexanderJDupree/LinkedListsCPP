@@ -3,7 +3,7 @@
 # LinkedListsCPP
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c24f1655cc534243b8ab5bcd60c8302c)](https://www.codacy.com/app/AlexanderJDupree/LinkedListsCPP?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AlexanderJDupree/LinkedListsCPP&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/AlexanderJDupree/LinkedListsCPP.svg?branch=master)](https://travis-ci.org/AlexanderJDupree/LinkedListsCPP)
+[![Build Status](https://travis-ci.org/AlexanderJDupree/LinkedListsCPP.svg?branch=release)](https://travis-ci.org/AlexanderJDupree/LinkedListsCPP)
 [![codecov](https://codecov.io/gh/AlexanderJDupree/LinkedListsCPP/branch/master/graph/badge.svg)](https://codecov.io/gh/AlexanderJDupree/LinkedListsCPP)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/AlexanderJDupree/LinkedListsCPP/master/LICENSE)
 
