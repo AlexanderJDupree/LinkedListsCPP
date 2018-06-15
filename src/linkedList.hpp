@@ -76,7 +76,7 @@ public:
     void insert(const_iterator position, size_type n, const_reference data);
     template <typename InputIterator>
     void insert(const_iterator position, InputIterator begin, InputIterator end);
-    
+
     iterator erase(iterator& position);
     iterator erase(iterator& first, iterator& last);
     
@@ -88,10 +88,20 @@ public:
 
     /* Operations */
     void reverse() noexcept;
-    void remove(const T& target);
+
+    void remove(const_reference target);
     template <class Predicate>
     void remove_if(Predicate pred);
+
+    iterator find(const_reference target);
+    template <class Predicate>
+    iterator find_if(Predicate pred);
+    
     void unique();
+
+    template <class Comparator>
+    void sort(Comparator compare);
+    void sort();
 
     /* Operator Overloads */
     inline bool operator==(const LinkedList<value_type>& rhs) const;
@@ -109,7 +119,15 @@ private:
     node_pointer tail;
 
     /* Helper functions */
-    void reverseLinks(node_pointer current, node_pointer previous) noexcept;
+    void reverse_links(node_pointer current, node_pointer previous) noexcept;
+
+    template <class Comparator>
+    void merge_sort(node_pointer& begin, Comparator compare);
+
+    void split(node_pointer& left, node_pointer& right);
+
+    template <class Comparator> 
+    node_pointer merge(node_pointer left, node_pointer right, Comparator compare);
 
 };
 

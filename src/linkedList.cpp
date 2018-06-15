@@ -345,7 +345,7 @@ void LinkedList<T>::reverse() noexcept
 {
     if (empty()) { return; }
 
-    reverseLinks(head, nullptr);
+    reverse_links(head, nullptr);
 
     std::swap(head, tail);
 
@@ -353,9 +353,9 @@ void LinkedList<T>::reverse() noexcept
 }
 
 template <typename T>
-void LinkedList<T>::remove(const T& target)
+void LinkedList<T>::remove(const_reference target)
 {
-    remove_if([&target] (const T& value) { return value == target; });
+    remove_if([&target] (const_reference value) { return value == target; });
     return;
 }
 
@@ -369,6 +369,28 @@ void LinkedList<T>::remove_if(Predicate pred)
         pred(*it) ? erase(it) : ++it;
     }
     return;
+}
+
+template <typename T>
+typename LinkedList<T>::iterator LinkedList<T>::find(const_reference target)
+{
+    return find_if([&target](const_reference value){return value == target;});
+}
+
+template <typename T>
+template <class Predicate>
+typename LinkedList<T>::iterator LinkedList<T>::find_if(Predicate pred)
+{
+    iterator it = begin();
+    while(it != end())
+    {
+        if(pred(*it))
+        {
+            return it;
+        }
+        ++it;
+    }
+    return it;
 }
 
 template <typename T>
@@ -389,6 +411,21 @@ void LinkedList<T>::unique()
         }
     }
     return;
+}
+
+template <typename T>
+template <class Comparator>
+void LinkedList<T>::sort(Comparator compare)
+{
+    merge_sort(head, compare);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::sort()
+{
+    sort([](const_reference val1, const_reference val2){return val1 < val2;});
 }
 
 /*******************************************************************************
@@ -443,16 +480,84 @@ void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcep
 }
 
 template <typename T>
-void LinkedList<T>::reverseLinks(node_pointer current, node_pointer previous) noexcept
+void LinkedList<T>::reverse_links(node_pointer current, node_pointer previous) noexcept
 {
     if (current->Next() != nullptr)
     {
-        reverseLinks(current->Next(), current);
+        reverse_links(current->Next(), current);
     }
 
     current->Next(previous);
 
     return;
+}
+
+template <typename T>
+template <class Comparator>
+void LinkedList<T>::merge_sort(node_pointer& begin, Comparator compare)
+{
+    // Base case
+    if(begin == nullptr || begin->Next() == nullptr)
+    {
+        return;
+    }
+
+    node_pointer left = begin;
+    node_pointer right = begin->Next();
+
+    // Split the list in half, break the links from left -> right
+    split(left, right);
+
+    left = begin;
+
+    // Recursively break the links and split the list in half
+    merge_sort(left, compare);
+    merge_sort(right, compare);
+
+    // Relink the list together in sorted order
+    begin = merge(left, right, compare);
+
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::split(node_pointer& left, node_pointer& right)
+{
+    // right travels through the list two links at a time
+    while((right = right->Next()) != nullptr)
+    {
+        if (right->Next() != nullptr)
+        {
+            // left travels through the list only one link at a time
+            left = left->Next();
+            right = right->Next();
+        }
+    }
+    // Left is at the midpoint of the list
+    right = left->Next();
+    left->Next(nullptr);
+}
+
+template <typename T>
+template <class Comparator>
+Node<T>* LinkedList<T>::merge(node_pointer left, node_pointer right, Comparator compare)
+{
+    node_pointer begin = nullptr;
+
+    if(left == nullptr) { return right; }
+    else if (right == nullptr) { return left; }
+
+    if(compare(*left->Data(), *right->Data()))
+    {
+        begin = left;
+        begin->Next(merge(left->Next(), right, compare));
+    }
+    else
+    {
+        begin = right;
+        begin->Next(merge(left, right->Next(), compare));
+    }
+    return begin;
 }
 
 

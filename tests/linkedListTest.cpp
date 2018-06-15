@@ -802,3 +802,92 @@ TEST_CASE("Using remove_if to erase elements fulfilling a predicate", "[linkedLi
         REQUIRE(list.empty());
     }
 }
+
+TEST_CASE("Using find to locate a specific element", "[linkedLists], [operations], [find]")
+{
+    SECTION("A populated list")
+    {
+        LinkedList<int> list { 1, 2, 3, 4, 5 };
+
+        REQUIRE(*list.find(3) == 3);
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+        REQUIRE(list.find(3) == list.end());
+    }
+}
+
+TEST_CASE("Sorting a list", "[linkedLists], [operations], [sort]")
+{
+    SECTION("A sorted list")
+    {
+        LinkedList<int> list {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        list.sort();
+
+        int i = 1;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("An unsorted list")
+    {
+        LinkedList<int> list {9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+        list.sort();
+
+        int i = 1;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            ++i;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+        list.sort();
+        REQUIRE(list.empty());
+    }
+}
+
+TEST_CASE("Sorting a list with a special comparator", "[linkedLists], [operations], [sort]")
+{
+    SECTION("A sorted list, and a reverse comparator")
+    {
+        LinkedList<int> list {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+        list.sort([](const int& val1, const int& val2){return val1 > val2;});
+
+        int i = 9;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            --i;
+        }
+    }
+    SECTION("An unsorted list, and a reverse comparator")
+    {
+        LinkedList<int> list {9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+        list.sort([](const int& val1, const int& val2){return val1 > val2;});
+
+        int i = 9;
+        for(auto& element : list)
+        {
+            REQUIRE(element == i);
+            --i;
+        }
+    }
+    SECTION("An empty list")
+    {
+        LinkedList<int> list;
+
+        list.sort([](const int& val1, const int& val2){return val1 > val2;});
+
+        REQUIRE(list.empty());
+    }
+}
