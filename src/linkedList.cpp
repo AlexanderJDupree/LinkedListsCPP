@@ -135,68 +135,68 @@ void LinkedList<T>::push_back(const_reference data)
 template<typename T>
 void LinkedList<T>::pop_front()
 {
-    if (this->empty())
-        return;
+    if (empty()) { return; }
 
-    Node<T>* newHead = head->Next();
+    node_pointer next = head->Next();
+
     delete head;
-    head = newHead;
+    head = next;
 
     return;
 }
 
 template<typename T>
-void LinkedList<T>::pop_front(T& overwright)
+T& LinkedList<T>::pop_front(reference out_data)
 {
-    if (this->empty())
-        return;
+    if (empty()) { return out_data; }
 
-    node_pointer newHead = head->Next();
-    overwright = *head->Data();
+    node_pointer next = head->Next();
+    out_data = *head->Data();
+
     delete head;
-    head = newHead;
+    head = next;
 
-    return;
+    return out_data;
 }
 
 template<typename T>
 void LinkedList<T>::pop_back()
 {
-    if (this->empty())
-        return;
+    if (empty()) { return; }
 
-    node_pointer beforeTail = head; 
+    node_pointer previous = head; 
 
-    while (beforeTail->Next() != tail)
+    while (previous->Next() != tail)
     {
-        beforeTail = beforeTail->Next();
+        previous = previous->Next();
     }
     delete tail;
-    beforeTail->Next(nullptr);
-    tail = beforeTail;
+
+    previous->Next(nullptr);
+    tail = previous;
 
     return; 
 
 }
 
 template<typename T>
-void LinkedList<T>::pop_back(T& overwright)
+T& LinkedList<T>::pop_back(reference out_data)
 {
-    if (this->empty())
-        return;
+    if (empty()) { return out_data; }
 
-    node_pointer beforeTail = head; 
+    node_pointer previous = head; 
 
-    while (beforeTail->Next() != tail)
+    while (previous->Next() != tail)
     {
-        beforeTail = beforeTail->Next();
+        previous = previous->Next();
     }
-    overwright = *tail->Data();
+    out_data = *tail->Data();
     delete tail;
-    beforeTail->Next(nullptr);
-    tail = beforeTail;
 
-    return; 
+    previous->Next(nullptr);
+    tail = previous;
+
+    return out_data; 
 }
 
 template<typename T>

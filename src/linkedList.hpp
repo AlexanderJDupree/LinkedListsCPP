@@ -68,9 +68,9 @@ public:
     void push_back(const_reference data);
     
     void pop_front();
-    void pop_front(T& overwright);
+    reference pop_front(reference out_data);
     void pop_back();
-    void pop_back(T& overwright);
+    reference pop_back(reference out_data);
     
     void insert(const_iterator& position, const_reference data);
     void insert(const_iterator position, size_type n, const_reference data);
