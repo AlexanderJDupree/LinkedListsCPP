@@ -1,13 +1,16 @@
-/*******************************************************************************
-* File: linkedListTest.cpp
-*
-* Description: Driver runs all unit tests for our linkedList class 
-*
-* Author: Alexander DuPree
-* 
-* Compiler: GNU GCC 5.4.0
-*
-*******************************************************************************/
+/*
+
+File: linkedListTest.cpp
+
+Copyright (c) 2018 Alexander DuPree
+
+This software is released as open source through the MIT License
+
+Authors: Alexander DuPree, Jacob Bickle
+
+https://github.com/AlexanderJDupree/LinkedListsCPP
+
+*/
 
 #include <vector>
 #include "catch.hpp"

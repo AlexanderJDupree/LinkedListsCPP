@@ -1,14 +1,16 @@
-/*******************************************************************************
-* File: node.h
-*
-* Description: 
-*
-* Author: Alexander DuPree
-* 
-* Compiler: GNU GCC 5.4.0
-*
-* Date: 2018 - 05 - 31
-*******************************************************************************/
+/*
+
+File: node.hpp
+
+Copyright (c) 2018 Alexander DuPree
+
+This software is released as open source through the MIT License
+
+Authors: Alexander DuPree, Jacob Bickle
+
+https://github.com/AlexanderJDupree/LinkedListsCPP
+
+*/
 
 #ifndef NODE_H
 #define NODE_H

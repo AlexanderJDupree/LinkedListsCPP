@@ -1,12 +1,16 @@
-/*******************************************************************************
-* File: iterator.cpp
-*
-* Description: 
-*
-* Compiler: GNU GCC 5.4.0
-*
-* Date: 2018 - 06 - 07
-*******************************************************************************/
+/*
+
+File: iterator.hpp
+
+Copyright (c) 2018 Alexander DuPree
+
+This software is released as open source through the MIT License
+
+Authors: Alexander DuPree, Jacob Bickle
+
+https://github.com/AlexanderJDupree/LinkedListsCPP
+
+*/
 
 #ifndef ITERATORS_H
 #define ITERATORS_H

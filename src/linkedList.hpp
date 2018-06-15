@@ -1,12 +1,16 @@
-/*******************************************************************************
-* File: linkedList.hpp
-*
-* Description: 
-* 
-* Compiler: GNU GCC 5.4.0
-*
-* Date: 2018 - 05 - 31
-*******************************************************************************/
+/*
+
+File: LinkedList.hpp
+
+Copyright (c) 2018 Alexander DuPree
+
+This software is released as open source through the MIT License
+
+Authors: Alexander DuPree, Jacob Bickle
+
+https://github.com/AlexanderJDupree/LinkedListsCPP
+
+*/
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H

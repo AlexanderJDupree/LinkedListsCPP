@@ -1,3 +1,17 @@
+/*
+
+File: node.cpp
+
+Copyright (c) 2018 Alexander DuPree
+
+This software is released as open source through the MIT License
+
+Authors: Alexander DuPree, Jacob Bickle
+
+https://github.com/AlexanderJDupree/LinkedListsCPP
+
+*/
+
 // Implementation for Node class
 
 #ifndef NODE_TPP
