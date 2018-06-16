@@ -35,18 +35,18 @@ public:
     ~Node();
 
     /* Inspectors */
-    T* Data() const;
-    Node* Next() const;
+    T* data() const;
+    Node* next() const;
 
     /* Mutators */
-    Node* Data(const T& value);
-    Node* Next(Node* node);
+    Node* data(const T& value);
+    Node* next(Node* node);
 
 
 private:
 
-    T* data;
-    Node* next;
+    T* _data;
+    Node* _next;
 };
 
 #include "node.cpp"

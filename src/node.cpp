@@ -20,47 +20,47 @@ https://github.com/AlexanderJDupree/LinkedListsCPP
 #include "node.hpp"
 
 template <typename T>
-Node<T>::Node() : data(new T()), next(nullptr) {}
+Node<T>::Node() : _data(new T()), _next(nullptr) {}
 
 template <typename T>
 Node<T>::Node(const Node& origin)
-    : data(new T(*origin.data)), next(origin.next) {}
+    : _data(new T(*origin._data)), _next(origin._next) {}
 
 template <typename T>
-Node<T>::Node(const T& value) : data(new T(value)), next (nullptr) {}
+Node<T>::Node(const T& value) : _data(new T(value)), _next (nullptr) {}
 
 template <typename T>
 Node<T>::~Node()
 {
-    delete data;
+    delete _data;
 }
 
 // Inspectors
 template <typename T>
-T* Node<T>::Data() const
+T* Node<T>::data() const
 {
-    return data;
+    return _data;
 }
 
 template <typename T>
-Node<T>* Node<T>::Next() const
+Node<T>* Node<T>::next() const
 {
-    return next;
+    return _next;
 }
 
 // Mutators
 template <typename T>
-Node<T>* Node<T>::Data(const T& value)
+Node<T>* Node<T>::data(const T& value)
 {
-    delete data;
-    this->data = new T(value);
+    delete _data;
+    this->_data = new T(value);
     return this;
 }
 
 template <typename T>
-Node<T>* Node<T>::Next(Node* node)
+Node<T>* Node<T>::next(Node* node)
 {
-    next = node;
+    _next = node;
     return this;
 }
 

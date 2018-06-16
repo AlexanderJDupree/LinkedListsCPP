@@ -12,7 +12,6 @@ https://github.com/AlexanderJDupree/LinkedListsCPP
 
 */
 
-// Linked List implementations
 #ifndef LINKED_LIST_TPP
 #define LINKED_LIST_TPP
 
@@ -21,6 +20,7 @@ https://github.com/AlexanderJDupree/LinkedListsCPP
 /*******************************************************************************
 CONSTRUCTORS
 *******************************************************************************/
+
 // Default
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
@@ -97,9 +97,6 @@ typename LinkedList<T>::iterator LinkedList<T>::begin()
 template <typename T>
 typename LinkedList<T>::const_iterator LinkedList<T>::cend() const
 {
-    // Prevents segmentation fault if attempt to get tails next node if tail is
-    // is a nullptr. Since tail will always point to a nullptr we can just 
-    // return an iterator to a nullptr
     return const_iterator(nullptr);
 } 
 
@@ -118,7 +115,7 @@ void LinkedList<T>::push_front(const_reference data)
 {
     node_pointer temp = new Node<T>(data);
 
-    temp->Next(head);
+    temp->next(head);
     head = temp;
 
     if (tail == nullptr)
@@ -132,7 +129,7 @@ void LinkedList<T>::push_front(const_reference data)
 template <typename T>
 void LinkedList<T>::push_back(const_reference data)
 {
-    if (this->empty())
+    if (empty())
     {
         push_front(data);
         return;
@@ -140,7 +137,7 @@ void LinkedList<T>::push_back(const_reference data)
 
     node_pointer temp = new Node<T>(data);
 
-    tail->Next(temp);
+    tail->next(temp);
     tail = temp;
 
     return;
@@ -151,7 +148,7 @@ void LinkedList<T>::pop_front()
 {
     if (empty()) { return; }
 
-    node_pointer next = head->Next();
+    node_pointer next = head->next();
 
     delete head;
     head = next;
@@ -164,8 +161,8 @@ T& LinkedList<T>::pop_front(reference out_data)
 {
     if (empty()) { return out_data; }
 
-    node_pointer next = head->Next();
-    out_data = *head->Data();
+    node_pointer next = head->next();
+    out_data = *head->data();
 
     delete head;
     head = next;
@@ -180,13 +177,13 @@ void LinkedList<T>::pop_back()
 
     node_pointer previous = head; 
 
-    while (previous->Next() != tail)
+    while (previous->next() != tail)
     {
-        previous = previous->Next();
+        previous = previous->next();
     }
     delete tail;
 
-    previous->Next(nullptr);
+    previous->next(nullptr);
     tail = previous;
 
     return; 
@@ -200,14 +197,14 @@ T& LinkedList<T>::pop_back(reference out_data)
 
     node_pointer previous = head; 
 
-    while (previous->Next() != tail)
+    while (previous->next() != tail)
     {
-        previous = previous->Next();
+        previous = previous->next();
     }
-    out_data = *tail->Data();
+    out_data = *tail->data();
     delete tail;
 
-    previous->Next(nullptr);
+    previous->next(nullptr);
     tail = previous;
 
     return out_data; 
@@ -224,11 +221,11 @@ void LinkedList<T>::insert(const_iterator& position, const_reference data)
     }
 
     node_pointer newNode = new Node<T>(data);
-    newNode->Next(position.node->Next());
+    newNode->next(position.node->next());
 
-    position.node->Next(newNode);
+    position.node->next(newNode);
 
-    if(tail->Next() == newNode)
+    if(tail->next() == newNode)
     {
         tail = newNode;
     }
@@ -272,22 +269,22 @@ LinkedList<T>::erase(iterator& position)
 
     if (previous != position.node)
     {
-        while (previous->Next() != position.node)
+        while (previous->next() != position.node)
         {
-            previous = previous->Next();
+            previous = previous->next();
         }
     }
 
-    previous->Next(position.node->Next());
+    previous->next(position.node->next());
 
     node_pointer temp = position.node;
 
     if (temp == head)
     {
-        head = head->Next();
+        head = head->next();
     }
 
-    position = iterator(previous->Next());
+    position = iterator(previous->next());
 
     delete temp;
 
@@ -320,7 +317,7 @@ void LinkedList<T>::clear()
     while (head != nullptr)
     {
         previous = head;
-        head = head->Next();
+        head = head->next();
         delete previous;
     }
 
@@ -496,12 +493,12 @@ void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcep
 template <typename T>
 void LinkedList<T>::reverse_links(node_pointer current, node_pointer previous) noexcept
 {
-    if (current->Next() != nullptr)
+    if (current->next() != nullptr)
     {
-        reverse_links(current->Next(), current);
+        reverse_links(current->next(), current);
     }
 
-    current->Next(previous);
+    current->next(previous);
 
     return;
 }
@@ -511,13 +508,13 @@ template <class Comparator>
 void LinkedList<T>::merge_sort(node_pointer& begin, Comparator compare)
 {
     // Base case
-    if(begin == nullptr || begin->Next() == nullptr)
+    if(begin == nullptr || begin->next() == nullptr)
     {
         return;
     }
 
     node_pointer left = begin;
-    node_pointer right = begin->Next();
+    node_pointer right = begin->next();
 
     // Split the list in half, break the links from left -> right
     split(left, right);
@@ -538,18 +535,18 @@ template <typename T>
 void LinkedList<T>::split(node_pointer& left, node_pointer& right)
 {
     // right travels through the list two links at a time
-    while((right = right->Next()) != nullptr)
+    while((right = right->next()) != nullptr)
     {
-        if (right->Next() != nullptr)
+        if (right->next() != nullptr)
         {
             // left travels through the list only one link at a time
-            left = left->Next();
-            right = right->Next();
+            left = left->next();
+            right = right->next();
         }
     }
     // Left is at the midpoint of the list
-    right = left->Next();
-    left->Next(nullptr);
+    right = left->next();
+    left->next(nullptr);
 }
 
 template <typename T>
@@ -561,15 +558,15 @@ Node<T>* LinkedList<T>::merge(node_pointer left, node_pointer right, Comparator 
     if(left == nullptr) { return right; }
     else if (right == nullptr) { return left; }
 
-    if(compare(*left->Data(), *right->Data()))
+    if(compare(*left->data(), *right->data()))
     {
         begin = left;
-        begin->Next(merge(left->Next(), right, compare));
+        begin->next(merge(left->next(), right, compare));
     }
     else
     {
         begin = right;
-        begin->Next(merge(left, right->Next(), compare));
+        begin->next(merge(left, right->next(), compare));
     }
     return begin;
 }
