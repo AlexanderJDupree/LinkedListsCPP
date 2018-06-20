@@ -146,3 +146,7 @@ See also the list of [contributors](https://github.com/AlexanderJDupree/LinkedLi
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/AlexanderJDupree/LinkedListsCPP/blob/master/LICENSE) file for details
+
+## Special Thanks
+
+This readme and the contributing guidelines are based off this great [template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)

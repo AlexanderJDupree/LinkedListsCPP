@@ -29,7 +29,7 @@ iterator_base<T>::iterator_base(pointer ptr) : node(ptr) {}
 template <typename T>
 typename iterator_base<T>::self_type& iterator_base<T>::operator++()
 {
-    node = node->Next();
+    node = node->next();
     return *this;
 }
 
@@ -44,7 +44,7 @@ typename iterator_base<T>::self_type iterator_base<T>::operator++(int)
 template <typename T>
 typename iterator_base<T>::reference iterator_base<T>::operator*()
 {
-    return *node->Data();
+    return *node->data();
 }
 
 template <typename T>
