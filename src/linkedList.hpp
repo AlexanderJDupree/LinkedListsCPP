@@ -61,10 +61,12 @@ public:
     ~LinkedList();
 
     /* Iterators */
-    const_iterator cbegin() const;
+    const_iterator cbegin() const noexcept;
+    const_iterator begin() const;
     iterator begin();
 
-    const_iterator cend() const;
+    const_iterator cend() const noexcept;
+    const_iterator end() const;
     iterator end();
 
     /* Modifiers */

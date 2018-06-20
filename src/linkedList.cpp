@@ -83,10 +83,16 @@ ITERATORS
 *******************************************************************************/
 
 template <typename T>
-typename LinkedList<T>::const_iterator LinkedList<T>::cbegin() const
+typename LinkedList<T>::const_iterator LinkedList<T>::cbegin() const noexcept
 {
     return const_iterator(head);
 }
+
+template <typename T>
+typename LinkedList<T>::const_iterator LinkedList<T>::begin() const
+{
+    return const_iterator(head);
+} 
 
 template <typename T>
 typename LinkedList<T>::iterator LinkedList<T>::begin()
@@ -95,7 +101,13 @@ typename LinkedList<T>::iterator LinkedList<T>::begin()
 } 
 
 template <typename T>
-typename LinkedList<T>::const_iterator LinkedList<T>::cend() const
+typename LinkedList<T>::const_iterator LinkedList<T>::cend() const noexcept
+{
+    return const_iterator(nullptr);
+}
+
+template <typename T>
+typename LinkedList<T>::const_iterator LinkedList<T>::end() const
 {
     return const_iterator(nullptr);
 } 
