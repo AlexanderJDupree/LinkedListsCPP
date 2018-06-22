@@ -75,13 +75,7 @@ git clone https://github.com/AlexanderJDupree/LinkedListsCPP.git
 cd LinkedListsCPP
 ```
 
-- Next, you'll need to make some directories for the Makefile to generate the binaries
-```bash
-cd tests
-mkdir bin debug
-cd ..
-```
-- Back in the top level directory call make
+- And just call make
 ```bash
 make
 ```
