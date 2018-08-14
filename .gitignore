@@ -32,6 +32,9 @@
 *.app
 tests/debug/runTests
 
+#Visual Studio folders
+.vs/
+
 # VS Code files
 
 # Swp files

@@ -23,7 +23,7 @@ CONSTRUCTORS
 
 // Default
 template <typename T>
-LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr) {}
+LinkedList<T>::LinkedList() : head(nullptr), tail(nullptr), list_size(0){}
 // Fill
 template <typename T>
 LinkedList<T>::LinkedList(size_type count, const_reference data) : LinkedList()
@@ -130,6 +130,8 @@ void LinkedList<T>::push_front(const_reference data)
     temp->next(head);
     head = temp;
 
+    ++list_size;
+
     if (tail == nullptr)
     {
         tail = head;
@@ -152,6 +154,8 @@ void LinkedList<T>::push_back(const_reference data)
     tail->next(temp);
     tail = temp;
 
+    ++list_size;
+
     return;
 }
 
@@ -164,6 +168,8 @@ void LinkedList<T>::pop_front()
 
     delete head;
     head = next;
+
+    --list_size;
 
     return;
 }
@@ -178,6 +184,8 @@ T& LinkedList<T>::pop_front(reference out_data)
 
     delete head;
     head = next;
+
+    --list_size;
 
     return out_data;
 }
@@ -194,6 +202,8 @@ void LinkedList<T>::pop_back()
         previous = previous->next();
     }
     delete tail;
+
+    --list_size;
 
     previous->next(nullptr);
     tail = previous;
@@ -216,6 +226,8 @@ T& LinkedList<T>::pop_back(reference out_data)
     out_data = *tail->data();
     delete tail;
 
+    --list_size;
+
     previous->next(nullptr);
     tail = previous;
 
@@ -236,6 +248,8 @@ void LinkedList<T>::insert(const_iterator& position, const_reference data)
     newNode->next(position.node->next());
 
     position.node->next(newNode);
+
+    ++list_size;
 
     if(tail->next() == newNode)
     {
@@ -299,6 +313,7 @@ LinkedList<T>::erase(iterator& position)
     position = iterator(previous->next());
 
     delete temp;
+    --list_size;
 
     return position;
 }
@@ -333,6 +348,8 @@ void LinkedList<T>::clear()
         delete previous;
     }
 
+    list_size = 0;
+
     return;
 }
 
@@ -349,14 +366,7 @@ bool LinkedList<T>::empty() const
 template <typename T>
 size_t LinkedList<T>::size() const
 {
-    size_type SIZE = 0;
-
-    for(const_iterator it = cbegin(); it != cend(); ++it)
-    {
-        ++SIZE;
-    }
-
-    return SIZE;
+    return list_size;
 }
 
 /*******************************************************************************
@@ -496,9 +506,12 @@ void LinkedList<T>::swap(LinkedList<T>& newList, LinkedList<T>& oldList) noexcep
     // Enables ADL
     using std::swap;
     
+    newList.list_size = oldList.list_size;
+
     // Swap pointers, reassigns ownership
     swap(newList.head, oldList.head);
     swap(newList.tail, oldList.tail);
+
     return;
 }
 
