@@ -118,6 +118,8 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
     {
         LinkedList<int> list {1, 2, 3, 4, 5};
 
+        REQUIRE(list.size() == 5);
+
         int i = 1;
         for (auto& element : list)
         {
@@ -135,6 +137,8 @@ TEST_CASE("Constructing Linked Lists instances", "[linkedLists], [constructors]"
     {
         std::vector<int> nums = { 1, 2, 3, 4, 5 };
         LinkedList<int> list(nums.begin(), nums.end());
+
+        REQUIRE(list.size() == 5);
 
         int i = 1;
         for (auto& element : list)
@@ -160,6 +164,7 @@ TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifier
 
         list.push_front(9);
 
+        REQUIRE(list.size() == 1);
         REQUIRE(*list.begin() == 9);
 
     }
@@ -171,6 +176,7 @@ TEST_CASE("Pushing elements to the front of the list", "[linkedLists], [modifier
         list.push_front('B');
         list.push_front('C');
 
+        REQUIRE(list.size() == 3);
         REQUIRE(*list.begin() == 'C');
     }
 }
@@ -183,6 +189,7 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
 
         list.push_back(5);
 
+        REQUIRE(list.size() == 1);
         REQUIRE(*list.begin() == 5);
         
     }
@@ -194,6 +201,8 @@ TEST_CASE("Pushing elements to the end of the list", "[linkedLists], [modifiers]
         list.push_back('X');
         list.push_back('Y');
         list.push_back('Z');
+
+        REQUIRE(list.size() == 3);
 
         char character = 'X';
         for (auto& element : list)
@@ -211,6 +220,8 @@ TEST_CASE("Popping front elements")
         LinkedList<int> list {1, 2, 3, 4};
         list.pop_front();
 
+        REQUIRE(list.size() == 3);
+
         int i = 2;
         for (auto& element : list)
         {
@@ -227,7 +238,8 @@ TEST_CASE("Popping front elements")
         list.pop_front(x);
 
         REQUIRE(x == 1);
-        
+        REQUIRE(list.size() == 3);
+
         x = 2;
         for (auto& element : list)
         {
@@ -262,6 +274,8 @@ TEST_CASE("Popping back elements")
         LinkedList<int> list {1, 2, 3, 4};
         list.pop_back();
 
+        REQUIRE(list.size() == 3);
+
         int i = 1;
         for (auto& element : list)
         {
@@ -279,7 +293,8 @@ TEST_CASE("Popping back elements")
         list.pop_back(x);
 
         REQUIRE(x == 4);
-        
+        REQUIRE(list.size() == 3);
+
         x = 1;
         for (auto& element : list)
         {
@@ -322,6 +337,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         It += 3;
        
+        REQUIRE(list.size() == 5);
         REQUIRE(*It == 5);
     }
     SECTION("Inserting at the end of a populated list")
@@ -336,6 +352,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         ++It;
 
+        REQUIRE(list.size() == 3);
         REQUIRE(*It == 5);
     }
     SECTION("Inserting at the beginning of a populated list")
@@ -348,6 +365,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         ++It;
 
+        REQUIRE(list.size() == 4);
         REQUIRE(*It == 1);
     }
     SECTION("Inserting into an empty list")
@@ -358,6 +376,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
 
         list.insert(It, 'Z');
 
+        REQUIRE(list.size() == 1);
         REQUIRE(*list.begin() == 'Z');
     }
     SECTION("Inserting using a ranged based iterator")
@@ -366,6 +385,8 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         LinkedList<int> list { 1, 5 };
 
         list.insert(list.cbegin(), nums.begin(), nums.end());
+
+        REQUIRE(list.size() == 5);
 
         int i = 1;
         for (auto& element : list)
@@ -380,6 +401,7 @@ TEST_CASE("Inserting an element in the list", "[linkedLists], [modifiers], [iter
         LinkedList<char> list;
         list.insert(list.cbegin(), 4, 'Z');
 
+        REQUIRE(list.size() == 4);
         for(auto& element : list)
         {
             REQUIRE(element == 'Z');
@@ -397,6 +419,8 @@ TEST_CASE("Using multiple modifiers on a list", "[linkedLists], [modifiers], [it
         list.push_back(3);
         list.push_front(1);
 
+
+        REQUIRE(list.size() == 3);
         int i = 1;
         for (auto& it : list)
         {

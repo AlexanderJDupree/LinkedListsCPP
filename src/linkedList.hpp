@@ -123,6 +123,7 @@ private:
 
     node_pointer head;
     node_pointer tail;
+    size_type list_size;
 
     /* Helper functions */
     void reverse_links(node_pointer current, node_pointer previous) noexcept;
