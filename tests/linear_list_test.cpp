@@ -164,6 +164,34 @@ TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equali
     }
 }
 
+TEST_CASE("Popping the front element off the list", "[linear_list], [operations], [pop_front]")
+{
+    SECTION("pop the front of an empty list")
+    {
+        linear_linked_list<int> empty_list;
+
+        REQUIRE(empty_list.pop_front().empty());
+    }
+    SECTION("Pop the front of a list with one element")
+    {
+        linear_linked_list<int> list { 1 };
+
+        REQUIRE(list.pop_front().empty());
+    }
+    SECTION("Pop the front of a populated list")
+    {
+        linear_linked_list<int> list { 7, 1, 2, 3 };
+
+        list.pop_front();
+
+        int i = 0;
+        for (const auto& n : list)
+        {
+            REQUIRE(n == ++i);
+        }
+    }
+}
+
 TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations]")
 {
     SECTION("remove_if with a value constructed functor")
