@@ -139,7 +139,25 @@ struct remove_seven
     }
 };
 
-TEST_CASE("Using functors to remove a specific element", "[list], [operations]")
+TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equality]")
+{
+    SECTION("Two empty lists")
+    {
+        linear_linked_list<int> lhs;
+        linear_linked_list<int> rhs;
+
+        REQUIRE(lhs == rhs);
+    }
+    SECTION("Two populated but differing lists")
+    {
+         linear_linked_list<int> lhs { 1, 2, 3 };
+         linear_linked_list<int> rhs { 1, 2, 3, 4 };
+
+         REQUIRE(lhs != rhs);
+    }
+}
+
+TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations]")
 {
     SECTION("remove_if with a value constructed functor")
     {
@@ -199,9 +217,15 @@ TEST_CASE("Using functors to remove a specific element", "[list], [operations]")
 
         REQUIRE(!list.remove_if(remove_seven()));
     }
+    SECTION("remove_if with an empty list")
+    {
+        linear_linked_list<int> list;
+
+        REQUIRE_FALSE(list.remove_if(remove_seven()));
+    }
 }
 
-TEST_CASE("Using mutable iterators to modify data", "[list], [iterators]")
+TEST_CASE("Using mutable iterators to modify data", "[linear_linked_list], [iterators]")
 {
     int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
 
