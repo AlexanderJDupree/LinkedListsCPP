@@ -16,7 +16,7 @@ Date: 07/11/2018
 #include <catch.hpp>
 #include "linked_list.h"
 
-TEST_CASE("Constructing linear_linked_list objects", "[list], [constructors]")
+TEST_CASE("Constructing linear_linked_list objects", "[linear_list], [constructors]")
 {
     SECTION("Default construction")
     {
@@ -24,21 +24,14 @@ TEST_CASE("Constructing linear_linked_list objects", "[list], [constructors]")
 
         REQUIRE(list.empty());
     }
-/*    SECTION("Copy construction")
+    SECTION("Copy construction")
     {
-        linear_linked_list<int> origin;
-        origin.add_unique(1);
-        origin.add_unique(3);
-        origin.add_unique(2);
-
+        linear_linked_list<int> origin { 1, 2, 3, 4, 5 };
         linear_linked_list<int> copy(origin);
 
-        bool assert = origin == copy;
-        REQUIRE(assert);
-
-        assert = copy.size() == 3;
-        REQUIRE(assert);
-    }*/
+        REQUIRE(origin == copy);
+        REQUIRE(copy.size() == 5);
+    }
     SECTION("Range based construction on a populated array")
     {
         int nums[] = {1, 2, 3, 4, 5};
@@ -53,7 +46,7 @@ TEST_CASE("Constructing linear_linked_list objects", "[list], [constructors]")
             REQUIRE(assert);
         }
     }
-    SECTION("Range base construction on an empty array")
+    SECTION("Range based construction on an empty array")
     {
         int nums[3];
 
@@ -71,7 +64,7 @@ TEST_CASE("Constructing linear_linked_list objects", "[list], [constructors]")
     }
 }
 
-TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
+TEST_CASE("Using clear to erase the list", "[linear_list], [clear], [destructor]")
 {
     SECTION("An empty list")
     {
@@ -81,83 +74,63 @@ TEST_CASE("Using clear to erase the list", "[list], [clear], [destructor]")
 
         REQUIRE(list.empty());
     }
-/*    SECTION("A populated list")
+    SECTION("A populated list")
     {
-        linear_linked_list<char> list;
-
-        list.add_unique('a');
-        list.add_unique('b');
-        list.add_unique('c');
+        linear_linked_list<char> list { 'a', 'b', 'c' };
 
         list.clear();
 
         REQUIRE(list.empty());
     }
-*/
 }
 
-TEST_CASE("Using swap to reassign data", "[list], [swap]")
-{
-/*    SECTION("An empty list and a populated list")
-    {
-        linear_linked_list<int> old;
-
-        old.add_unique(3);
-        old.add_unique(1);
-        old.add_unique(2);
-
-        linear_linked_list<int> list;
-
-        linear_linked_list<int>::swap(list, old);
-
-        int i = 1;
-        for (linear_linked_list<int>::const_iterator it = list.begin(); it != list.end(); ++it)
-        {
-            bool assert = *it == i++;
-            REQUIRE(assert);
-        }
-    } */
-    SECTION("two empty lists")
-    {
-        linear_linked_list<int> old;
-        linear_linked_list<int> list;
-
-        linear_linked_list<int>::swap(list, old);
-
-        bool assert = old == list;
-        REQUIRE(assert);
-    }
-}
-/*
-TEST_CASE("Using the copy-assignment operator", "[list], [operators], [copy-assignment]")
+TEST_CASE("Using swap to reassign data", "[linear_list], [swap]")
 {
     SECTION("An empty list and a populated list")
     {
-        linear_linked_list<int> old;
-
-        old.add_unique(3);
-        old.add_unique(1);
-        old.add_unique(2);
+        linear_linked_list<int> old {1, 2, 3};
 
         linear_linked_list<int> list;
 
-        list = old;
+        linear_linked_list<int>::swap(list, old);
 
-        bool assert = old == list;
-        REQUIRE(assert);
+        int i = 0;
+        for (const auto& elem : list)
+        {
+            REQUIRE(elem == ++i);
+        }
     }
     SECTION("two empty lists")
     {
         linear_linked_list<int> old;
         linear_linked_list<int> list;
 
-        old = list;
+        linear_linked_list<int>::swap(list, old);
 
         bool assert = old == list;
         REQUIRE(assert);
     }
 }
-*/
+
+TEST_CASE("Using the copy-assignment operator", "[linear_list], [operators], [copy-assignment]")
+{
+    SECTION("An empty list and a populated list")
+    {
+        linear_linked_list<int> old { 1, 2, 3 };
+
+        linear_linked_list<int> list;
+
+        REQUIRE((list = old) == old);
+    }
+    SECTION("two empty lists")
+    {
+        linear_linked_list<int> old;
+        linear_linked_list<int> list;
+
+        REQUIRE((old = list) == list);
+    }
+}
+
 struct remove_seven
 {
     bool operator() (const int& value)

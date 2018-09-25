@@ -38,6 +38,17 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
     }
 }
 
+// Initializer List
+template <typename T>
+linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init)
+    : head(NULL), tail(NULL), _size(0)
+{
+    for (const_reference element : init)
+    {
+        push_back(element);
+    }
+}
+
 // Copy constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list(const self_type& origin) 

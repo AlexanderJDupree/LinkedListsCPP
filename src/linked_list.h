@@ -33,6 +33,7 @@ Date: 06/27/2018
 #include <cstddef> // NULL
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
+#include <initializer_list> 
 
 template <typename T>
 class linear_linked_list
@@ -56,17 +57,20 @@ class linear_linked_list
 
     /****** CONSTRUCTORS ******/
 
-    // Instantiates an EMPTY list
+    // Default
     linear_linked_list();
 
-    // Ranged based constructor
+    // Ranged based
     template <class InputIterator>
     linear_linked_list(InputIterator begin, InputIterator end);
 
-    // Copies each element in the original list onto this list
+    // Initializer List
+    explicit linear_linked_list(std::initializer_list<value_type> init);
+
+    // Copy Constructor
     linear_linked_list(const self_type& origin);
    
-    // Uses clear() to delete each element in the list
+    // Destructor
     ~linear_linked_list();
      
     /****** MODIFIERS ******/
