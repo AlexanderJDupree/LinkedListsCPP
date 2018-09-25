@@ -190,6 +190,22 @@ TEST_CASE("Popping the front element off the list", "[linear_list], [operations]
             REQUIRE(n == ++i);
         }
     }
+    SECTION("Pop the front of an empty list with out parameter")
+    {
+        int i = 7;
+
+        linear_linked_list<int> empty_list;
+
+        REQUIRE(empty_list.pop_front(i) == 7);
+    }
+    SECTION("Pop the front of a populated list")
+    {
+        int i = 7;
+
+        linear_linked_list<int> list { 1, 2, 3, 4 };
+
+        REQUIRE(list.pop_front(i) == 1);
+    }
 }
 
 TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations]")

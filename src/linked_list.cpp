@@ -129,6 +129,19 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
 }
 
 template <typename T>
+T& linear_linked_list<T>::pop_front(reference out_param)
+{
+    if(!empty())
+    {
+        out_param = head->data;
+
+        pop_front();
+    }
+        
+    return out_param;
+}
+
+template <typename T>
 void linear_linked_list<T>::clear()
 {
     if(empty())
