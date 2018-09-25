@@ -148,10 +148,17 @@ TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equali
 
         REQUIRE(lhs == rhs);
     }
-    SECTION("Two populated but differing lists")
+    SECTION("Two populated lists of differing sizes")
     {
          linear_linked_list<int> lhs { 1, 2, 3 };
          linear_linked_list<int> rhs { 1, 2, 3, 4 };
+
+         REQUIRE(lhs != rhs);
+    }
+    SECTION("Two populated lists of matching sizes")
+    {
+         linear_linked_list<int> lhs { 1, 2, 3 };
+         linear_linked_list<int> rhs { 1, 2, 4 };
 
          REQUIRE(lhs != rhs);
     }
