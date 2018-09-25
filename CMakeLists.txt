@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0") # debug, no optimisation
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage") # enabling coverage
 
 set(SOURCE_FILES tests/tests_main.cpp tests/linear_list_test.cpp release/linked_list.hpp)
-include_directories(include tests/third_party release/)
+include_directories(include tests/third_party src/)
 add_executable(run_tests ${SOURCE_FILES})
 
 if(USE_CPP14)
@@ -39,4 +39,4 @@ if (ENABLE_COVERAGE)
 endif()
 
 include(CTest)
-add_test(NAME RunTests COMMAND $<TARGET_FILE:run_tests>)
+add_test(NAME run_tests COMMAND $<TARGET_FILE:run_tests>)

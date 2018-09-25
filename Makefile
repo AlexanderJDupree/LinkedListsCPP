@@ -22,4 +22,4 @@ $(OBJ_DIR)/linkedListTest.o: $(TEST_DIR)/linear_list_test.cpp
 
 clean:
 	rm $(OBJ_DIR)/*.o 
-	rm $(TEST_DIR)/debug/runTests
+	rm $(TEST_DIR)/debug/run_tests
