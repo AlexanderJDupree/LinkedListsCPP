@@ -1,30 +1,18 @@
 /*
-File: linked_list.h
+ 
+ File: linked_list.cpp
 
-Description: linear_linked_list is a data structure that stores data onto a node
-             as well as the address for the next element in the container.
+ Brief: Header defines protoypes and internal classes for the linear linked list
+        data structure.
 
-             This implementation for the linear linked list is a fully templated
-             class. This allows the linear_linked_list to be instantiated to 
-             store any data types. 
+ Copyright (c) 2018 Alexander DuPree
 
-             By default the linear linked list COPIES the data onto the node. 
-             This requires that the data object have a copy constructor defined
-             or can be shallow copied with the default copy constructor.
+ This software is released as open source through the MIT License
 
-             To access data or traverse the list, this linear linked list makes 
-             use of forward iterators. The forward iterator cannot be decremented.
-             The end iterator represents the element one-past the end of the
-             list which is a null pointer. dereferencing end iterators causes 
-             undifined behavior.
+ Authors: Alexander DuPree, Jacob Bickle
 
-Author: Alexander DuPree
+ https://github.com/AlexanderJDupree/LinkedListsCPP
 
-Class: CS163
-
-Assignment: program2
-
-Date: 06/27/2018
 */
 
 #ifndef LINKED_LIST_H
@@ -33,7 +21,7 @@ Date: 06/27/2018
 #include <cstddef> // NULL
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
-#include <initializer_list> 
+#include <initializer_list>  // std::initializer_list
 
 template <typename T>
 class linear_linked_list
@@ -84,6 +72,7 @@ class linear_linked_list
     // Removes the element at the front of the list
     self_type& pop_front();
 
+    // Copies the front element onto the out_param and removes it
     reference pop_front(reference out_param);
 
     // wrapper method for clear_list, if the list is empty does nothing

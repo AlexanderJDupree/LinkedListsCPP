@@ -1,16 +1,19 @@
 /*
-File: list_test.cpp
+ 
+ File: linear_list_test.cpp
 
-Description: Unit tests for the linear_linked_list data structure
+ Brief: Unit tests for linear linked list data structure
 
-Author: Alexander DuPree
+ Copyright (c) 2018 Alexander DuPree
 
-Class: CS163
+ This software is released as open source through the MIT License
 
-Assignment: program1
+ Authors: Alexander DuPree, Jacob Bickle
 
-Date: 07/11/2018
+ https://github.com/AlexanderJDupree/LinkedListsCPP
+
 */
+
 
 #include <iostream>
 #include <catch.hpp>

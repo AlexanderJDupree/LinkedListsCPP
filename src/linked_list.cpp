@@ -1,17 +1,17 @@
 /*
-File: linked_list.cpp
+ 
+ File: linked_list.cpp
 
-Description: Implementation for templated linear_linked_list class. Defines
-             methods for modifiers, capacity checks, and iteration of the 
-             linear_linked_list data structure.
+ Brief: Implementation file for the linear_linked_list data structure
 
-Author: Alexander DuPree
+ Copyright (c) 2018 Alexander DuPree
 
-Class: CS163
+ This software is released as open source through the MIT License
 
-Assignment: program1
+ Authors: Alexander DuPree, Jacob Bickle
 
-Date: 07/11/2018
+ https://github.com/AlexanderJDupree/LinkedListsCPP
+
 */
 
 #ifndef LINKED_LIST_CPP
@@ -125,7 +125,6 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
     --_size;
 
     return *this;
-    
 }
 
 template <typename T>
@@ -151,8 +150,11 @@ void linear_linked_list<T>::clear()
 
     // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
+
     _size = 0;
+
     tail = NULL;
+
     return;
 }
 
