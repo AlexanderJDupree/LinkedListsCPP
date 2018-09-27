@@ -9,7 +9,7 @@
 
  This software is released as open source through the MIT License
 
- Authors: Alexander DuPree, Jacob Bickle
+ Authors: Alexander DuPree
 
  https://github.com/AlexanderJDupree/LinkedListsCPP
 
@@ -75,8 +75,11 @@ class linear_linked_list
     // Copies the front element onto the out_param and removes it
     reference pop_front(reference out_param);
 
-    // wrapper method for clear_list, if the list is empty does nothing
+    // Removes each element from the container
     void clear();
+
+    // Searches the list for target element, removes if found
+    bool remove(const_reference target);
 
     // Removes the first item fullfilling the predicate functor
     template <class Predicate>
@@ -119,7 +122,7 @@ class linear_linked_list
     /****** COPY-ASSIGNMENT AND SWAP ******/
 
     // creates a copy of the origin, then swaps ownership with the copy
-    self_type& operator=(const self_type& origin);
+    self_type& operator=(self_type copy);
 
     // Swaps pointers to each other's resources. effectively reassigning 
     // ownership.
@@ -149,12 +152,14 @@ class linear_linked_list
 
     size_type _size; // Keeps track of the number of elements in the list
 
-    /* Private Functions */
+    /* Recursive Functions */
 
     void clear_list(Node*& current);
 
     template <class Predicate>
     bool remove_if(Predicate pred, Node* current);
+
+    /* Subroutines */
 
     // Throws a logic error exception if the node* is NULL
     void throw_if_null(Node* node) const;
@@ -187,13 +192,12 @@ class linear_linked_list
         /* Operator Overloads */
 
         self_type& operator++(); // Prefix ++
-        self_type& operator++(int); // Postfix ++
+        self_type operator++(int); // Postfix ++
 
         const_reference operator*() const;
         const_pointer operator->() const;
 
-        // returns true if each iterator is pointing to the same address in
-        // memory
+        // Iterators are equal if they point to the same memory address
         bool operator==(const self_type& rhs) const;
         bool operator!=(const self_type& rhs) const;
       
@@ -201,6 +205,7 @@ class linear_linked_list
 
         Node* node;
     };
+
     /*
     @class: forward_iterator
     

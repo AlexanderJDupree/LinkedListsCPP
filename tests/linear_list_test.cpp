@@ -134,14 +134,6 @@ TEST_CASE("Using the copy-assignment operator", "[linear_list], [operators], [co
     }
 }
 
-struct remove_seven
-{
-    bool operator() (const int& value)
-    {
-        return value == 7;
-    }
-};
-
 TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equality]")
 {
     SECTION("Two empty lists")
@@ -211,7 +203,32 @@ TEST_CASE("Popping the front element off the list", "[linear_list], [operations]
     }
 }
 
-TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations]")
+TEST_CASE("Removing a specific element from a list", "[linear_list], [operations], [remove]")
+{
+    linear_linked_list<int> list { 1, 2, 3, 4 };
+
+    SECTION("Remove from a populated list")
+    {
+        REQUIRE(list.remove(4));
+        REQUIRE(list.size() == 3);
+    }
+
+    SECTION("Removing an item not found in a list")
+    {
+        REQUIRE_FALSE(list.remove(7));
+    }
+}
+
+struct remove_seven
+{
+    bool operator() (const int& value)
+    {
+        return value == 7;
+    }
+};
+
+
+TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations], [remove_if]")
 {
     SECTION("remove_if with a value constructed functor")
     {

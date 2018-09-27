@@ -8,7 +8,7 @@
 
  This software is released as open source through the MIT License
 
- Authors: Alexander DuPree, Jacob Bickle
+ Authors: Alexander DuPree
 
  https://github.com/AlexanderJDupree/LinkedListsCPP
 
@@ -176,6 +176,12 @@ void linear_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
+bool linear_linked_list<T>::remove(const_reference target)
+{
+    return remove_if([&target](T& sample){ return target == sample; });
+}
+
+template <typename T>
 template <class Predicate>
 bool linear_linked_list<T>::remove_if(Predicate pred)
 {
@@ -324,15 +330,13 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
     while(left != end() && right != rhs.end())
     {
         // If any element does not match then return false
-        if (*left != *right)
+        if (*(left++) != *(right++))
         {
             return false;
         }
-        ++left;
-        ++right;
     }
 
-    return left == end() && right == end();
+    return true;
 }
 
 template <typename T>
@@ -343,12 +347,9 @@ bool linear_linked_list<T>::operator!=(const self_type& rhs) const
 
 template <typename T>
 typename linear_linked_list<T>::self_type& 
-linear_linked_list<T>::operator=(const self_type& origin)
+// Pass by value is utilized to make use of the copy constructor
+linear_linked_list<T>::operator=(self_type copy)
 {
-    // Create a copy of the list, if an exception is thrown then the state of 
-    // original list and our list is unchanged
-    linear_linked_list<T> copy(origin);
-
     // Swap ownership of resources with the copy
     swap(*this, copy);
 
@@ -394,7 +395,7 @@ linear_linked_list<T>::const_iterator::operator++()
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator& 
+typename linear_linked_list<T>::const_iterator
 linear_linked_list<T>::const_iterator::operator++(int)
 {
     // Create a copy to satisfy postfix incrementation requirements
@@ -406,7 +407,7 @@ linear_linked_list<T>::const_iterator::operator++(int)
 template <typename T>
 bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
 {
-    // Compare memory addresses, NOT the value of the data member
+    // Iterators are equal if they point to the same memory address
     return node == rhs.node;
 }
 
