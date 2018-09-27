@@ -205,17 +205,17 @@ TEST_CASE("Popping the front element off the list", "[linear_list], [operations]
 
 TEST_CASE("Removing a specific element from a list", "[linear_list], [operations], [remove]")
 {
-    linear_linked_list<int> list { 1, 2, 3, 4 };
+    linear_linked_list<int> list { 1, 4, 2, 3, 4 };
 
     SECTION("Remove from a populated list")
     {
-        REQUIRE(list.remove(4));
+        REQUIRE(list.remove(4) == 2);
         REQUIRE(list.size() == 3);
     }
 
     SECTION("Removing an item not found in a list")
     {
-        REQUIRE_FALSE(list.remove(7));
+        REQUIRE(list.remove(7) == 0);
     }
 }
 
@@ -227,25 +227,23 @@ struct remove_seven
     }
 };
 
-
 TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations], [remove_if]")
 {
     SECTION("remove_if with a value constructed functor")
     {
         remove_seven functor;
 
-        int nums[] = { 1, 2, 3, 4, 7, 5, 6 };
+        int nums[] = { 7, 1, 2, 3, 4, 7, 5, 6, 7};
 
-        linear_linked_list<int> list(nums, nums + 7);
+        linear_linked_list<int> list(nums, nums + 9);
 
-        REQUIRE(list.remove_if(functor));
+        REQUIRE(list.remove_if(functor) == 3);
 
         int i = 0;
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with the element as the head")
@@ -260,8 +258,7 @@ TEST_CASE("Using functors to remove a specific element", "[linear_list], [operat
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with the element as the tail")
@@ -276,8 +273,7 @@ TEST_CASE("Using functors to remove a specific element", "[linear_list], [operat
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with no matching element")

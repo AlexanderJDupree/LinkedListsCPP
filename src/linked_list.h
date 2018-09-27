@@ -78,12 +78,12 @@ class linear_linked_list
     // Removes each element from the container
     void clear();
 
-    // Searches the list for target element, removes if found
-    bool remove(const_reference target);
+    // Removes all items matching target, returns number of items removed
+    int remove(const_reference target);
 
-    // Removes the first item fullfilling the predicate functor
+    // Removes the all items fullfilling the predicate functor
     template <class Predicate>
-    bool remove_if(Predicate pred);
+    int remove_if(Predicate pred);
 
     /****** CAPACITY ******/
 
@@ -157,7 +157,7 @@ class linear_linked_list
     void clear_list(Node*& current);
 
     template <class Predicate>
-    bool remove_if(Predicate pred, Node* current);
+    int remove_if(Predicate pred, Node*& current, Node* prev=NULL);
 
     /* Subroutines */
 

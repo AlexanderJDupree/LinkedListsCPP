@@ -176,58 +176,56 @@ void linear_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
-bool linear_linked_list<T>::remove(const_reference target)
+int linear_linked_list<T>::remove(const_reference target)
 {
     return remove_if([&target](T& sample){ return target == sample; });
 }
 
 template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred)
+int linear_linked_list<T>::remove_if(Predicate pred)
 {
     if (empty())
     {
-        return false;
+        return 0;
     }
-
-    if(pred(head->data))
-    {
-        pop_front();
-        return true;
-    }
-
+    
     return remove_if(pred, head);
 }
 
 template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
+int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
 {
-    // Base case: no element in the list fulfills the predicate
-    if(current == tail)
+    // Base Case: Traversed the whole list
+    if(current == NULL)
     {
-        return false;
+        return 0;
     }
 
-    // Predicate fulfilled, remove next element
-    if(pred(current->next->data))
+    // Predicate fulfilled, remove this element
+    if(pred(current->data))
     {
-        Node* temp = current->next;
-        current->next = temp->next;
 
-        if (tail == temp)
+        if (tail == current)
         {
-            tail = current;
+            tail = prev;
         }
 
-        delete temp;
+        prev = current;
+
+        current = current->next;
+
+        delete prev;
 
         --_size;
 
-        return true;
+        return 1 + remove_if(pred, current, prev=current);
     }
 
-    return remove_if(pred, current->next);
+    prev = current;
+
+    return remove_if(pred, current->next, prev);
 }
 
 /****** CAPACITY ******/
@@ -281,7 +279,6 @@ const T& linear_linked_list<T>::back() const
 
     return tail->data;
 }
-
 
 /****** ITERATORS ******/
 
