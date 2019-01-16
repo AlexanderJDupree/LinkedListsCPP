@@ -30,27 +30,27 @@ A linked list is a container that supports constant time insertion and removal o
 ### Prerequisites
 - LinkedList.hpp is compiled in the C++ 11 standard and will **NOT** compile in older C++ language standards.
 
-All releases are header only, meaning all you need to do to get started is drop the file into a visible include path for your project. Once the file is reachable from your project you can start using the linked list container like this:
+All releases are header only, meaning all you need to do to get started is drop the header into a visible include path for your project. Once the file is reachable from your project you can start using the linked list container like this:
 
 ```c++
 #include <iostream>
-#include "linkedList.hpp"
+#include "linked_list.h"
 
 int main()
 {
-    LinkedList<char> list { 'H', 'E', 'L', 'L', 'O', '!' };
+    linear_linked_list<char> list { 'H', 'E', 'L', 'L', 'O', '!' };
 
-    LinkedList<char>::iterator it;
-    for(it = list.begin(); it != list.end(); ++it)
+    for(const char& letter : list)
     {
-        std::cout << *it;
+        std::cout << letter;
     }
-    return 0;
 
     // Prints "HELLO!" to the console
+
+    return 0;
+
 }
 ```
-
 
 
 ### Usage
@@ -82,7 +82,7 @@ make
 - Now you can execute the unit tests by typing
 
 ```
-./tests/debug/runTests
+./tests/debug/run_tests
 ```
 
 The first time you enter _make_ may take a minute, as it must build the [Catch2 framework](https://github.com/catchorg/Catch2). However, _make_ will keep all of the resulting obj files in the _tests/bin/_ directory. Afterwards, _make_ will only build files you have updated, and link them together again.

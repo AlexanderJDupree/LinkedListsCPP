@@ -1,17 +1,17 @@
 /*
-File: linked_list.cpp
+ 
+ File: linked_list.cpp
 
-Description: Implementation for templated linear_linked_list class. Defines
-             methods for modifiers, capacity checks, and iteration of the 
-             linear_linked_list data structure.
+ Brief: Implementation file for the linear_linked_list data structure
 
-Author: Alexander DuPree
+ Copyright (c) 2018 Alexander DuPree
 
-Class: CS163
+ This software is released as open source through the MIT License
 
-Assignment: program1
+ Authors: Alexander DuPree
 
-Date: 07/11/2018
+ https://github.com/AlexanderJDupree/LinkedListsCPP
+
 */
 
 #ifndef LINKED_LIST_CPP
@@ -24,13 +24,13 @@ Date: 07/11/2018
 // default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
-    : head(NULL), tail(NULL), _size(0) {}
+    : head(nullptr), tail(nullptr), _size(0) {}
 
 // ranged based constructor
 template <typename T>
 template <class InputIterator>
 linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     for(; begin != end; ++begin)
     {
@@ -41,7 +41,7 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
 // Initializer List
 template <typename T>
 linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init)
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     for (const_reference element : init)
     {
@@ -52,7 +52,7 @@ linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init
 // Copy constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list(const self_type& origin) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     const_iterator it;
     for (it = origin.begin(); it != origin.end(); ++it)
@@ -76,7 +76,7 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
     Node* temp = new Node(data, head);
     head = temp;
 
-    if (tail == NULL)
+    if (tail == nullptr)
     {
         tail = head;
     }
@@ -125,7 +125,19 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
     --_size;
 
     return *this;
-    
+}
+
+template <typename T>
+T& linear_linked_list<T>::pop_front(reference out_param)
+{
+    if(!empty())
+    {
+        out_param = head->data;
+
+        pop_front();
+    }
+        
+    return out_param;
 }
 
 template <typename T>
@@ -138,8 +150,11 @@ void linear_linked_list<T>::clear()
 
     // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
+
     _size = 0;
-    tail = NULL;
+
+    tail = nullptr;
+
     return;
 }
 
@@ -155,58 +170,62 @@ void linear_linked_list<T>::clear_list(Node*& current)
 
     // Deletes the current node as the stack unwinds
     delete current;
-    current = NULL;
+    current = nullptr;
 
     return;
 }
 
 template <typename T>
+int linear_linked_list<T>::remove(const_reference target)
+{
+    return remove_if([&target](T& sample){ return target == sample; });
+}
+
+template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred)
+int linear_linked_list<T>::remove_if(Predicate pred)
 {
     if (empty())
     {
-        return false;
+        return 0;
     }
-
-    if(pred(head->data))
-    {
-        pop_front();
-        return true;
-    }
-
+    
     return remove_if(pred, head);
 }
 
 template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
+int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
 {
-    // Base case: no element in the list fulfills the predicate
-    if(current == tail)
+    // Base Case: Traversed the whole list
+    if(current == nullptr)
     {
-        return false;
+        return 0;
     }
 
-    // Predicate fulfilled, remove next element
-    if(pred(current->next->data))
+    // Predicate fulfilled, remove this element
+    if(pred(current->data))
     {
-        Node* temp = current->next;
-        current->next = temp->next;
 
-        if (tail == temp)
+        if (tail == current)
         {
-            tail = current;
+            tail = prev;
         }
 
-        delete temp;
+        prev = current;
+
+        current = current->next;
+
+        delete prev;
 
         --_size;
 
-        return true;
+        return 1 + remove_if(pred, current, prev=current);
     }
 
-    return remove_if(pred, current->next);
+    prev = current;
+
+    return remove_if(pred, current->next, prev);
 }
 
 /****** CAPACITY ******/
@@ -215,8 +234,8 @@ template <typename T>
 bool linear_linked_list<T>::empty() const
 {
     /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
+    Because head is only nullptr when the list is empty we can return the 
+    logical NOT of head. This returns true iff head is nullptr.
     */
 
     return !(head);
@@ -261,7 +280,6 @@ const T& linear_linked_list<T>::back() const
     return tail->data;
 }
 
-
 /****** ITERATORS ******/
 
 template <typename T>
@@ -282,14 +300,14 @@ template <typename T>
 typename linear_linked_list<T>::iterator
 linear_linked_list<T>::end()
 {
-    return iterator(NULL);
+    return iterator(nullptr);
 }
 
 template <typename T>
 typename linear_linked_list<T>::const_iterator 
 linear_linked_list<T>::end() const
 {
-    return const_iterator(NULL);
+    return const_iterator(nullptr);
 }
 
 /****** COMPARISON OPERATORS ******/
@@ -309,15 +327,13 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
     while(left != end() && right != rhs.end())
     {
         // If any element does not match then return false
-        if (*left != *right)
+        if (*(left++) != *(right++))
         {
             return false;
         }
-        ++left;
-        ++right;
     }
 
-    return left == end() && right == end();
+    return true;
 }
 
 template <typename T>
@@ -328,12 +344,9 @@ bool linear_linked_list<T>::operator!=(const self_type& rhs) const
 
 template <typename T>
 typename linear_linked_list<T>::self_type& 
-linear_linked_list<T>::operator=(const self_type& origin)
+// Pass by value is utilized to make use of the copy constructor
+linear_linked_list<T>::operator=(self_type copy)
 {
-    // Create a copy of the list, if an exception is thrown then the state of 
-    // original list and our list is unchanged
-    linear_linked_list<T> copy(origin);
-
     // Swap ownership of resources with the copy
     swap(*this, copy);
 
@@ -361,7 +374,7 @@ void linear_linked_list<T>::throw_if_null(Node* node) const
         return;
     }
 
-    throw std::logic_error("Element access fail, NULL pointer");
+    throw std::logic_error("Element access fail, nullptr pointer");
 }
 
 /*******************************************************************************
@@ -379,7 +392,7 @@ linear_linked_list<T>::const_iterator::operator++()
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator& 
+typename linear_linked_list<T>::const_iterator
 linear_linked_list<T>::const_iterator::operator++(int)
 {
     // Create a copy to satisfy postfix incrementation requirements
@@ -391,7 +404,7 @@ linear_linked_list<T>::const_iterator::operator++(int)
 template <typename T>
 bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
 {
-    // Compare memory addresses, NOT the value of the data member
+    // Iterators are equal if they point to the same memory address
     return node == rhs.node;
 }
 

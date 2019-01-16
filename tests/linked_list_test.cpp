@@ -1,16 +1,19 @@
 /*
-File: list_test.cpp
+ 
+ File: linked_list_test.cpp
 
-Description: Unit tests for the linear_linked_list data structure
+ Brief: Unit tests for linear linked list data structure
 
-Author: Alexander DuPree
+ Copyright (c) 2018 Alexander DuPree
 
-Class: CS163
+ This software is released as open source through the MIT License
 
-Assignment: program1
+ Authors: Alexander DuPree, Jacob Bickle
 
-Date: 07/11/2018
+ https://github.com/AlexanderJDupree/LinkedListsCPP
+
 */
+
 
 #include <iostream>
 #include <catch.hpp>
@@ -40,22 +43,6 @@ TEST_CASE("Constructing linear_linked_list objects", "[linear_list], [constructo
 
         linear_linked_list<int>::const_iterator it;
         int i = 0;
-        for(it = list.begin(); it != list.end(); ++it)
-        {
-            bool assert = *it == nums[i++];
-            REQUIRE(assert);
-        }
-    }
-    SECTION("Range based construction on an empty array")
-    {
-        int nums[3];
-
-        linear_linked_list<int> list(nums, nums + 3);
-
-        linear_linked_list<int>::const_iterator it;
-
-        int i = 0;
-
         for(it = list.begin(); it != list.end(); ++it)
         {
             bool assert = *it == nums[i++];
@@ -131,14 +118,6 @@ TEST_CASE("Using the copy-assignment operator", "[linear_list], [operators], [co
     }
 }
 
-struct remove_seven
-{
-    bool operator() (const int& value)
-    {
-        return value == 7;
-    }
-};
-
 TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equality]")
 {
     SECTION("Two empty lists")
@@ -190,26 +169,65 @@ TEST_CASE("Popping the front element off the list", "[linear_list], [operations]
             REQUIRE(n == ++i);
         }
     }
+    SECTION("Pop the front of an empty list with out parameter")
+    {
+        int i = 7;
+
+        linear_linked_list<int> empty_list;
+
+        REQUIRE(empty_list.pop_front(i) == 7);
+    }
+    SECTION("Pop the front of a populated list")
+    {
+        int i = 7;
+
+        linear_linked_list<int> list { 1, 2, 3, 4 };
+
+        REQUIRE(list.pop_front(i) == 1);
+    }
 }
 
-TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations]")
+TEST_CASE("Removing a specific element from a list", "[linear_list], [operations], [remove]")
+{
+    linear_linked_list<int> list { 1, 4, 2, 3, 4 };
+
+    SECTION("Remove from a populated list")
+    {
+        REQUIRE(list.remove(4) == 2);
+        REQUIRE(list.size() == 3);
+    }
+
+    SECTION("Removing an item not found in a list")
+    {
+        REQUIRE(list.remove(7) == 0);
+    }
+}
+
+struct remove_seven
+{
+    bool operator() (const int& value)
+    {
+        return value == 7;
+    }
+};
+
+TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations], [remove_if]")
 {
     SECTION("remove_if with a value constructed functor")
     {
         remove_seven functor;
 
-        int nums[] = { 1, 2, 3, 4, 7, 5, 6 };
+        int nums[] = { 7, 1, 2, 3, 4, 7, 5, 6, 7};
 
-        linear_linked_list<int> list(nums, nums + 7);
+        linear_linked_list<int> list(nums, nums + 9);
 
-        REQUIRE(list.remove_if(functor));
+        REQUIRE(list.remove_if(functor) == 3);
 
         int i = 0;
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with the element as the head")
@@ -224,8 +242,7 @@ TEST_CASE("Using functors to remove a specific element", "[linear_list], [operat
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with the element as the tail")
@@ -240,8 +257,7 @@ TEST_CASE("Using functors to remove a specific element", "[linear_list], [operat
         linear_linked_list<int>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
         {
-            bool assert = *it == ++i;
-            REQUIRE(assert);
+            REQUIRE(*it == ++i);
         }
     }
     SECTION("remove_if with no matching element")
