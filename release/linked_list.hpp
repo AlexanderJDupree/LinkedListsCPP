@@ -2,6 +2,8 @@
  
  File: linked_list.cpp
 
+ Version: v2.0.0
+
  Brief: Header defines protoypes and internal classes for the linear linked list
         data structure.
 
