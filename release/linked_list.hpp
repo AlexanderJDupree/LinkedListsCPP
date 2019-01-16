@@ -1,37 +1,26 @@
-/*File: linked_list.h
+/*
+ 
+ File: linked_list.cpp
 
-Description: linear_linked_list is a data structure that stores data onto a node
-             as well as the address for the next element in the container.
+ Brief: Header defines protoypes and internal classes for the linear linked list
+        data structure.
 
-             This implementation for the linear linked list is a fully templated
-             class. This allows the linear_linked_list to be instantiated to 
-             store any data types. 
+ Copyright (c) 2018 Alexander DuPree
 
-             By default the linear linked list COPIES the data onto the node. 
-             This requires that the data object have a copy constructor defined
-             or can be shallow copied with the default copy constructor.
+ This software is released as open source through the MIT License
 
-             To access data or traverse the list, this linear linked list makes 
-             use of forward iterators. The forward iterator cannot be decremented.
-             The end iterator represents the element one-past the end of the
-             list which is a null pointer. dereferencing end iterators causes 
-             undifined behavior.
+ Authors: Alexander DuPree
 
-Author: Alexander DuPree
+ https://github.com/AlexanderJDupree/LinkedListsCPP
 
-Class: CS163
-
-Assignment: program2
-
-Date: 06/27/2018
 */
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include <cstddef> // NULL
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
+#include <initializer_list>  // std::initializer_list
 
 template <typename T>
 class linear_linked_list
@@ -55,17 +44,20 @@ class linear_linked_list
 
     /****** CONSTRUCTORS ******/
 
-    // Instantiates an EMPTY list
+    // Default
     linear_linked_list();
 
-    // Ranged based constructor
+    // Ranged based
     template <class InputIterator>
     linear_linked_list(InputIterator begin, InputIterator end);
 
-    // Copies each element in the original list onto this list
+    // Initializer List
+    explicit linear_linked_list(std::initializer_list<value_type> init);
+
+    // Copy Constructor
     linear_linked_list(const self_type& origin);
    
-    // Uses clear() to delete each element in the list
+    // Destructor
     ~linear_linked_list();
      
     /****** MODIFIERS ******/
@@ -79,14 +71,18 @@ class linear_linked_list
     // Removes the element at the front of the list
     self_type& pop_front();
 
+    // Copies the front element onto the out_param and removes it
     reference pop_front(reference out_param);
 
-    // wrapper method for clear_list, if the list is empty does nothing
+    // Removes each element from the container
     void clear();
 
-    // Removes the first item fullfilling the predicate functor
+    // Removes all items matching target, returns number of items removed
+    int remove(const_reference target);
+
+    // Removes the all items fullfilling the predicate functor
     template <class Predicate>
-    bool remove_if(Predicate pred);
+    int remove_if(Predicate pred);
 
     /****** CAPACITY ******/
 
@@ -125,7 +121,7 @@ class linear_linked_list
     /****** COPY-ASSIGNMENT AND SWAP ******/
 
     // creates a copy of the origin, then swaps ownership with the copy
-    self_type& operator=(const self_type& origin);
+    self_type& operator=(self_type copy);
 
     // Swaps pointers to each other's resources. effectively reassigning 
     // ownership.
@@ -141,8 +137,8 @@ class linear_linked_list
     */
     struct Node
     {
-        // Default values are default constrution and NULL
-        Node(const_reference value = value_type(), Node* next = NULL) 
+        // Default values are default constrution and nullptr
+        Node(const_reference value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
 
         value_type data;
@@ -155,14 +151,16 @@ class linear_linked_list
 
     size_type _size; // Keeps track of the number of elements in the list
 
-    /* Private Functions */
+    /* Recursive Functions */
 
     void clear_list(Node*& current);
 
     template <class Predicate>
-    bool remove_if(Predicate pred, Node* current);
+    int remove_if(Predicate pred, Node*& current, Node* prev=nullptr);
 
-    // Throws a logic error exception if the node* is NULL
+    /* Subroutines */
+
+    // Throws a logic error exception if the node* is nullptr
     void throw_if_null(Node* node) const;
 
     public:
@@ -187,19 +185,18 @@ class linear_linked_list
 
         /* Constructors */
 
-        // default constructor points the iterator to NULL
-        const_forward_iterator(Node* ptr = NULL) : node(ptr) {}
+        // default constructor points the iterator to nullptr
+        const_forward_iterator(Node* ptr = nullptr) : node(ptr) {}
 
         /* Operator Overloads */
 
         self_type& operator++(); // Prefix ++
-        self_type& operator++(int); // Postfix ++
+        self_type operator++(int); // Postfix ++
 
         const_reference operator*() const;
         const_pointer operator->() const;
 
-        // returns true if each iterator is pointing to the same address in
-        // memory
+        // Iterators are equal if they point to the same memory address
         bool operator==(const self_type& rhs) const;
         bool operator!=(const self_type& rhs) const;
       
@@ -207,6 +204,7 @@ class linear_linked_list
 
         Node* node;
     };
+
     /*
     @class: forward_iterator
     
@@ -222,7 +220,7 @@ class linear_linked_list
         /* Type definitions */
         typedef forward_iterator    self_type;
 
-        forward_iterator(Node* ptr = NULL) : const_forward_iterator(ptr) {}
+        forward_iterator(Node* ptr = nullptr) : const_forward_iterator(ptr) {}
 
         reference operator*();
 
@@ -232,19 +230,19 @@ class linear_linked_list
 };
 
 /*
-File: linked_list.cpp
+ 
+ File: linked_list.cpp
 
-Description: Implementation for templated linear_linked_list class. Defines
-             methods for modifiers, capacity checks, and iteration of the 
-             linear_linked_list data structure.
+ Brief: Implementation file for the linear_linked_list data structure
 
-Author: Alexander DuPree
+ Copyright (c) 2018 Alexander DuPree
 
-Class: CS163
+ This software is released as open source through the MIT License
 
-Assignment: program1
+ Authors: Alexander DuPree
 
-Date: 07/11/2018
+ https://github.com/AlexanderJDupree/LinkedListsCPP
+
 */
 
 #ifndef LINKED_LIST_CPP
@@ -255,13 +253,13 @@ Date: 07/11/2018
 // default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
-    : head(NULL), tail(NULL), _size(0) {}
+    : head(nullptr), tail(nullptr), _size(0) {}
 
 // ranged based constructor
 template <typename T>
 template <class InputIterator>
 linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     for(; begin != end; ++begin)
     {
@@ -269,10 +267,21 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
     }
 }
 
+// Initializer List
+template <typename T>
+linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init)
+    : linear_linked_list()
+{
+    for (const_reference element : init)
+    {
+        push_back(element);
+    }
+}
+
 // Copy constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list(const self_type& origin) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     const_iterator it;
     for (it = origin.begin(); it != origin.end(); ++it)
@@ -296,7 +305,7 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
     Node* temp = new Node(data, head);
     head = temp;
 
-    if (tail == NULL)
+    if (tail == nullptr)
     {
         tail = head;
     }
@@ -345,7 +354,19 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
     --_size;
 
     return *this;
-    
+}
+
+template <typename T>
+T& linear_linked_list<T>::pop_front(reference out_param)
+{
+    if(!empty())
+    {
+        out_param = head->data;
+
+        pop_front();
+    }
+        
+    return out_param;
 }
 
 template <typename T>
@@ -358,8 +379,11 @@ void linear_linked_list<T>::clear()
 
     // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
+
     _size = 0;
-    tail = NULL;
+
+    tail = nullptr;
+
     return;
 }
 
@@ -375,58 +399,62 @@ void linear_linked_list<T>::clear_list(Node*& current)
 
     // Deletes the current node as the stack unwinds
     delete current;
-    current = NULL;
+    current = nullptr;
 
     return;
 }
 
 template <typename T>
+int linear_linked_list<T>::remove(const_reference target)
+{
+    return remove_if([&target](T& sample){ return target == sample; });
+}
+
+template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred)
+int linear_linked_list<T>::remove_if(Predicate pred)
 {
     if (empty())
     {
-        return false;
+        return 0;
     }
-
-    if(pred(head->data))
-    {
-        pop_front();
-        return true;
-    }
-
+    
     return remove_if(pred, head);
 }
 
 template <typename T>
 template <class Predicate>
-bool linear_linked_list<T>::remove_if(Predicate pred, Node* current)
+int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
 {
-    // Base case: no element in the list fulfills the predicate
-    if(current == tail)
+    // Base Case: Traversed the whole list
+    if(current == nullptr)
     {
-        return false;
+        return 0;
     }
 
-    // Predicate fulfilled, remove next element
-    if(pred(current->next->data))
+    // Predicate fulfilled, remove this element
+    if(pred(current->data))
     {
-        Node* temp = current->next;
-        current->next = temp->next;
 
-        if (tail == temp)
+        if (tail == current)
         {
-            tail = current;
+            tail = prev;
         }
 
-        delete temp;
+        prev = current;
+
+        current = current->next;
+
+        delete prev;
 
         --_size;
 
-        return true;
+        return 1 + remove_if(pred, current, prev=current);
     }
 
-    return remove_if(pred, current->next);
+    prev = current;
+
+    return remove_if(pred, current->next, prev);
 }
 
 /****** CAPACITY ******/
@@ -435,8 +463,8 @@ template <typename T>
 bool linear_linked_list<T>::empty() const
 {
     /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
+    Because head is only nullptr when the list is empty we can return the 
+    logical NOT of head. This returns true iff head is nullptr.
     */
 
     return !(head);
@@ -481,7 +509,6 @@ const T& linear_linked_list<T>::back() const
     return tail->data;
 }
 
-
 /****** ITERATORS ******/
 
 template <typename T>
@@ -502,14 +529,14 @@ template <typename T>
 typename linear_linked_list<T>::iterator
 linear_linked_list<T>::end()
 {
-    return iterator(NULL);
+    return iterator(nullptr);
 }
 
 template <typename T>
 typename linear_linked_list<T>::const_iterator 
 linear_linked_list<T>::end() const
 {
-    return const_iterator(NULL);
+    return const_iterator(nullptr);
 }
 
 /****** COMPARISON OPERATORS ******/
@@ -529,15 +556,13 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
     while(left != end() && right != rhs.end())
     {
         // If any element does not match then return false
-        if (*left != *right)
+        if (*(left++) != *(right++))
         {
             return false;
         }
-        ++left;
-        ++right;
     }
 
-    return left == end() && right == end();
+    return true;
 }
 
 template <typename T>
@@ -548,12 +573,9 @@ bool linear_linked_list<T>::operator!=(const self_type& rhs) const
 
 template <typename T>
 typename linear_linked_list<T>::self_type& 
-linear_linked_list<T>::operator=(const self_type& origin)
+// Pass by value is utilized to make use of the copy constructor
+linear_linked_list<T>::operator=(self_type copy)
 {
-    // Create a copy of the list, if an exception is thrown then the state of 
-    // original list and our list is unchanged
-    linear_linked_list<T> copy(origin);
-
     // Swap ownership of resources with the copy
     swap(*this, copy);
 
@@ -581,7 +603,7 @@ void linear_linked_list<T>::throw_if_null(Node* node) const
         return;
     }
 
-    throw std::logic_error("Element access fail, NULL pointer");
+    throw std::logic_error("Element access fail, nullptr pointer");
 }
 
 /*******************************************************************************
@@ -599,7 +621,7 @@ linear_linked_list<T>::const_iterator::operator++()
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator& 
+typename linear_linked_list<T>::const_iterator
 linear_linked_list<T>::const_iterator::operator++(int)
 {
     // Create a copy to satisfy postfix incrementation requirements
@@ -611,7 +633,7 @@ linear_linked_list<T>::const_iterator::operator++(int)
 template <typename T>
 bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
 {
-    // Compare memory addresses, NOT the value of the data member
+    // Iterators are equal if they point to the same memory address
     return node == rhs.node;
 }
 
@@ -651,5 +673,6 @@ linear_linked_list<T>::iterator::operator->()
 }
 
 #endif //LINKED_LIST_CPP
+
 #endif //LINKED_LIST_H
 
