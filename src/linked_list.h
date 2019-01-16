@@ -18,7 +18,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include <cstddef> // NULL
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
 #include <initializer_list>  // std::initializer_list
@@ -138,8 +137,8 @@ class linear_linked_list
     */
     struct Node
     {
-        // Default values are default constrution and NULL
-        Node(const_reference value = value_type(), Node* next = NULL) 
+        // Default values are default constrution and nullptr
+        Node(const_reference value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
 
         value_type data;
@@ -157,11 +156,11 @@ class linear_linked_list
     void clear_list(Node*& current);
 
     template <class Predicate>
-    int remove_if(Predicate pred, Node*& current, Node* prev=NULL);
+    int remove_if(Predicate pred, Node*& current, Node* prev=nullptr);
 
     /* Subroutines */
 
-    // Throws a logic error exception if the node* is NULL
+    // Throws a logic error exception if the node* is nullptr
     void throw_if_null(Node* node) const;
 
     public:
@@ -186,8 +185,8 @@ class linear_linked_list
 
         /* Constructors */
 
-        // default constructor points the iterator to NULL
-        const_forward_iterator(Node* ptr = NULL) : node(ptr) {}
+        // default constructor points the iterator to nullptr
+        const_forward_iterator(Node* ptr = nullptr) : node(ptr) {}
 
         /* Operator Overloads */
 
@@ -221,7 +220,7 @@ class linear_linked_list
         /* Type definitions */
         typedef forward_iterator    self_type;
 
-        forward_iterator(Node* ptr = NULL) : const_forward_iterator(ptr) {}
+        forward_iterator(Node* ptr = nullptr) : const_forward_iterator(ptr) {}
 
         reference operator*();
 

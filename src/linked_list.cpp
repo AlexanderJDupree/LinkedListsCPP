@@ -24,13 +24,13 @@
 // default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
-    : head(NULL), tail(NULL), _size(0) {}
+    : head(nullptr), tail(nullptr), _size(0) {}
 
 // ranged based constructor
 template <typename T>
 template <class InputIterator>
 linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     for(; begin != end; ++begin)
     {
@@ -41,7 +41,7 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
 // Initializer List
 template <typename T>
 linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init)
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     for (const_reference element : init)
     {
@@ -52,7 +52,7 @@ linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init
 // Copy constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list(const self_type& origin) 
-    : head(NULL), tail(NULL), _size(0)
+    : linear_linked_list()
 {
     const_iterator it;
     for (it = origin.begin(); it != origin.end(); ++it)
@@ -76,7 +76,7 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
     Node* temp = new Node(data, head);
     head = temp;
 
-    if (tail == NULL)
+    if (tail == nullptr)
     {
         tail = head;
     }
@@ -153,7 +153,7 @@ void linear_linked_list<T>::clear()
 
     _size = 0;
 
-    tail = NULL;
+    tail = nullptr;
 
     return;
 }
@@ -170,7 +170,7 @@ void linear_linked_list<T>::clear_list(Node*& current)
 
     // Deletes the current node as the stack unwinds
     delete current;
-    current = NULL;
+    current = nullptr;
 
     return;
 }
@@ -198,7 +198,7 @@ template <class Predicate>
 int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
 {
     // Base Case: Traversed the whole list
-    if(current == NULL)
+    if(current == nullptr)
     {
         return 0;
     }
@@ -234,8 +234,8 @@ template <typename T>
 bool linear_linked_list<T>::empty() const
 {
     /*
-    Because head is only NULL when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is NULL.
+    Because head is only nullptr when the list is empty we can return the 
+    logical NOT of head. This returns true iff head is nullptr.
     */
 
     return !(head);
@@ -300,14 +300,14 @@ template <typename T>
 typename linear_linked_list<T>::iterator
 linear_linked_list<T>::end()
 {
-    return iterator(NULL);
+    return iterator(nullptr);
 }
 
 template <typename T>
 typename linear_linked_list<T>::const_iterator 
 linear_linked_list<T>::end() const
 {
-    return const_iterator(NULL);
+    return const_iterator(nullptr);
 }
 
 /****** COMPARISON OPERATORS ******/
@@ -374,7 +374,7 @@ void linear_linked_list<T>::throw_if_null(Node* node) const
         return;
     }
 
-    throw std::logic_error("Element access fail, NULL pointer");
+    throw std::logic_error("Element access fail, nullptr pointer");
 }
 
 /*******************************************************************************
