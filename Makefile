@@ -15,7 +15,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 $(OBJ_DIR)/tests_main.o: $(TEST_DIR)/tests_main.cpp $(TEST_DIR)/third_party/catch.hpp
 	$(CC) $(CPPFLAGS) -c -o $@ $<  
 
-$(OBJ_DIR)/linkedListTest.o: $(TEST_DIR)/linear_list_test.cpp
+$(OBJ_DIR)/linkedListTest.o: $(TEST_DIR)/linked_list_test.cpp
 	$(CC) $(CPPFLAGS) -c -o $@ $<
 
 .PHONEY: clean

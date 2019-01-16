@@ -20,21 +20,22 @@
 
 ## Introduction
 
-**LinkedListsCPP** is a C++ standard template library compliant repository of linked list data structures. Currently, only the forward linked list structure is implemented in our release build. 
+**LinkedListsCPP** is a fully templated linked list data structure repository that will, in the future, contain C++ implementations of different linked lists. Currently, only the linear linked list structure is implemented in the release build. 
 
-A linked list is a container that supports constant time insertion and removal of elements from anywhere in the container. Accessing elements in the container is accomplished through the use of iterators, fast random access is not supported. 
+Linked lists are sequence containers that allow for constant time insertion and removal operations within the sequence. The linear linked list is a singly-linked structure where each element in the sequence is linked to the next element in the sequence. The main drawback of linked lists is the inability to directly access elements by position. Linked lists require traversal to access elements not located on the front or end of the list. The linear linked list is further hampered by the inability to freely traverse its contents. linear linked lists can only be traversed from beginning to end by use of iterators. However, linked lists can expand and contract in size dynamically at runtime, this makes them a very useful data structure.   
+
 ## Getting Started
 
 - Download the latest [release here](https://github.com/AlexanderJDupree/LinkedListsCPP/releases).
 
 ### Prerequisites
-- LinkedList.hpp is compiled in the C++ 11 standard and will **NOT** compile in older C++ language standards.
+- LinkedList.hpp utilizes C++ 11 language features and will **NOT** compile in older C++ language standards.
 
 All releases are header only, meaning all you need to do to get started is drop the header into a visible include path for your project. Once the file is reachable from your project you can start using the linked list container like this:
 
 ```c++
 #include <iostream>
-#include "linked_list.h"
+#include "linked_list.hpp"
 
 int main()
 {
@@ -48,15 +49,13 @@ int main()
     // Prints "HELLO!" to the console
 
     return 0;
-
 }
 ```
 
 
 ### Usage
 
-For extensive documentation on all functions and usage of the linked list container, please see the documentation [here](). TODO Add link to docs. Also, make the docs
-
+Extensive documentation can be expected for the future. For right now, however, please read header comments or examine how the linked lists are used in the unit tests for usage instructions.
 
 ## Execute Unit Tests
 
