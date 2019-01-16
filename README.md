@@ -29,7 +29,7 @@ Linked lists are sequence containers that allow for constant time insertion and 
 - Download the latest [release here](https://github.com/AlexanderJDupree/LinkedListsCPP/releases).
 
 ### Prerequisites
-- LinkedList.hpp utilizes C++ 11 language features and will **NOT** compile in older C++ language standards.
+- linked_list.hpp utilizes C++ 11 language features and will **NOT** compile in older C++ language standards.
 
 All releases are header only, meaning all you need to do to get started is drop the header into a visible include path for your project. Once the file is reachable from your project you can start using the linked list container like this:
 
