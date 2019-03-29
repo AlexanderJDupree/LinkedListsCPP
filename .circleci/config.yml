@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Installing wget
+          command: 'apt-get install -y wget'
+      - run:
           name: Download Premake5
           command: 'wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha13/premake-5.0.0-alpha13-linux.tar.gz'
       - run:
