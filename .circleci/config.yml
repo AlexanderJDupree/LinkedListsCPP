@@ -1,0 +1,23 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Download Premake5
+          command: 'wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha13/premake-5.0.0-alpha13-linux.tar.gz'
+      - run:
+          name: Install Premake5
+          command: 'tar -xvf premake-5.0.0-alpha13-linux.tar.gz'
+      - run:
+          name: Creating Build Files
+          command: './premake5 gmake'
+      - run:
+          name: debug build
+          command: 'make -C gmake config=debug verbose=true'
+      - run:
+          name: release build
+          command: 'make -C gmake config=release verbose=true'
+  
