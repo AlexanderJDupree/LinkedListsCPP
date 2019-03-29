@@ -66,11 +66,13 @@ class linear_linked_list
      
     /****** MODIFIERS ******/
 
+    // TODO add push_front/back methods for lists and iterators
+    
     // Adds an element to the front of the list
-    self_type& push_front(const_reference data);
+    self_type& push_front(const_reference& data);
 
     // Adds an element to the back of the list
-    self_type& push_back(const_reference data);
+    self_type& push_back(const_reference& data);
 
     // Removes the element at the front of the list
     self_type& pop_front();
@@ -86,7 +88,7 @@ class linear_linked_list
 
     // Removes the all items fullfilling the predicate function
     template <class Predicate>
-    int remove_if(Predicate pred); // TODO Predicate is passed by value here
+    int remove_if(Predicate&& pred);
 
     /****** CAPACITY ******/
 
@@ -141,8 +143,8 @@ class linear_linked_list
     */
     struct Node
     {
-        // Default values are default constrution and nullptr
-        Node(const_reference value = value_type(), Node* next = nullptr) 
+        // Default values are default constructor and nullptr
+        Node(const_reference& value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
 
         value_type data;
@@ -160,12 +162,13 @@ class linear_linked_list
     void clear_list(Node*& current);
 
     template <class Predicate>
-    int remove_if(Predicate pred, Node*& current, Node* prev=nullptr);
+    int remove_if(Predicate&& pred, Node*& current, Node* prev=nullptr);
 
     /* Subroutines */
 
     // Throws a logic error exception if the node* is nullptr
     void throw_if_null(Node* node) const;
+    // TODO make custom null exception that can print out useful information
 
     public:
 
