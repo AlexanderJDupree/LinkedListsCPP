@@ -20,26 +20,26 @@
 
 ## Introduction
 
-**LinkedListsCPP** is a fully templated linked list data structure repository that will, in the future, contain C++ implementations of different linked lists. Currently, only the linear linked list structure is implemented in the release build. 
-
-Linked lists are sequence containers that allow for constant time insertion and removal operations within the sequence. The linear linked list is a singly-linked structure where each element in the sequence is linked to the next element in the sequence. The main drawback of linked lists is the inability to directly access elements by position. Linked lists require traversal to access elements not located on the front or end of the list. The linear linked list is further hampered by the inability to freely traverse its contents. linear linked lists can only be traversed from beginning to end by use of iterators. However, linked lists can expand and contract in size dynamically at runtime, this makes them a very useful data structure.   
+**LinkedListsCPP** project features a collection of linked list data structures. These linked lists are fully templated and mirror the syntax and functionality of the C++ standard library containers. Currently only the linear linked list is implemented, but stay tuned for doubly and circular linked list releases!
 
 ## Getting Started
 
 - Download the latest [release here](https://github.com/AlexanderJDupree/LinkedListsCPP/releases).
 
 ### Prerequisites
-- linked_list.hpp utilizes C++ 11 language features and will **NOT** compile in older C++ language standards.
+- linked_list.hpp utilizes C++ 11 language features and will **NOT** compile in older C++ language standards. In the future, compiler and language standard detection will be added for compatibility. If you want to work on this feature, feel free to contribute!
 
-All releases are header only, meaning all you need to do to get started is drop the header into a visible include path for your project. Once the file is reachable from your project you can start using the linked list container like this:
+### Usage
+
+All releases are header only, so just drop the .hpp file into your includes and start using the linked list like this:
 
 ```c++
 #include <iostream>
-#include "linked_list.hpp"
+#include "linear_linked_list.hpp"
 
 int main()
 {
-    linear_linked_list<char> list { 'H', 'E', 'L', 'L', 'O', '!' };
+    linear_linked_list<char> list { 'H', 'E', 'L', 'L', 'O', '!', '\n' };
 
     for(const char& letter : list)
     {
@@ -47,22 +47,15 @@ int main()
     }
 
     // Prints "HELLO!" to the console
-
+    
     return 0;
 }
 ```
-
-
-### Usage
-
-Extensive documentation can be expected for the future. For right now, however, please read header comments or examine how the linked lists are used in the unit tests for usage instructions.
+Extensive documentation can be expected for the future. For right now, however, please the read header comments or examine how the linked lists are used in the unit tests for usage instructions.
 
 ## Execute Unit Tests
 
-For those who wish to contribute and execute the unit tests follow these instructions:
-
-_Windows users, ensure you have **MinGW-Make** installed and included in your PATH._
-_For instructions see this [link](http://mingw.org/wiki/Getting_Started)_
+For those who wish to contribute, you'll need to build and run the unit tests. This repo utilizes [Premake5](https://github.com/premake/premake-core) to build the necessary project files. After you Premake5 is installed you can start building the project.
 
 - First, clone the repository
 ```bash
@@ -74,27 +67,22 @@ git clone https://github.com/AlexanderJDupree/LinkedListsCPP.git
 cd LinkedListsCPP
 ```
 
-- And just call make
+- And run premake5 <action> to generate the project files for your platform. For example to build GNU Makefiles run:
 ```bash
-make
+premake5 gmake
 ```
-- Now you can execute the unit tests by typing
+- To run the unit tests, just build the application.
 
 ```
-./tests/debug/run_tests
+cd gmake && make
 ```
 
-The first time you enter _make_ may take a minute, as it must build the [Catch2 framework](https://github.com/catchorg/Catch2). However, _make_ will keep all of the resulting obj files in the _tests/bin/_ directory. Afterwards, _make_ will only build files you have updated, and link them together again.
-
-If you find it necessary, you may **remove** the obj files from _tests/bin/_ by entering the following
-```
-make clean
-```
-Of course, the next time you use _make_ it will take a minute to build everything again.
+- If you need to rerun the tests, they are located in bin/tests/
 
 ## Built With
 
 * [Catch2](https://github.com/catchorg/Catch2) - Unit Testing framework used
+* [Premake5](https://github.com/premake/premake-core) - Build System
 
 ## Contributing
 
