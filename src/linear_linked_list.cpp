@@ -176,6 +176,31 @@ void linear_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::reverse()
+{
+    if(!empty())
+    {
+        reverse(head);
+
+        std::swap(head, tail);
+    }
+    return *this;
+}
+
+template <typename T>
+void linear_linked_list<T>::reverse(Node* current, Node* prev)
+{
+    if(current->next != nullptr)
+    {
+        reverse(current->next, current);
+    }
+
+    current->next = prev;
+
+    return;
+}
+
+template <typename T>
 int linear_linked_list<T>::remove(const_reference target)
 {
     // lambda catches target and compares it to each element in the list

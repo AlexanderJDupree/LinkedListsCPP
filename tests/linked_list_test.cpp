@@ -253,7 +253,7 @@ TEST_CASE("Testing equality between lists", "[operators], [equality]")
     }
 }
 
-TEST_CASE("Popping the front element off the list", "[linear_list], [operations], [pop_front]")
+TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
 {
     SECTION("pop the front of an empty list")
     {
@@ -297,7 +297,7 @@ TEST_CASE("Popping the front element off the list", "[linear_list], [operations]
     }
 }
 
-TEST_CASE("Removing a specific element from a list", "[linear_list], [operations], [remove]")
+TEST_CASE("Removing a specific element from a list", "[operations], [remove]")
 {
     linear_linked_list<int> list { 1, 4, 2, 3, 4 };
 
@@ -321,7 +321,7 @@ struct remove_seven
     }
 };
 
-TEST_CASE("Using functors to remove a specific element", "[linear_list], [operations], [remove_if]")
+TEST_CASE("Using functors to remove a specific element", "[remove_if]")
 {
     SECTION("remove_if with a value constructed functor")
     {
@@ -386,7 +386,7 @@ TEST_CASE("Using functors to remove a specific element", "[linear_list], [operat
     }
 }
 
-TEST_CASE("Using mutable iterators to modify data", "[linear_linked_list], [iterators]")
+TEST_CASE("Using mutable iterators to modify data", "[iterators]")
 {
     int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
 
@@ -400,4 +400,34 @@ TEST_CASE("Using mutable iterators to modify data", "[linear_linked_list], [iter
         REQUIRE(assert);
     }
 }
+
+TEST_CASE("Reversing the order of a list", "[reverse]")
+{
+    SECTION("Empty list")
+    {
+        linear_linked_list<int> empty_list;
+
+        REQUIRE(empty_list.reverse().empty());
+    }
+    SECTION("A list with one element")
+    {
+        
+        linear_linked_list<int> list { 1 };
+
+        REQUIRE((list.reverse().front() == (list.back() == 1)));
+    }
+    SECTION("A populated list")
+    {
+        linear_linked_list<int> list { 5, 4, 3, 2, 1 };
+        
+        list.reverse();
+
+        int i = 0;
+        for(auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+}
+
 
