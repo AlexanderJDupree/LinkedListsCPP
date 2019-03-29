@@ -15,17 +15,19 @@
 */
 
 
+#include <vector>
 #include <iostream>
 #include <catch.hpp>
 #include "linear_linked_list.hpp"
 
-TEST_CASE("Constructing linear_linked_list objects", "[linear_list], [constructors]")
+TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
 {
     SECTION("Default construction")
     {
         linear_linked_list<int> list;
 
         REQUIRE(list.empty());
+        REQUIRE(list.size() == 0);
     }
     SECTION("Copy construction")
     {
@@ -49,9 +51,30 @@ TEST_CASE("Constructing linear_linked_list objects", "[linear_list], [constructo
             REQUIRE(assert);
         }
     }
+    SECTION("Ranged based construction with a standard container")
+    {
+        std::vector<int> nums = { 1, 2, 3, 4, 5 };
+
+        linear_linked_list<int> list(nums.begin(), nums.end());
+
+        std::vector<int>::iterator iter = nums.begin();
+        for(auto num : list)
+        {
+            REQUIRE(num == *(iter++));
+        }
+    }
+    SECTION("Initializer list construction")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5 };
+        int i = 0;
+        for(auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
 }
 
-TEST_CASE("Using clear to erase the list", "[linear_list], [clear], [destructor]")
+TEST_CASE("Using clear to erase the list", "[clear], [destructor]")
 {
     SECTION("An empty list")
     {
@@ -71,7 +94,87 @@ TEST_CASE("Using clear to erase the list", "[linear_list], [clear], [destructor]
     }
 }
 
-TEST_CASE("Using swap to reassign data", "[linear_list], [swap]")
+TEST_CASE("Front/Back element access", "[front], [back]")
+{
+    SECTION("A populated list")
+    {
+        linear_linked_list<int> list {1, 2, 3, 4, 5};
+
+        REQUIRE(list.front() == 1);
+        REQUIRE(list.back() == 5);
+    }
+    SECTION("front and back are the same with a list with one element")
+    {
+        linear_linked_list<int> list { 1 };
+
+        REQUIRE(list.front() == list.back());
+    }
+    SECTION("Empty list front/back access will throw a logic_error")
+    {
+        linear_linked_list<int> empty_list;
+
+        REQUIRE_THROWS(empty_list.front());
+        REQUIRE_THROWS(empty_list.back());
+    }
+}
+
+TEST_CASE("Pushing to elements to the front of the list", "[push_front]")
+{
+    SECTION("An empty list")
+    {
+        linear_linked_list<char> list;
+
+        REQUIRE(list.push_front('a').front() == 'a');
+    }
+    SECTION("A populated list")
+    {
+        linear_linked_list<int> list {1, 2, 3, 4, 5};
+
+        REQUIRE(list.push_front(42).front() == 42);
+    }
+    SECTION("Pushing multiple elements")
+    {
+        linear_linked_list<int> list; 
+
+        list.push_front(3).push_front(2).push_front(1);
+
+        int i = 0;
+        for (auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+}
+
+TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
+{
+    SECTION("An empty list")
+    {
+        linear_linked_list<char> list;
+
+        REQUIRE(list.push_back('a').front() == 'a');
+    }
+    SECTION("A populated list")
+    {
+        linear_linked_list<int> list {1, 2, 3, 4, 5};
+
+        REQUIRE(list.push_back(42).back() == 42);
+    }
+    SECTION("Pushing multiple elements")
+    {
+        linear_linked_list<int> list; 
+
+        list.push_back(1).push_back(2).push_back(3);
+
+        int i = 0;
+        for (auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+}
+
+TEST_CASE("Using swap to reassign data", "[swap]")
 {
     SECTION("An empty list and a populated list")
     {
@@ -86,6 +189,7 @@ TEST_CASE("Using swap to reassign data", "[linear_list], [swap]")
         {
             REQUIRE(elem == ++i);
         }
+        REQUIRE(old.empty());
     }
     SECTION("two empty lists")
     {
@@ -94,12 +198,11 @@ TEST_CASE("Using swap to reassign data", "[linear_list], [swap]")
 
         linear_linked_list<int>::swap(list, old);
 
-        bool assert = old == list;
-        REQUIRE(assert);
+        REQUIRE(old == list);
     }
 }
 
-TEST_CASE("Using the copy-assignment operator", "[linear_list], [operators], [copy-assignment]")
+TEST_CASE("Using the copy-assignment operator", "[operators], [copy-assignment]")
 {
     SECTION("An empty list and a populated list")
     {
@@ -118,7 +221,7 @@ TEST_CASE("Using the copy-assignment operator", "[linear_list], [operators], [co
     }
 }
 
-TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equality]")
+TEST_CASE("Testing equality between lists", "[operators], [equality]")
 {
     SECTION("Two empty lists")
     {
@@ -140,6 +243,13 @@ TEST_CASE("Testing equality between lists", "[linear_list], [operators], [equali
          linear_linked_list<int> rhs { 1, 2, 4 };
 
          REQUIRE(lhs != rhs);
+    }
+    SECTION("Two populated lists with matching elements")
+    {
+         linear_linked_list<int> lhs { 1, 2, 3 };
+         linear_linked_list<int> rhs { 1, 2, 3 };
+
+         REQUIRE(lhs == rhs);
     }
 }
 

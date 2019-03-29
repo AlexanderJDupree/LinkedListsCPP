@@ -71,7 +71,7 @@ linear_linked_list<T>::~linear_linked_list()
 /****** MODIFIERS ******/
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
+linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference& data)
 {
     Node* temp = new Node(data, head);
     head = temp;
@@ -86,7 +86,7 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_back(const_reference data)
+linear_linked_list<T>& linear_linked_list<T>::push_back(const_reference& data)
 {
     if(empty())
     {
@@ -178,12 +178,13 @@ void linear_linked_list<T>::clear_list(Node*& current)
 template <typename T>
 int linear_linked_list<T>::remove(const_reference target)
 {
+    // lambda catches target and compares it to each element in the list
     return remove_if([&target](T& sample){ return target == sample; });
 }
 
 template <typename T>
 template <class Predicate>
-int linear_linked_list<T>::remove_if(Predicate pred)
+int linear_linked_list<T>::remove_if(Predicate&& pred)
 {
     if (empty())
     {
@@ -195,7 +196,7 @@ int linear_linked_list<T>::remove_if(Predicate pred)
 
 template <typename T>
 template <class Predicate>
-int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
+int linear_linked_list<T>::remove_if(Predicate&& pred, Node*& current, Node* prev)
 {
     // Base Case: Traversed the whole list
     if(current == nullptr)
@@ -207,6 +208,7 @@ int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
     if(pred(current->data))
     {
 
+        // Edge case : element to be removed is the tail. 
         if (tail == current)
         {
             tail = prev;
@@ -233,13 +235,9 @@ int linear_linked_list<T>::remove_if(Predicate pred, Node*& current, Node* prev)
 template <typename T>
 bool linear_linked_list<T>::empty() const
 {
-    /*
-    Because head is only nullptr when the list is empty we can return the 
-    logical NOT of head. This returns true iff head is nullptr.
-    */
-
     return !(head);
 }
+
 template <typename T>
 typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
 {
@@ -333,7 +331,7 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
         }
     }
 
-    return true;
+    return true; // TODO test left and right are both end iterators
 }
 
 template <typename T>
@@ -344,7 +342,6 @@ bool linear_linked_list<T>::operator!=(const self_type& rhs) const
 
 template <typename T>
 typename linear_linked_list<T>::self_type& 
-// Pass by value is utilized to make use of the copy constructor
 linear_linked_list<T>::operator=(self_type copy)
 {
     // Swap ownership of resources with the copy
@@ -374,7 +371,7 @@ void linear_linked_list<T>::throw_if_null(Node* node) const
         return;
     }
 
-    throw std::logic_error("Element access fail, nullptr pointer");
+    throw std::logic_error("Element access fail, null pointer");
 }
 
 /*******************************************************************************
@@ -411,7 +408,6 @@ bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) con
 template <typename T>
 bool linear_linked_list<T>::const_iterator::operator!=(const self_type& rhs) const
 {
-    // return the logical NOT of the equality comparison
     return !(*this == rhs);
 }
 
