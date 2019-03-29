@@ -17,7 +17,7 @@
 
 #include <iostream>
 #include <catch.hpp>
-#include "linked_list.h"
+#include "linear_linked_list.hpp"
 
 TEST_CASE("Constructing linear_linked_list objects", "[linear_list], [constructors]")
 {
@@ -290,3 +290,4 @@ TEST_CASE("Using mutable iterators to modify data", "[linear_linked_list], [iter
         REQUIRE(assert);
     }
 }
+

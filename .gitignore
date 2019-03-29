@@ -30,14 +30,18 @@
 *.exe
 *.out
 *.app
-tests/debug/runTests
+tests/debug/*
 
 #Visual Studio folders
 .vs/
+vs*/
 
-# VS Code files
 
 # Swp files
 *.sw?
 
+# Generated Directories
+bin/
+gmake/
+gmake2/
  
