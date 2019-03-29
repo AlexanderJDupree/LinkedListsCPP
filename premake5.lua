@@ -36,7 +36,7 @@ workspace "LinkedList"
 
     filter "toolset:gcc"
         buildoptions { 
-            "-Wall", "-Wextra", "-Werror"
+            "-Wall", "-Wextra", "-Werror", "-std=c++11"
         }
 
     filter {} -- close filter
@@ -82,9 +82,6 @@ project "Tests"
     includedirs { test_inc, include, "src/" }
 
     postbuildcommands ".././bin/tests/run_tests"
-
-    filter { "action:gmake or action:gmake2" }
-        buildoptions "-std=c++11"
 
     filter {} -- close filter
 
