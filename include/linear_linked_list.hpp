@@ -83,6 +83,9 @@ class linear_linked_list
     // Removes each element from the container
     self_type& clear();
 
+    // Reverses the order of elements
+    self_type& reverse();
+
     // Removes all items matching target, returns number of items removed
     int remove(const_reference target);
 
@@ -160,6 +163,8 @@ class linear_linked_list
     /* Recursive Functions */
 
     void clear_list(Node*& current);
+
+    void reverse(Node* current, Node* prev=nullptr);
 
     template <class Predicate>
     int remove_if(Predicate&& pred, Node*& current, Node* prev=nullptr);
