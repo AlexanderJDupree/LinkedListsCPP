@@ -22,6 +22,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <utility> // std::move, std::exchange
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
 #include <initializer_list>  // std::initializer_list
@@ -60,6 +61,9 @@ class linear_linked_list
 
     // Copy Constructor
     linear_linked_list(const self_type& origin);
+
+    // Move Constructor
+    linear_linked_list(self_type&& origin);
    
     // Destructor
     ~linear_linked_list();
@@ -142,12 +146,12 @@ class linear_linked_list
 
     /****** COPY-ASSIGNMENT AND SWAP ******/
 
-    // creates a copy of the origin, then swaps ownership with the copy
-    self_type& operator=(self_type copy);
-
     // Swaps pointers to each other's resources. effectively reassigning 
     // ownership.
-    static void swap(self_type& new_list, self_type& old_list);
+    void swap(self_type& origin);
+
+    // creates a copy of the origin, then swaps ownership with the copy
+    self_type& operator=(self_type copy);
 
   private:
     
@@ -162,6 +166,11 @@ class linear_linked_list
         // Default values are default constructor and nullptr
         Node(const_reference& value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
+
+        // Move Constructor 
+        Node(Node&& origin)
+            : data(origin.data), next(origin.next) 
+        { origin.data = value_type(); origin.next = nullptr; }
 
         value_type data;
         Node* next;

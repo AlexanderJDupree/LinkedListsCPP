@@ -61,6 +61,14 @@ linear_linked_list<T>::linear_linked_list(const self_type& origin)
     }
 }
 
+// Move constructor
+template <typename T>
+linear_linked_list<T>::linear_linked_list(self_type&& origin)
+    : linear_linked_list()
+{
+    origin.swap(*this);
+}
+
 // Destructor
 template <typename T>
 linear_linked_list<T>::~linear_linked_list()
@@ -427,21 +435,21 @@ typename linear_linked_list<T>::self_type&
 linear_linked_list<T>::operator=(self_type copy)
 {
     // Swap ownership of resources with the copy
-    swap(*this, copy);
+    swap(copy);
 
     // As the copy goes out of scope it destructs with the old data
     return *this;
 }
 
 template <typename T>
-void linear_linked_list<T>::swap(self_type& new_list, self_type& old_list)
+void linear_linked_list<T>::swap(self_type& origin)
 {
     using std::swap;
 
     // Swaps pointers, reassigns ownership
-    swap(new_list.head, old_list.head);
-    swap(new_list.tail, old_list.tail);
-    swap(new_list._size, old_list._size);
+    swap(head, origin.head);
+    swap(tail, origin.tail);
+    swap(_size, origin._size);
     return;
 }
 

@@ -72,6 +72,18 @@ TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Move Construction")
+    {
+        linear_linked_list<int> origin { 1, 2, 3, 4, 5 };
+        linear_linked_list<int> moved_list(std::move(origin));
+
+        int i = 0;
+        for (auto num : moved_list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(origin.empty());
+    }
 }
 
 TEST_CASE("Using clear to erase the list", "[clear], [destructor]")
@@ -188,7 +200,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
 
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         int i = 0;
         for (const auto& elem : list)
@@ -202,7 +214,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
         linear_linked_list<int> old;
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         REQUIRE(old == list);
     }
@@ -224,6 +236,24 @@ TEST_CASE("Using the copy-assignment operator", "[operators], [copy-assignment]"
         linear_linked_list<int> list;
 
         REQUIRE((old = list) == list);
+    }
+    SECTION("Self-assignment does nothing")
+    {
+        linear_linked_list<int> list { 1, 2, 3 };
+        REQUIRE((list = list) == list);
+    }
+    SECTION("Move assignment empties old list")
+    {
+        linear_linked_list<int> old { 1, 2, 3 };
+        linear_linked_list<int> list = std::move(old);
+
+        int i = 0;
+        for (auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(i == 3);
+        REQUIRE(old.empty());
     }
 }
 
