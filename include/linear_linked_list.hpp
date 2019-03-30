@@ -86,12 +86,25 @@ class linear_linked_list
     // Reverses the order of elements
     self_type& reverse();
 
+    // Sorts the list, defaults to ascending order
+    self_type& sort();
+
+    template <class Compare>
+    self_type& sort(Compare&& comp);
+
+    // Merges list into this list
+    self_type& merge(self_type& list);
+
+    template <class Compare>
+    self_type& merge(self_type& list, Compare&& comp);
+
     // Removes all items matching target, returns number of items removed
     int remove(const_reference target);
 
     // Removes the all items fullfilling the predicate function
     template <class Predicate>
     int remove_if(Predicate&& pred);
+
 
     /****** CAPACITY ******/
 
@@ -165,6 +178,9 @@ class linear_linked_list
     void clear_list(Node*& current);
 
     void reverse(Node* current, Node* prev=nullptr);
+
+    template <class Compare>
+    Node* merge(Node* self, Node* other, Compare&& comp);
 
     template <class Predicate>
     int remove_if(Predicate&& pred, Node*& current, Node* prev=nullptr);

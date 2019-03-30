@@ -201,6 +201,63 @@ void linear_linked_list<T>::reverse(Node* current, Node* prev)
 }
 
 template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::sort()
+{
+    return sort([](const T& lhs, const T& rhs){ return lhs < rhs; });
+}
+
+template <typename T>
+template <class Compare>
+linear_linked_list<T>& linear_linked_list<T>::sort(Compare&& comp)
+{
+    return *this;
+}
+
+template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list)
+{
+    return merge(list, [](const T& lhs, const T& rhs){ return lhs < rhs; });
+}
+
+template <typename T>
+template <class Compare>
+linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list, Compare&& comp)
+{
+    if(&list != this)
+    {
+        head = merge(head, list.head, comp);
+
+        // set tail to the "greater" of the two tails OR whichever tail isn't null
+        tail = !tail || (list.tail && comp(tail->data, list.tail->data))
+             ? list.tail : tail;
+
+        // Clear the merged list. Merge does not copy, so if the list does not 
+        // forfeit its resources a double free error will occur
+        list.head = list.tail = nullptr;
+        _size += list._size;
+        list._size = 0;
+    }
+    return *this;
+}
+
+template <typename T>
+template <class Compare>
+typename linear_linked_list<T>::Node* 
+linear_linked_list<T>::merge(Node* self, Node* other, Compare&& comp)
+{
+    // Base case : self OR other list is empty return the non-empty list
+    if (self == nullptr) { return other; }
+    if (other == nullptr) { return self; }
+
+    bool comparison = comp(self->data, other->data);
+
+    Node* head = comparison ? self : other;
+    head->next = comparison ? merge(self->next, other, comp) 
+                            : merge(self, other->next, comp);
+    return head;
+}
+
+template <typename T>
 int linear_linked_list<T>::remove(const_reference target)
 {
     // lambda catches target and compares it to each element in the list
