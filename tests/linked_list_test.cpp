@@ -24,17 +24,44 @@ class Data
 {
   public:
 
-    Data(int num, std::string str)
+    Data(int num = 0, std::string str = "")
         : num(num), str(str) {}
 
-    bool operator==(const Data& rhs)
+    Data(const Data& origin) = default;
+
+    Data(Data&& rval)
+        : Data() 
+    {
+        ++move_count;
+        swap(rval);
+    }
+
+    void swap(Data& rval)
+    {
+        using std::swap;
+        swap(num, rval.num);
+        swap(str, rval.str);
+        return;
+    }
+
+    Data& operator=(Data&& rval)
+    {
+        swap(rval);
+        ++move_count;
+
+        return *this;
+    }
+
+    bool operator==(const Data& rhs) const
     {
         return num == rhs.num && str == rhs.str;
     }
 
     int num;
     std::string str;
+    static int move_count;
 };
+int Data::move_count = 0;
 
 
 TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
@@ -185,9 +212,21 @@ TEST_CASE("Pushing to elements to the front of the list", "[push_front]")
         int i = 0;
         for (auto item : list)
         {
-            bool assert = item == data[i++];
-            REQUIRE(assert);
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
         }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_front(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
     }
 }
 
@@ -229,9 +268,21 @@ TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
         int i = 0;
         for (auto item : list)
         {
-            bool assert = item == data[i++];
-            REQUIRE(assert);
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
         }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_back(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
     }
 }
 
@@ -358,7 +409,7 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
             REQUIRE(n == ++i);
         }
     }
-    SECTION("Pop the front of an empty list with out parameter")
+    SECTION("passing out param to pop on an empty list does not modify the param")
     {
         int i = 7;
 
@@ -366,13 +417,23 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
 
         REQUIRE(empty_list.pop_front(i) == 7);
     }
-    SECTION("Pop the front of a populated list")
+    SECTION("Pop the front of a populated list with a out parameter copies the data")
     {
         int i = 7;
 
         linear_linked_list<int> list { 1, 2, 3, 4 };
 
         REQUIRE(list.pop_front(i) == 1);
+    }
+    SECTION("Popping the list with a class will utilize the move constructor")
+    {
+        Data::move_count = 0;
+        Data out_param;
+
+        linear_linked_list<Data> list { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+
+        REQUIRE(list.pop_front(out_param) == Data(1, "one"));
+        REQUIRE(Data::move_count == 1);
     }
 }
 

@@ -71,18 +71,21 @@ class linear_linked_list
     /****** MODIFIERS ******/
 
     // TODO add push_front/back methods for lists and iterators
-    // TODO overload push_front/back for move constructors
 
     // Adds an element to the front of the list
-    self_type& push_front(const_reference& data);
+    self_type& push_front(T&& data);
+    self_type& push_front(const_reference data);
 
     // Adds an element to the back of the list
-    self_type& push_back(const_reference& data);
+    self_type& push_back(T&& data);
+    self_type& push_back(const_reference data);
 
+    // TODO make pop_back methods
     // Removes the element at the front of the list
     self_type& pop_front();
 
     // Copies the front element onto the out_param and removes it
+    // TODO refactor to utilize move semantics
     reference pop_front(reference out_param);
 
     // Removes each element from the container
@@ -109,7 +112,6 @@ class linear_linked_list
     // Removes the all items fullfilling the predicate function
     template <class Predicate>
     int remove_if(Predicate&& pred);
-
 
     /****** CAPACITY ******/
 
@@ -165,13 +167,12 @@ class linear_linked_list
     struct Node
     {
         // Default values are default constructor and nullptr
-        Node(const_reference& value = value_type(), Node* next = nullptr) 
+        Node(const_reference value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
 
-        // Move Constructor 
-        Node(Node&& origin)
-            : data(origin.data), next(origin.next) 
-        { origin.data = value_type(); origin.next = nullptr; }
+        // rvalue constructor
+        Node(T&& value, Node* next = nullptr)
+            : data(std::forward<T>(value)), next(next) {}
 
         value_type data;
         Node* next;
@@ -196,6 +197,9 @@ class linear_linked_list
     int remove_if(Predicate&& pred, Node*& current, Node* prev=nullptr);
 
     /* Subroutines */
+
+    self_type& push_front(Node* node);
+    self_type& push_back(Node* node);
 
     // Throws a logic error exception if the node* is nullptr
     void throw_if_null(Node* node) const;

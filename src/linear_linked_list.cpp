@@ -79,10 +79,21 @@ linear_linked_list<T>::~linear_linked_list()
 /****** MODIFIERS ******/
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference& data)
+linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
 {
-    Node* temp = new Node(data, head);
-    head = temp;
+    return push_front(new Node(data, head));
+}
+
+template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::push_front(T&& data)
+{
+    return push_front(new Node(std::forward<T>(data), head));
+}
+
+template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::push_front(Node* node)
+{
+    head = node;
 
     if (tail == nullptr)
     {
@@ -96,19 +107,31 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference& data)
 template <typename T>
 linear_linked_list<T>& linear_linked_list<T>::push_back(const_reference& data)
 {
+    return push_back(new Node(data));
+}
+
+template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::push_back(T&& data)
+{
+    return push_back(new Node(std::forward<T>(data)));
+}
+
+template <typename T>
+linear_linked_list<T>& linear_linked_list<T>::push_back(Node* node)
+{
     if(empty())
     {
-        return push_front(data);
+        return push_front(node);
     }
 
-    Node* temp = new Node(data);
-
-    tail->next = temp;
-    tail = temp;
+    tail->next = node;
+    tail = node;
 
     ++_size;
     return *this;
 }
+
+
 
 template <typename T>
 linear_linked_list<T>& linear_linked_list<T>::pop_front()
@@ -140,7 +163,7 @@ T& linear_linked_list<T>::pop_front(reference out_param)
 {
     if(!empty())
     {
-        out_param = head->data;
+        out_param = std::move(head->data);
 
         pop_front();
     }
