@@ -541,6 +541,40 @@ TEST_CASE("Using mutable iterators to modify data", "[iterators]")
     }
 }
 
+TEST_CASE("Finding the middle point of a list", "[iterators]")
+{
+    SECTION("Populated list with odd number of elements")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6, 7 };
+
+        REQUIRE(*list.middle() == 4);
+    }
+    SECTION("Populated list with even number of elements")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6 };
+
+        REQUIRE(*list.middle() == 3);
+    }
+    SECTION("Middle point of a list with two elements is the beginning")
+    {
+        linear_linked_list<int> list { 1, 2 };
+
+        REQUIRE(*list.middle() == 1);
+    }
+    SECTION("Middle point of a list with one element is the beginning")
+    {
+        linear_linked_list<int> list { 1 };
+
+        REQUIRE(*list.middle() == 1);
+    }
+    SECTION("Calling middle on the empty list returns an end iterator")
+    {
+        linear_linked_list<int> list;
+
+        REQUIRE(list.middle() == list.end());
+    }
+}
+
 TEST_CASE("Reversing the order of a list", "[reverse]")
 {
     SECTION("Empty list")
@@ -692,9 +726,20 @@ TEST_CASE("Merging two sorted lists", "[merge]")
         REQUIRE(first.front() == 6);
         REQUIRE(first.back() == 1);
     }
+    SECTION("Merge two lists of one element each")
+    {
+        linear_linked_list<int> first { 2 };
+        linear_linked_list<int> second { 1 };
+
+        first.merge(second);
+
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 2);
+        REQUIRE(second.empty());
+    }
 }
 
-TEST_CASE("Breaking lists into smaller lists with iterators", "[break]")
+TEST_CASE("Splitting lists into smaller lists with iterators", "[split]")
 {
     SECTION("Break the head off a populated list")
     {
@@ -733,7 +778,7 @@ TEST_CASE("Breaking lists into smaller lists with iterators", "[break]")
     SECTION("Splitting a list with one element returns the empty list")
     {
         linear_linked_list<int> left { 1 };
-        linear_linked_list<int> right = left.split(left.begin());
+        linear_linked_list<int> right = left.split(left.middle());
 
         REQUIRE(left.front() == 1);
         REQUIRE(right.empty());
@@ -760,7 +805,6 @@ TEST_CASE("Breaking lists into smaller lists with iterators", "[break]")
     }
 }
 
-/*
 TEST_CASE("Sorting lists", "[sort]")
 {
     SECTION("Default sort is to sort into ascending order")
@@ -775,7 +819,29 @@ TEST_CASE("Sorting lists", "[sort]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Sorting a list with a custom compare function")
+    {
+        linear_linked_list<int> list { 3, 5, 2, 1, 4, 6 };
 
+        list.sort([](int lhs, int rhs){ return lhs > rhs; });
+
+        int i = 7;
+        for(auto num : list)
+        {
+            REQUIRE(num == --i);
+        }
+    }
+    SECTION("Sorting a sorted list")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6 };
+
+        list.sort();
+
+        int i = 0;
+        for(auto& num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
 }
-*/
 

@@ -235,7 +235,17 @@ template <typename T>
 template <class Compare>
 linear_linked_list<T>& linear_linked_list<T>::sort(Compare&& comp)
 {
-    return *this;
+    if(head == nullptr || head->next == nullptr)
+    {
+        return *this;
+    }
+
+    linear_linked_list<T> right = split(middle());
+
+    sort(comp);
+    right.sort(comp);
+
+    return merge(right, comp);
 }
 
 template <typename T>
@@ -272,8 +282,7 @@ linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list, Compare&& c
         tail = !tail || (list.tail && comp(tail->data, list.tail->data))
              ? list.tail : tail;
 
-        // Clear the merged list. Merge does not copy, so if the list does not 
-        // forfeit its resources a double free error will occur
+        // Merge does not copy, source must relinquish resources
         list.head = list.tail = nullptr;
     }
     return *this;
@@ -463,12 +472,8 @@ template <typename T>
 typename linear_linked_list<T>::Node* 
 linear_linked_list<T>::middle(Node* slow, Node* fast) const
 {
-    if(fast == nullptr || (fast = fast->next) == nullptr)
-    {
-        return slow;
-    }
-
-    return middle(slow->next, fast->next);
+    return (fast == nullptr || (fast = fast->next) == nullptr) 
+           ? slow : middle(slow->next, fast->next);
 }
 
 /****** COMPARISON OPERATORS ******/
