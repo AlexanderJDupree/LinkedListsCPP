@@ -20,6 +20,50 @@
 #include <catch.hpp>
 #include "linear_linked_list.hpp"
 
+class Data
+{
+  public:
+
+    Data(int num = 0, std::string str = "")
+        : num(num), str(str) {}
+
+    Data(const Data& origin) = default;
+
+    Data(Data&& rval)
+        : Data() 
+    {
+        ++move_count;
+        swap(rval);
+    }
+
+    void swap(Data& rval)
+    {
+        using std::swap;
+        swap(num, rval.num);
+        swap(str, rval.str);
+        return;
+    }
+
+    Data& operator=(Data&& rval)
+    {
+        swap(rval);
+        ++move_count;
+
+        return *this;
+    }
+
+    bool operator==(const Data& rhs) const
+    {
+        return num == rhs.num && str == rhs.str;
+    }
+
+    int num;
+    std::string str;
+    static int move_count;
+};
+int Data::move_count = 0;
+
+
 TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
 {
     SECTION("Default construction")
@@ -71,6 +115,18 @@ TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
         {
             REQUIRE(num == ++i);
         }
+    }
+    SECTION("Move Construction")
+    {
+        linear_linked_list<int> origin { 1, 2, 3, 4, 5 };
+        linear_linked_list<int> moved_list(std::move(origin));
+
+        int i = 0;
+        for (auto num : moved_list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(origin.empty());
     }
 }
 
@@ -147,6 +203,31 @@ TEST_CASE("Pushing to elements to the front of the list", "[push_front]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_front(data[2]).push_front(data[1]).push_front(data[0]);
+        int i = 0;
+        for (auto item : list)
+        {
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
+        }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_front(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
+    }
 }
 
 TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
@@ -170,13 +251,38 @@ TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
         int nums[] = { 3, 2, 1 };
         linear_linked_list<int> list; 
 
-        list.push_front(nums[0]).push_front(nums[1]).push_front(nums[2]);
+        list.push_back(nums[2]).push_back(nums[1]).push_back(nums[0]);
 
         int i = 0;
         for (auto num : list)
         {
             REQUIRE(num == ++i);
         }
+    }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_back(data[0]).push_back(data[1]).push_back(data[2]);
+        int i = 0;
+        for (auto item : list)
+        {
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
+        }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_back(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
     }
 }
 
@@ -188,7 +294,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
 
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         int i = 0;
         for (const auto& elem : list)
@@ -202,7 +308,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
         linear_linked_list<int> old;
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         REQUIRE(old == list);
     }
@@ -224,6 +330,24 @@ TEST_CASE("Using the copy-assignment operator", "[operators], [copy-assignment]"
         linear_linked_list<int> list;
 
         REQUIRE((old = list) == list);
+    }
+    SECTION("Self-assignment does nothing")
+    {
+        linear_linked_list<int> list { 1, 2, 3 };
+        REQUIRE((list = list) == list);
+    }
+    SECTION("Move assignment empties old list")
+    {
+        linear_linked_list<int> old { 1, 2, 3 };
+        linear_linked_list<int> list = std::move(old);
+
+        int i = 0;
+        for (auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(i == 3);
+        REQUIRE(old.empty());
     }
 }
 
@@ -285,7 +409,7 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
             REQUIRE(n == ++i);
         }
     }
-    SECTION("Pop the front of an empty list with out parameter")
+    SECTION("passing out param to pop on an empty list does not modify the param")
     {
         int i = 7;
 
@@ -293,13 +417,23 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
 
         REQUIRE(empty_list.pop_front(i) == 7);
     }
-    SECTION("Pop the front of a populated list")
+    SECTION("Pop the front of a populated list with a out parameter copies the data")
     {
         int i = 7;
 
         linear_linked_list<int> list { 1, 2, 3, 4 };
 
         REQUIRE(list.pop_front(i) == 1);
+    }
+    SECTION("Popping the list with a class will utilize the move constructor")
+    {
+        Data::move_count = 0;
+        Data out_param;
+
+        linear_linked_list<Data> list { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+
+        REQUIRE(list.pop_front(out_param) == Data(1, "one"));
+        REQUIRE(Data::move_count == 1);
     }
 }
 

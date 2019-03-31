@@ -22,6 +22,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <utility> // std::move, std::exchange
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
 #include <initializer_list>  // std::initializer_list
@@ -60,6 +61,9 @@ class linear_linked_list
 
     // Copy Constructor
     linear_linked_list(const self_type& origin);
+
+    // Move Constructor
+    linear_linked_list(self_type&& origin);
    
     // Destructor
     ~linear_linked_list();
@@ -67,13 +71,16 @@ class linear_linked_list
     /****** MODIFIERS ******/
 
     // TODO add push_front/back methods for lists and iterators
-    
+
     // Adds an element to the front of the list
-    self_type& push_front(const_reference& data);
+    self_type& push_front(T&& data);
+    self_type& push_front(const_reference data);
 
     // Adds an element to the back of the list
-    self_type& push_back(const_reference& data);
+    self_type& push_back(T&& data);
+    self_type& push_back(const_reference data);
 
+    // TODO make pop_back methods
     // Removes the element at the front of the list
     self_type& pop_front();
 
@@ -104,7 +111,6 @@ class linear_linked_list
     // Removes the all items fullfilling the predicate function
     template <class Predicate>
     int remove_if(Predicate&& pred);
-
 
     /****** CAPACITY ******/
 
@@ -142,12 +148,12 @@ class linear_linked_list
 
     /****** COPY-ASSIGNMENT AND SWAP ******/
 
-    // creates a copy of the origin, then swaps ownership with the copy
-    self_type& operator=(self_type copy);
-
     // Swaps pointers to each other's resources. effectively reassigning 
     // ownership.
-    static void swap(self_type& new_list, self_type& old_list);
+    void swap(self_type& origin);
+
+    // creates a copy of the origin, then swaps ownership with the copy
+    self_type& operator=(self_type copy);
 
   private:
     
@@ -160,8 +166,12 @@ class linear_linked_list
     struct Node
     {
         // Default values are default constructor and nullptr
-        Node(const_reference& value = value_type(), Node* next = nullptr) 
+        Node(const_reference value = value_type(), Node* next = nullptr) 
             : data(value), next(next) {}
+
+        // rvalue constructor
+        Node(T&& value, Node* next = nullptr)
+            : data(std::forward<T>(value)), next(next) {}
 
         value_type data;
         Node* next;
@@ -186,6 +196,9 @@ class linear_linked_list
     int remove_if(Predicate&& pred, Node*& current, Node* prev=nullptr);
 
     /* Subroutines */
+
+    self_type& push_front(Node* node);
+    self_type& push_back(Node* node);
 
     // Throws a logic error exception if the node* is nullptr
     void throw_if_null(Node* node) const;
