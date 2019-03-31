@@ -85,7 +85,6 @@ class linear_linked_list
     self_type& pop_front();
 
     // Copies the front element onto the out_param and removes it
-    // TODO refactor to utilize move semantics
     reference pop_front(reference out_param);
 
     // Removes each element from the container
