@@ -71,7 +71,8 @@ class linear_linked_list
     /****** MODIFIERS ******/
 
     // TODO add push_front/back methods for lists and iterators
-    
+    // TODO overload push_front/back for move constructors
+
     // Adds an element to the front of the list
     self_type& push_front(const_reference& data);
 

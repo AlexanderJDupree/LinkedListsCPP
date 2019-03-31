@@ -20,6 +20,23 @@
 #include <catch.hpp>
 #include "linear_linked_list.hpp"
 
+class Data
+{
+  public:
+
+    Data(int num, std::string str)
+        : num(num), str(str) {}
+
+    bool operator==(const Data& rhs)
+    {
+        return num == rhs.num && str == rhs.str;
+    }
+
+    int num;
+    std::string str;
+};
+
+
 TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
 {
     SECTION("Default construction")
@@ -159,6 +176,19 @@ TEST_CASE("Pushing to elements to the front of the list", "[push_front]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_front(data[2]).push_front(data[1]).push_front(data[0]);
+        int i = 0;
+        for (auto item : list)
+        {
+            bool assert = item == data[i++];
+            REQUIRE(assert);
+        }
+    }
 }
 
 TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
@@ -182,12 +212,25 @@ TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
         int nums[] = { 3, 2, 1 };
         linear_linked_list<int> list; 
 
-        list.push_front(nums[0]).push_front(nums[1]).push_front(nums[2]);
+        list.push_back(nums[2]).push_back(nums[1]).push_back(nums[0]);
 
         int i = 0;
         for (auto num : list)
         {
             REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_back(data[0]).push_back(data[1]).push_back(data[2]);
+        int i = 0;
+        for (auto item : list)
+        {
+            bool assert = item == data[i++];
+            REQUIRE(assert);
         }
     }
 }
