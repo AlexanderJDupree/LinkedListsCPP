@@ -20,6 +20,50 @@
 #include <catch.hpp>
 #include "linear_linked_list.hpp"
 
+class Data
+{
+  public:
+
+    Data(int num = 0, std::string str = "")
+        : num(num), str(str) {}
+
+    Data(const Data& origin) = default;
+
+    Data(Data&& rval)
+        : Data() 
+    {
+        ++move_count;
+        swap(rval);
+    }
+
+    void swap(Data& rval)
+    {
+        using std::swap;
+        swap(num, rval.num);
+        swap(str, rval.str);
+        return;
+    }
+
+    Data& operator=(Data&& rval)
+    {
+        swap(rval);
+        ++move_count;
+
+        return *this;
+    }
+
+    bool operator==(const Data& rhs) const
+    {
+        return num == rhs.num && str == rhs.str;
+    }
+
+    int num;
+    std::string str;
+    static int move_count;
+};
+int Data::move_count = 0;
+
+
 TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
 {
     SECTION("Default construction")
@@ -72,6 +116,18 @@ TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Move Construction")
+    {
+        linear_linked_list<int> origin { 1, 2, 3, 4, 5 };
+        linear_linked_list<int> moved_list(std::move(origin));
+
+        int i = 0;
+        for (auto num : moved_list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(origin.empty());
+    }
 }
 
 TEST_CASE("Using clear to erase the list", "[clear], [destructor]")
@@ -122,27 +178,55 @@ TEST_CASE("Pushing to elements to the front of the list", "[push_front]")
 {
     SECTION("An empty list")
     {
+        char letter = 'a';
         linear_linked_list<char> list;
 
-        REQUIRE(list.push_front('a').front() == 'a');
+        REQUIRE(list.push_front(letter).front() == letter);
     }
     SECTION("A populated list")
     {
+        int num = 42;
         linear_linked_list<int> list {1, 2, 3, 4, 5};
 
-        REQUIRE(list.push_front(42).front() == 42);
+        REQUIRE(list.push_front(num).front() == num);
     }
     SECTION("Pushing multiple elements")
     {
+        int nums[] = { 3, 2, 1 };
         linear_linked_list<int> list; 
 
-        list.push_front(3).push_front(2).push_front(1);
+        list.push_front(nums[0]).push_front(nums[1]).push_front(nums[2]);
 
         int i = 0;
         for (auto num : list)
         {
             REQUIRE(num == ++i);
         }
+    }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_front(data[2]).push_front(data[1]).push_front(data[0]);
+        int i = 0;
+        for (auto item : list)
+        {
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
+        }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_front(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
     }
 }
 
@@ -150,27 +234,55 @@ TEST_CASE("Pushing to elements to the back of the list", "[push_back]")
 {
     SECTION("An empty list")
     {
+        char letter = 'b';
         linear_linked_list<char> list;
 
-        REQUIRE(list.push_back('a').front() == 'a');
+        REQUIRE(list.push_back(letter).front() == letter);
     }
     SECTION("A populated list")
     {
+        int num = 42;
         linear_linked_list<int> list {1, 2, 3, 4, 5};
 
-        REQUIRE(list.push_back(42).back() == 42);
+        REQUIRE(list.push_back(num).back() == num);
     }
     SECTION("Pushing multiple elements")
     {
+        int nums[] = { 3, 2, 1 };
         linear_linked_list<int> list; 
 
-        list.push_back(1).push_back(2).push_back(3);
+        list.push_back(nums[2]).push_back(nums[1]).push_back(nums[0]);
 
         int i = 0;
         for (auto num : list)
         {
             REQUIRE(num == ++i);
         }
+    }
+    SECTION("Pushing simple data classes")
+    {
+        Data data[] = { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list;
+
+        list.push_back(data[0]).push_back(data[1]).push_back(data[2]);
+        int i = 0;
+        for (auto item : list)
+        {
+            REQUIRE(item.num == data[i].num);
+            REQUIRE(item.str == data[i++].str);
+        }
+    }
+    SECTION("Using std::move with push")
+    {
+        Data data(1, "one");
+        linear_linked_list<Data> list;
+
+        list.push_back(std::move(data));
+
+        REQUIRE(list.front() == Data(1, "one"));
+
+        REQUIRE(data.num == 0);
+        REQUIRE(data.str == "");
     }
 }
 
@@ -182,7 +294,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
 
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         int i = 0;
         for (const auto& elem : list)
@@ -196,7 +308,7 @@ TEST_CASE("Using swap to reassign data", "[swap]")
         linear_linked_list<int> old;
         linear_linked_list<int> list;
 
-        linear_linked_list<int>::swap(list, old);
+        list.swap(old);
 
         REQUIRE(old == list);
     }
@@ -218,6 +330,24 @@ TEST_CASE("Using the copy-assignment operator", "[operators], [copy-assignment]"
         linear_linked_list<int> list;
 
         REQUIRE((old = list) == list);
+    }
+    SECTION("Self-assignment does nothing")
+    {
+        linear_linked_list<int> list { 1, 2, 3 };
+        REQUIRE((list = list) == list);
+    }
+    SECTION("Move assignment empties old list")
+    {
+        linear_linked_list<int> old { 1, 2, 3 };
+        linear_linked_list<int> list = std::move(old);
+
+        int i = 0;
+        for (auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(i == 3);
+        REQUIRE(old.empty());
     }
 }
 
@@ -279,7 +409,7 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
             REQUIRE(n == ++i);
         }
     }
-    SECTION("Pop the front of an empty list with out parameter")
+    SECTION("passing out param to pop on an empty list does not modify the param")
     {
         int i = 7;
 
@@ -287,13 +417,23 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
 
         REQUIRE(empty_list.pop_front(i) == 7);
     }
-    SECTION("Pop the front of a populated list")
+    SECTION("Pop the front of a populated list with a out parameter copies the data")
     {
         int i = 7;
 
         linear_linked_list<int> list { 1, 2, 3, 4 };
 
         REQUIRE(list.pop_front(i) == 1);
+    }
+    SECTION("Popping the list with a class will utilize the move constructor")
+    {
+        Data::move_count = 0;
+        Data out_param;
+
+        linear_linked_list<Data> list { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+
+        REQUIRE(list.pop_front(out_param) == Data(1, "one"));
+        REQUIRE(Data::move_count == 1);
     }
 }
 
@@ -401,6 +541,40 @@ TEST_CASE("Using mutable iterators to modify data", "[iterators]")
     }
 }
 
+TEST_CASE("Finding the middle point of a list", "[iterators]")
+{
+    SECTION("Populated list with odd number of elements")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6, 7 };
+
+        REQUIRE(*list.middle() == 4);
+    }
+    SECTION("Populated list with even number of elements")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6 };
+
+        REQUIRE(*list.middle() == 3);
+    }
+    SECTION("Middle point of a list with two elements is the beginning")
+    {
+        linear_linked_list<int> list { 1, 2 };
+
+        REQUIRE(*list.middle() == 1);
+    }
+    SECTION("Middle point of a list with one element is the beginning")
+    {
+        linear_linked_list<int> list { 1 };
+
+        REQUIRE(*list.middle() == 1);
+    }
+    SECTION("Calling middle on the empty list returns an end iterator")
+    {
+        linear_linked_list<int> list;
+
+        REQUIRE(list.middle() == list.end());
+    }
+}
+
 TEST_CASE("Reversing the order of a list", "[reverse]")
 {
     SECTION("Empty list")
@@ -430,4 +604,244 @@ TEST_CASE("Reversing the order of a list", "[reverse]")
     }
 }
 
+TEST_CASE("Merging two sorted lists", "[merge]")
+{
+    SECTION("Two lists of equal size")
+    {
+        linear_linked_list<int> first { 1, 3, 5 };
+        linear_linked_list<int> second { 2, 4, 6 };
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 6);
+    }
+    SECTION("second list replaces head")
+    {
+        linear_linked_list<int> first { 2, 4, 6 };
+        linear_linked_list<int> second { 1, 3, 5 };
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 6);
+    }
+    SECTION("Two non-alternating lists")
+    {
+        linear_linked_list<int> first { 1, 2, 3 };
+        linear_linked_list<int> second { 4, 5, 6 };
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 6);
+    }
+    SECTION("Lists of varying sizes")
+    {
+        linear_linked_list<int> first { 6 };
+        linear_linked_list<int> second { 1, 2, 3, 4, 5 };
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 6);
+    }
+    SECTION("Merge a populated list into an empty list")
+    {
+        linear_linked_list<int> first;
+        linear_linked_list<int> second { 1, 2, 3, 4, 5 };
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 5);
+    }
+    SECTION("Merge an empty list into a populated list")
+    {
+        linear_linked_list<int> first { 1, 2, 3, 4, 5 };
+        linear_linked_list<int> second;
+
+        first.merge(second);
+
+        int i = 0;
+        for (auto num : first)
+        {
+            REQUIRE(num == ++i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 5);
+    }
+    SECTION("Merge two empty lists")
+    {
+        linear_linked_list<int> first;
+        linear_linked_list<int> second;
+
+        REQUIRE(first.merge(second).empty());
+        REQUIRE(second.empty());
+    }
+    SECTION("Merge two lists with a custom compare function")
+    {
+        linear_linked_list<int> first { 3, 2, 1 };
+        linear_linked_list<int> second { 6, 5, 4 };
+
+        first.merge(second, [](int left, int right){ return left > right; });
+
+        int i = 7;
+        for (auto num : first)
+        {
+            REQUIRE(num == --i);
+        }
+        REQUIRE(second.empty());
+        REQUIRE(first.front() == 6);
+        REQUIRE(first.back() == 1);
+    }
+    SECTION("Merge two lists of one element each")
+    {
+        linear_linked_list<int> first { 2 };
+        linear_linked_list<int> second { 1 };
+
+        first.merge(second);
+
+        REQUIRE(first.front() == 1);
+        REQUIRE(first.back() == 2);
+        REQUIRE(second.empty());
+    }
+}
+
+TEST_CASE("Splitting lists into smaller lists with iterators", "[split]")
+{
+    SECTION("Break the head off a populated list")
+    {
+        linear_linked_list<int> head { 1, 2, 3, 4, 5, 6 };
+        linear_linked_list<int> tail = head.split(head.begin());
+
+        REQUIRE(head.front() == 1);
+
+        int i = 1;
+        for(auto num : tail)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Split the list in half")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+        linear_linked_list<int> right = left.split(left.middle());
+
+        REQUIRE(left.back() == 4);
+        
+        int i = 4;
+        for(auto num : right)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Split a empty list")
+    {
+        linear_linked_list<int> left;
+        linear_linked_list<int> right  = left.split(left.begin());
+
+        REQUIRE(left.empty());
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting a list with one element returns the empty list")
+    {
+        linear_linked_list<int> left { 1 };
+        linear_linked_list<int> right = left.split(left.middle());
+
+        REQUIRE(left.front() == 1);
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting at the end of the list returns the empty list")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+
+        linear_linked_list<int>::const_iterator it = left.begin();
+
+        while(*(it++) != 7);
+
+        linear_linked_list<int> right = left.split(it);
+
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting the list with an end iterator returns the empty list")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+
+        linear_linked_list<int> right = left.split(left.end());
+
+        REQUIRE(right.empty());
+    }
+}
+
+TEST_CASE("Sorting lists", "[sort]")
+{
+    SECTION("Default sort is to sort into ascending order")
+    {
+        linear_linked_list<int> list { 3, 5, 2, 1, 4, 6 };
+
+        list.sort();
+
+        int i = 0;
+        for(auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Sorting a list with a custom compare function")
+    {
+        linear_linked_list<int> list { 3, 5, 2, 1, 4, 6 };
+
+        list.sort([](int lhs, int rhs){ return lhs > rhs; });
+
+        int i = 7;
+        for(auto num : list)
+        {
+            REQUIRE(num == --i);
+        }
+    }
+    SECTION("Sorting a sorted list")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5, 6 };
+
+        list.sort();
+
+        int i = 0;
+        for(auto& num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+}
 
