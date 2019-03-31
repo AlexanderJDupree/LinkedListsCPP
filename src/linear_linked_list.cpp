@@ -24,7 +24,7 @@
 // default constructor
 template <typename T>
 linear_linked_list<T>::linear_linked_list() 
-    : head(nullptr), tail(nullptr), _size(0) {}
+    : head(nullptr), tail(nullptr) {}
 
 // ranged based constructor
 template <typename T>
@@ -100,7 +100,6 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(Node* node)
         tail = head;
     }
 
-    ++_size;
     return *this;
 }
 
@@ -127,7 +126,6 @@ linear_linked_list<T>& linear_linked_list<T>::push_back(Node* node)
     tail->next = node;
     tail = node;
 
-    ++_size;
     return *this;
 }
 
@@ -152,8 +150,6 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
     delete head;
 
     head = temp;
-
-    --_size;
 
     return *this;
 }
@@ -181,8 +177,6 @@ linear_linked_list<T>& linear_linked_list<T>::clear()
 
     // clear_list is a recursive function that deletes each node of the list
     clear_list(head);
-
-    _size = 0;
 
     tail = nullptr;
 
@@ -245,6 +239,22 @@ linear_linked_list<T>& linear_linked_list<T>::sort(Compare&& comp)
 }
 
 template <typename T>
+linear_linked_list<T> linear_linked_list<T>::split(const_iterator pos)
+{
+    linear_linked_list<T> temp;
+
+    if(pos.node != nullptr)
+    {
+        temp.head = pos.node->next;
+        temp.tail = tail;
+
+        tail = pos.node;
+        tail->next = nullptr;
+    }
+    return temp;
+}
+
+template <typename T>
 linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list)
 {
     return merge(list, [](const T& lhs, const T& rhs){ return lhs < rhs; });
@@ -265,8 +275,6 @@ linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list, Compare&& c
         // Clear the merged list. Merge does not copy, so if the list does not 
         // forfeit its resources a double free error will occur
         list.head = list.tail = nullptr;
-        _size += list._size;
-        list._size = 0;
     }
     return *this;
 }
@@ -333,8 +341,6 @@ int linear_linked_list<T>::remove_if(Predicate&& pred, Node*& current, Node* pre
 
         delete prev;
 
-        --_size;
-
         return 1 + remove_if(pred, current, prev=current);
     }
 
@@ -354,7 +360,13 @@ bool linear_linked_list<T>::empty() const
 template <typename T>
 typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
 {
-    return _size;
+    return size(head);
+}
+
+template <typename T>
+typename linear_linked_list<T>::size_type linear_linked_list<T>::size(Node* head) const
+{
+    return (head != nullptr) ? 1 + size(head->next) : 0;
 }
 
 /****** ELEMENT ACCESS ******/
@@ -421,6 +433,44 @@ linear_linked_list<T>::end() const
     return const_iterator(nullptr);
 }
 
+template <typename T>
+typename linear_linked_list<T>::iterator 
+linear_linked_list<T>::middle()
+{
+    return iterator(middle(head));
+}
+
+template <typename T>
+typename linear_linked_list<T>::const_iterator 
+linear_linked_list<T>::middle() const
+{
+    return const_iterator(middle(head));
+}
+
+template <typename T>
+typename linear_linked_list<T>::Node* 
+linear_linked_list<T>::middle(Node* head) const
+{
+    if(head == nullptr || head->next == nullptr)
+    {
+        return head;
+    }
+
+    return middle(head, head->next);
+}
+
+template <typename T>
+typename linear_linked_list<T>::Node* 
+linear_linked_list<T>::middle(Node* slow, Node* fast) const
+{
+    if(fast == nullptr || (fast = fast->next) == nullptr)
+    {
+        return slow;
+    }
+
+    return middle(slow->next, fast->next);
+}
+
 /****** COMPARISON OPERATORS ******/
 
 template <typename T>
@@ -472,7 +522,6 @@ void linear_linked_list<T>::swap(self_type& origin)
     // Swaps pointers, reassigns ownership
     swap(head, origin.head);
     swap(tail, origin.tail);
-    swap(_size, origin._size);
     return;
 }
 

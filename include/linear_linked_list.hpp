@@ -99,6 +99,9 @@ class linear_linked_list
     template <class Compare>
     self_type& sort(Compare&& comp);
 
+    // Splits the list on the parameter and returns the split
+    self_type split(const_iterator pos);
+
     // Merges list into this list
     self_type& merge(self_type& list);
 
@@ -117,7 +120,7 @@ class linear_linked_list
     // returns true if the list is empty
     bool empty() const;
 
-    // returns the number of elements in the list
+    // returns length of list by recurring through the list. O(n) operation.
     size_type size() const;
 
     /****** ELEMENT ACCESS ******/
@@ -137,6 +140,10 @@ class linear_linked_list
 
     iterator end();
     const_iterator end() const;
+
+    // Travels the list two nodes at a time to find the middle. O(n) complexity.
+    iterator middle();
+    const_iterator middle() const;
 
     /****** COMPARISON OPERATORS ******/
 
@@ -181,9 +188,12 @@ class linear_linked_list
     Node* head;
     Node* tail;
 
-    size_type _size; // Keeps track of the number of elements in the list
-
     /* Recursive Functions */
+
+    size_type size(Node* head) const;
+
+    Node* middle(Node* head) const;
+    Node* middle(Node* slow, Node* fast) const;
 
     void clear_list(Node*& current);
 
@@ -240,6 +250,8 @@ class linear_linked_list
         // Iterators are equal if they point to the same memory address
         bool operator==(const self_type& rhs) const;
         bool operator!=(const self_type& rhs) const;
+
+        friend linear_linked_list<T>;
       
       protected:
 

@@ -694,13 +694,12 @@ TEST_CASE("Merging two sorted lists", "[merge]")
     }
 }
 
-/*
-TEST_CASE("Breaking lists into smaller lists", "[break]")
+TEST_CASE("Breaking lists into smaller lists with iterators", "[break]")
 {
     SECTION("Break the head off a populated list")
     {
-        linear_linked_list<int> tail { 1, 2, 3, 4, 5, 6 };
-        linear_linked_list<int> head = tail.break(tail.begin());
+        linear_linked_list<int> head { 1, 2, 3, 4, 5, 6 };
+        linear_linked_list<int> tail = head.split(head.begin());
 
         REQUIRE(head.front() == 1);
 
@@ -710,9 +709,58 @@ TEST_CASE("Breaking lists into smaller lists", "[break]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Split the list in half")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+        linear_linked_list<int> right = left.split(left.middle());
 
+        REQUIRE(left.back() == 4);
+        
+        int i = 4;
+        for(auto num : right)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Split a empty list")
+    {
+        linear_linked_list<int> left;
+        linear_linked_list<int> right  = left.split(left.begin());
+
+        REQUIRE(left.empty());
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting a list with one element returns the empty list")
+    {
+        linear_linked_list<int> left { 1 };
+        linear_linked_list<int> right = left.split(left.begin());
+
+        REQUIRE(left.front() == 1);
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting at the end of the list returns the empty list")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+
+        linear_linked_list<int>::const_iterator it = left.begin();
+
+        while(*(it++) != 7);
+
+        linear_linked_list<int> right = left.split(it);
+
+        REQUIRE(right.empty());
+    }
+    SECTION("Splitting the list with an end iterator returns the empty list")
+    {
+        linear_linked_list<int> left { 1, 2, 3, 4, 5, 6, 7 };
+
+        linear_linked_list<int> right = left.split(left.end());
+
+        REQUIRE(right.empty());
+    }
 }
 
+/*
 TEST_CASE("Sorting lists", "[sort]")
 {
     SECTION("Default sort is to sort into ascending order")
