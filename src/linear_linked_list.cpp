@@ -256,7 +256,7 @@ linear_linked_list<T> linear_linked_list<T>::split(const_iterator pos)
     if(pos.node != nullptr)
     {
         temp.head = pos.node->next;
-        temp.tail = tail;
+        temp.tail = (temp.head == nullptr) ? nullptr : tail;
 
         tail = pos.node;
         tail->next = nullptr;
