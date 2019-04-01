@@ -59,10 +59,18 @@ class Data
 
     int num;
     std::string str;
-    static int move_count;
+    static int move_count; // Ensures move semantics are actually being used
 };
 int Data::move_count = 0;
 
+// Test functor for predicate functions
+struct is_seven
+{
+    bool operator() (const int& value)
+    {
+        return value == 7;
+    }
+};
 
 TEST_CASE("Constructing linear_linked_list objects", "[constructors]")
 {
@@ -430,7 +438,11 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
         Data::move_count = 0;
         Data out_param;
 
-        linear_linked_list<Data> list { Data(1, "one"), Data(2, "two"), Data(3, "three") };
+        linear_linked_list<Data> list { 
+                                    Data(1, "one"), 
+                                    Data(2, "two"), 
+                                    Data(3, "three") 
+                                };
 
         REQUIRE(list.pop_front(out_param) == Data(1, "one"));
         REQUIRE(Data::move_count == 1);
@@ -453,19 +465,11 @@ TEST_CASE("Removing a specific element from a list", "[operations], [remove]")
     }
 }
 
-struct remove_seven
-{
-    bool operator() (const int& value)
-    {
-        return value == 7;
-    }
-};
-
 TEST_CASE("Using functors to remove a specific element", "[remove_if]")
 {
     SECTION("remove_if with a value constructed functor")
     {
-        remove_seven functor;
+        is_seven functor;
 
         int nums[] = { 7, 1, 2, 3, 4, 7, 5, 6, 7};
 
@@ -486,7 +490,7 @@ TEST_CASE("Using functors to remove a specific element", "[remove_if]")
 
         linear_linked_list<int> list(nums, nums + 7);
 
-        REQUIRE(list.remove_if(remove_seven()));
+        REQUIRE(list.remove_if(is_seven()));
 
         int i = 0;
         linear_linked_list<int>::const_iterator it;
@@ -501,7 +505,7 @@ TEST_CASE("Using functors to remove a specific element", "[remove_if]")
 
         linear_linked_list<int> list(nums, nums + 7);
 
-        REQUIRE(list.remove_if(remove_seven()));
+        REQUIRE(list.remove_if(is_seven()));
 
         int i = 0;
         linear_linked_list<int>::const_iterator it;
@@ -516,13 +520,13 @@ TEST_CASE("Using functors to remove a specific element", "[remove_if]")
 
         linear_linked_list<int> list(nums, nums + 6);
 
-        REQUIRE(!list.remove_if(remove_seven()));
+        REQUIRE(!list.remove_if(is_seven()));
     }
     SECTION("remove_if with an empty list")
     {
         linear_linked_list<int> list;
 
-        REQUIRE_FALSE(list.remove_if(remove_seven()));
+        REQUIRE_FALSE(list.remove_if(is_seven()));
     }
 }
 
@@ -782,6 +786,7 @@ TEST_CASE("Splitting lists into smaller lists with iterators", "[split]")
 
         REQUIRE(left.front() == 1);
         REQUIRE(right.empty());
+        REQUIRE_THROWS(right.back());
     }
     SECTION("Splitting at the end of the list returns the empty list")
     {
@@ -794,6 +799,8 @@ TEST_CASE("Splitting lists into smaller lists with iterators", "[split]")
         linear_linked_list<int> right = left.split(it);
 
         REQUIRE(right.empty());
+        REQUIRE_THROWS(right.back()); // Head and Tail should be NULL and throw an error
+        REQUIRE_THROWS(right.front());
     }
     SECTION("Splitting the list with an end iterator returns the empty list")
     {
@@ -802,6 +809,15 @@ TEST_CASE("Splitting lists into smaller lists with iterators", "[split]")
         linear_linked_list<int> right = left.split(left.end());
 
         REQUIRE(right.empty());
+    }
+    SECTION("Splitting the list with an iterator does not modify the iterator")
+    {
+        linear_linked_list<int> list { 1, 2, 3, 4, 5 };
+
+        linear_linked_list<int>::iterator it = list.begin();
+        linear_linked_list<int> split = list.split(it);
+
+        REQUIRE(*it == (*list.begin() == 1));
     }
 }
 

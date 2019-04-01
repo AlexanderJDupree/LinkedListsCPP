@@ -195,6 +195,9 @@ class linear_linked_list
     Node* middle(Node* head) const;
     Node* middle(Node* slow, Node* fast) const;
 
+    template <class Predicate>
+    const_iterator find_split(Node* head, Predicate&& pred);
+
     void clear_list(Node*& current);
 
     void reverse(Node* current, Node* prev=nullptr);
