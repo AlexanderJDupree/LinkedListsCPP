@@ -306,6 +306,19 @@ linear_linked_list<T>::merge(Node* self, Node* other, Compare&& comp)
 }
 
 template <typename T>
+typename linear_linked_list<T>::iterator
+linear_linked_list<T>::erase_after(iterator pos)
+{
+    if(!empty() && tail != head)
+    {
+        Node* temp = pos.node->next;
+        pos.node->next = temp->next;
+        delete temp;
+    }
+    return pos;
+}
+
+template <typename T>
 int linear_linked_list<T>::remove(const_reference target)
 {
     // lambda catches target and compares it to each element in the list
