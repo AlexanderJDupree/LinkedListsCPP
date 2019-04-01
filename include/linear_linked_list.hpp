@@ -80,12 +80,13 @@ class linear_linked_list
     self_type& push_back(T&& data);
     self_type& push_back(const_reference data);
 
-    // TODO make pop_back methods
     // Removes the element at the front of the list
     self_type& pop_front();
 
     // Copies the front element onto the out_param and removes it
     reference pop_front(reference out_param);
+    // NOTE: There is no pop_back method for the singly linked list, as the 
+    // time complexity for pop_back is O(n). Therefore pop_front is encouraged
 
     // Removes each element from the container
     self_type& clear();
