@@ -309,7 +309,7 @@ template <typename T>
 typename linear_linked_list<T>::iterator
 linear_linked_list<T>::erase_after(iterator pos)
 {
-    if(!empty() && tail != head)
+    if(!empty() && pos.node != tail)
     {
         Node* temp = pos.node->next;
         pos.node->next = temp->next;

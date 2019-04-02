@@ -474,6 +474,15 @@ TEST_CASE("Erasing elements from a list", "[operations], [erase_after]")
             REQUIRE(num == ++i);
         }
     }
+    SECTION("Erasing with the last iterator in the list does nothing")
+    {
+        linear_linked_list<int>::iterator it = list.begin();
+        while(*(++it) != 6);
+
+        list.erase_after(it);
+
+        REQUIRE((list.back() == 6) == (*it == 6));
+    }
 }
 
 TEST_CASE("Removing a specific element from a list", "[operations], [remove]")
