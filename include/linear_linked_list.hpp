@@ -109,6 +109,8 @@ class linear_linked_list
     template <class Compare>
     self_type& merge(self_type& list, Compare&& comp);
 
+    iterator erase_after(iterator pos);
+
     // Removes all items matching target, returns number of items removed
     int remove(const_reference target);
 

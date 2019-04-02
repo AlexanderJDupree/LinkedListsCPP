@@ -449,11 +449,47 @@ TEST_CASE("Popping the front element off the list", "[operations], [pop_front]")
     }
 }
 
+TEST_CASE("Erasing elements from a list", "[operations], [erase_after]")
+{
+    linear_linked_list<int> empty_list;
+    linear_linked_list<int> list { 1, 4, 2, 3, 4, 5, 6 };
+
+    SECTION("Erasing elements from an empty list does nothing and returns the iterator")
+    {
+        REQUIRE(empty_list.erase_after(empty_list.begin()) == empty_list.begin());
+    }
+    SECTION("Erasing with a list of a single element does nothing")
+    {
+        linear_linked_list<int> singular_list { 1 };
+
+        REQUIRE(*singular_list.erase_after(singular_list.begin()) == 1);
+    }
+    SECTION("Erasing elements from a populated list")
+    { 
+        list.erase_after(list.begin());
+
+        int i = 0;
+        for(auto num : list)
+        {
+            REQUIRE(num == ++i);
+        }
+    }
+    SECTION("Erasing with the last iterator in the list does nothing")
+    {
+        linear_linked_list<int>::iterator it = list.begin();
+        while(*(++it) != 6);
+
+        list.erase_after(it);
+
+        REQUIRE((list.back() == 6) == (*it == 6));
+    }
+}
+
 TEST_CASE("Removing a specific element from a list", "[operations], [remove]")
 {
     linear_linked_list<int> list { 1, 4, 2, 3, 4 };
 
-    SECTION("Remove from a populated list")
+    SECTION("Remove from a populated list returns number of items removed")
     {
         REQUIRE(list.remove(4) == 2);
         REQUIRE(list.size() == 3);
