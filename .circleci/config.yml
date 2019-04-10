@@ -16,8 +16,8 @@ jobs:
           command: './premake5 gmake'
       - run:
           name: debug build
-          command: 'make -C gmake config=debug verbose=true'
+          command: 'make -C gmake config=debug_single verbose=true'
       - run:
           name: release build
-          command: 'make -C gmake config=release verbose=true'
+          command: 'make -C gmake config=release_single verbose=true'
   

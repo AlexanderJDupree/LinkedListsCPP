@@ -8,6 +8,7 @@
 -- WORKSPACE CONFIGURATION --
 workspace "LinkedList"
     configurations { "debug", "release" }
+    platforms { "single", "double" }
 
     if _ACTION == "clean" then
         os.rmdir("bin/")
@@ -33,6 +34,12 @@ workspace "LinkedList"
     filter "configurations:release*" 
         defines { "NDEBUG" } 
         optimize "On"
+
+    filter "platforms:single"
+        defines { "LINEAR_LINKED_LIST" }
+
+    filter "platforms:double"
+        defines { "DOUBLE_LINKED_LIST" }
 
     filter "toolset:gcc"
         buildoptions { 
