@@ -18,11 +18,12 @@
 #include <vector>
 #include <iostream>
 #include <catch.hpp>
-#include "linear_linked_list.hpp"
 
 #ifdef DOUBLE_LINKED_LIST
+#include "double_linked_list.hpp"
 #define linked_list double_linked_list
 #else 
+#include "linear_linked_list.hpp"
 #define linked_list linear_linked_list
 #endif
 

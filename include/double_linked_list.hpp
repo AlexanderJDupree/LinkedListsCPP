@@ -1,21 +1,21 @@
 /*
  
- File: linear_linked_list.h
+File: double_linked_list.h
 
- Brief: Linear Linked List is a heap allocated, singularly linked, sequence 
-        container. This data structure provides constant time insertion and 
-        removal operations. However, random access is not supported. This 
-        iplementation defines the standard push/pop/remove methods as well as 
-        forward iterators traversal as well as higher order functions like
-        for_each, and sort_by.
+Brief: Doubly Linked List is a heap allocated, doubly linked, sequence 
+       container. This data structure provides constant time insertion and 
+       removal operations. However, random access is not supported. This 
+       implementation defines the standard push/pop/remove methods as well as 
+       bidirectional iterators traversal as well as higher order functions like
+       for_each, and sort_by.
 
- Copyright (c) 2018 Alexander DuPree
+Copyright (c) 2018 Alexander DuPree
 
- This software is released as open source through the MIT License
+This software is released as open source through the MIT License
 
- Authors: Alexander DuPree
+Authors: Alexander DuPree
 
- https://github.com/AlexanderJDupree/LinkedListsCPP
+https://github.com/AlexanderJDupree/LinkedListsCPP
 
 */
 
@@ -28,7 +28,7 @@
 #include <initializer_list>  // std::initializer_list
 
 template <typename T>
-class linear_linked_list
+class double_linked_list
 {
   public:
 
@@ -45,28 +45,28 @@ class linear_linked_list
     typedef size_t                 size_type;
     typedef forward_iterator       iterator;
     typedef const_forward_iterator const_iterator;
-    typedef linear_linked_list<T>  self_type;
+    typedef double_linked_list<T>  self_type;
 
     /****** CONSTRUCTORS ******/
 
     // Default
-    linear_linked_list();
+    double_linked_list();
 
     // Ranged based
     template <class InputIterator>
-    linear_linked_list(InputIterator begin, InputIterator end);
+    double_linked_list(InputIterator begin, InputIterator end);
 
     // Initializer List
-    explicit linear_linked_list(std::initializer_list<value_type> init);
+    explicit double_linked_list(std::initializer_list<value_type> init);
 
     // Copy Constructor
-    linear_linked_list(const self_type& origin);
+    double_linked_list(const self_type& origin);
 
     // Move Constructor
-    linear_linked_list(self_type&& origin);
+    double_linked_list(self_type&& origin);
    
     // Destructor
-    ~linear_linked_list();
+    ~double_linked_list();
      
     /****** MODIFIERS ******/
 
@@ -257,7 +257,7 @@ class linear_linked_list
         bool operator==(const self_type& rhs) const;
         bool operator!=(const self_type& rhs) const;
 
-        friend linear_linked_list<T>;
+        friend double_linked_list<T>;
       
       protected:
 
@@ -288,7 +288,7 @@ class linear_linked_list
     };
 };
 
-#include "linear_linked_list.cpp"
+#include "double_linked_list.cpp"
 
 #endif //LINKED_LIST_H
 

@@ -1,8 +1,8 @@
 /*
  
- File: linear_linked_list.cpp
+ File: double_linked_list.cpp
 
- Brief: Implementation file for the linear_linked_list data structure
+ Brief: Implementation file for the double_linked_list data structure
 
  Copyright (c) 2018 Alexander DuPree
 
@@ -17,20 +17,20 @@
 #ifndef LINKED_LIST_CPP
 #define LINKED_LIST_CPP
 
-#include "linear_linked_list.hpp"
+#include "double_linked_list.hpp"
 
 /****** CONSTRUCTORS ******/
 
 // default constructor
 template <typename T>
-linear_linked_list<T>::linear_linked_list() 
+double_linked_list<T>::double_linked_list() 
     : head(nullptr), tail(nullptr) {}
 
 // ranged based constructor
 template <typename T>
 template <class InputIterator>
-linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end) 
-    : linear_linked_list()
+double_linked_list<T>::double_linked_list(InputIterator begin, InputIterator end) 
+    : double_linked_list()
 {
     for(; begin != end; ++begin)
     {
@@ -40,8 +40,8 @@ linear_linked_list<T>::linear_linked_list(InputIterator begin, InputIterator end
 
 // Initializer List
 template <typename T>
-linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init)
-    : linear_linked_list()
+double_linked_list<T>::double_linked_list(std::initializer_list<value_type> init)
+    : double_linked_list()
 {
     for (const_reference element : init)
     {
@@ -51,8 +51,8 @@ linear_linked_list<T>::linear_linked_list(std::initializer_list<value_type> init
 
 // Copy constructor
 template <typename T>
-linear_linked_list<T>::linear_linked_list(const self_type& origin) 
-    : linear_linked_list()
+double_linked_list<T>::double_linked_list(const self_type& origin) 
+    : double_linked_list()
 {
     const_iterator it;
     for (it = origin.begin(); it != origin.end(); ++it)
@@ -63,15 +63,15 @@ linear_linked_list<T>::linear_linked_list(const self_type& origin)
 
 // Move constructor
 template <typename T>
-linear_linked_list<T>::linear_linked_list(self_type&& origin)
-    : linear_linked_list()
+double_linked_list<T>::double_linked_list(self_type&& origin)
+    : double_linked_list()
 {
     origin.swap(*this);
 }
 
 // Destructor
 template <typename T>
-linear_linked_list<T>::~linear_linked_list()
+double_linked_list<T>::~double_linked_list()
 {
     clear();
 }
@@ -79,19 +79,19 @@ linear_linked_list<T>::~linear_linked_list()
 /****** MODIFIERS ******/
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_front(const_reference data)
+double_linked_list<T>& double_linked_list<T>::push_front(const_reference data)
 {
     return push_front(new Node(data, head));
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_front(T&& data)
+double_linked_list<T>& double_linked_list<T>::push_front(T&& data)
 {
     return push_front(new Node(std::forward<T>(data), head));
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_front(Node* node)
+double_linked_list<T>& double_linked_list<T>::push_front(Node* node)
 {
     head = node;
 
@@ -104,19 +104,19 @@ linear_linked_list<T>& linear_linked_list<T>::push_front(Node* node)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_back(const_reference& data)
+double_linked_list<T>& double_linked_list<T>::push_back(const_reference& data)
 {
     return push_back(new Node(data));
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_back(T&& data)
+double_linked_list<T>& double_linked_list<T>::push_back(T&& data)
 {
     return push_back(new Node(std::forward<T>(data)));
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::push_back(Node* node)
+double_linked_list<T>& double_linked_list<T>::push_back(Node* node)
 {
     if(empty())
     {
@@ -132,7 +132,7 @@ linear_linked_list<T>& linear_linked_list<T>::push_back(Node* node)
 
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::pop_front()
+double_linked_list<T>& double_linked_list<T>::pop_front()
 {
     if (empty())
     {
@@ -155,7 +155,7 @@ linear_linked_list<T>& linear_linked_list<T>::pop_front()
 }
 
 template <typename T>
-T& linear_linked_list<T>::pop_front(reference out_param)
+T& double_linked_list<T>::pop_front(reference out_param)
 {
     if(!empty())
     {
@@ -168,7 +168,7 @@ T& linear_linked_list<T>::pop_front(reference out_param)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::clear()
+double_linked_list<T>& double_linked_list<T>::clear()
 {
     if(empty())
     {
@@ -184,7 +184,7 @@ linear_linked_list<T>& linear_linked_list<T>::clear()
 }
 
 template <typename T>
-void linear_linked_list<T>::clear_list(Node*& current)
+void double_linked_list<T>::clear_list(Node*& current)
 {
     // While the current node pointer is not at the end of the list
     if (current != tail)
@@ -201,7 +201,7 @@ void linear_linked_list<T>::clear_list(Node*& current)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::reverse()
+double_linked_list<T>& double_linked_list<T>::reverse()
 {
     if(!empty())
     {
@@ -213,7 +213,7 @@ linear_linked_list<T>& linear_linked_list<T>::reverse()
 }
 
 template <typename T>
-void linear_linked_list<T>::reverse(Node* current, Node* prev)
+void double_linked_list<T>::reverse(Node* current, Node* prev)
 {
     if(current->next != nullptr)
     {
@@ -226,21 +226,21 @@ void linear_linked_list<T>::reverse(Node* current, Node* prev)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::sort()
+double_linked_list<T>& double_linked_list<T>::sort()
 {
     return sort([](const T& lhs, const T& rhs){ return lhs < rhs; });
 }
 
 template <typename T>
 template <class Compare>
-linear_linked_list<T>& linear_linked_list<T>::sort(Compare&& comp)
+double_linked_list<T>& double_linked_list<T>::sort(Compare&& comp)
 {
     if(head == nullptr || head->next == nullptr)
     {
         return *this;
     }
 
-    linear_linked_list<T> right = split(middle());
+    double_linked_list<T> right = split(middle());
 
     sort(comp);
     right.sort(comp);
@@ -249,9 +249,9 @@ linear_linked_list<T>& linear_linked_list<T>::sort(Compare&& comp)
 }
 
 template <typename T>
-linear_linked_list<T> linear_linked_list<T>::split(const_iterator pos)
+double_linked_list<T> double_linked_list<T>::split(const_iterator pos)
 {
-    linear_linked_list<T> temp;
+    double_linked_list<T> temp;
 
     if(pos.node != nullptr)
     {
@@ -265,14 +265,14 @@ linear_linked_list<T> linear_linked_list<T>::split(const_iterator pos)
 }
 
 template <typename T>
-linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list)
+double_linked_list<T>& double_linked_list<T>::merge(self_type& list)
 {
     return merge(list, [](const T& lhs, const T& rhs){ return lhs < rhs; });
 }
 
 template <typename T>
 template <class Compare>
-linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list, Compare&& comp)
+double_linked_list<T>& double_linked_list<T>::merge(self_type& list, Compare&& comp)
 {
     if(&list != this)
     {
@@ -290,8 +290,8 @@ linear_linked_list<T>& linear_linked_list<T>::merge(self_type& list, Compare&& c
 
 template <typename T>
 template <class Compare>
-typename linear_linked_list<T>::Node* 
-linear_linked_list<T>::merge(Node* self, Node* other, Compare&& comp)
+typename double_linked_list<T>::Node* 
+double_linked_list<T>::merge(Node* self, Node* other, Compare&& comp)
 {
     // Base case : self OR other list is empty return the non-empty list
     if (self == nullptr) { return other; }
@@ -306,8 +306,8 @@ linear_linked_list<T>::merge(Node* self, Node* other, Compare&& comp)
 }
 
 template <typename T>
-typename linear_linked_list<T>::iterator
-linear_linked_list<T>::erase_after(iterator pos)
+typename double_linked_list<T>::iterator
+double_linked_list<T>::erase_after(iterator pos)
 {
     if(!empty() && pos.node != tail)
     {
@@ -319,7 +319,7 @@ linear_linked_list<T>::erase_after(iterator pos)
 }
 
 template <typename T>
-int linear_linked_list<T>::remove(const_reference target)
+int double_linked_list<T>::remove(const_reference target)
 {
     // lambda catches target and compares it to each element in the list
     return remove_if([&target](T& sample){ return target == sample; });
@@ -327,7 +327,7 @@ int linear_linked_list<T>::remove(const_reference target)
 
 template <typename T>
 template <class Predicate>
-int linear_linked_list<T>::remove_if(Predicate&& pred)
+int double_linked_list<T>::remove_if(Predicate&& pred)
 {
     if (empty())
     {
@@ -339,7 +339,7 @@ int linear_linked_list<T>::remove_if(Predicate&& pred)
 
 template <typename T>
 template <class Predicate>
-int linear_linked_list<T>::remove_if(Predicate&& pred, Node*& current, Node* prev)
+int double_linked_list<T>::remove_if(Predicate&& pred, Node*& current, Node* prev)
 {
     // Base Case: Traversed the whole list
     if(current == nullptr)
@@ -374,19 +374,19 @@ int linear_linked_list<T>::remove_if(Predicate&& pred, Node*& current, Node* pre
 /****** CAPACITY ******/
 
 template <typename T>
-bool linear_linked_list<T>::empty() const
+bool double_linked_list<T>::empty() const
 {
     return !(head);
 }
 
 template <typename T>
-typename linear_linked_list<T>::size_type linear_linked_list<T>::size() const
+typename double_linked_list<T>::size_type double_linked_list<T>::size() const
 {
     return size(head);
 }
 
 template <typename T>
-typename linear_linked_list<T>::size_type linear_linked_list<T>::size(Node* head) const
+typename double_linked_list<T>::size_type double_linked_list<T>::size(Node* head) const
 {
     return (head != nullptr) ? 1 + size(head->next) : 0;
 }
@@ -394,7 +394,7 @@ typename linear_linked_list<T>::size_type linear_linked_list<T>::size(Node* head
 /****** ELEMENT ACCESS ******/
 
 template <typename T>
-T& linear_linked_list<T>::front() 
+T& double_linked_list<T>::front() 
 {
     throw_if_null(head);
 
@@ -402,7 +402,7 @@ T& linear_linked_list<T>::front()
 }
 
 template <typename T>
-const T& linear_linked_list<T>::front() const
+const T& double_linked_list<T>::front() const
 {
     throw_if_null(head);
 
@@ -410,7 +410,7 @@ const T& linear_linked_list<T>::front() const
 }
 
 template <typename T>
-T& linear_linked_list<T>::back() 
+T& double_linked_list<T>::back() 
 {
     throw_if_null(tail);
 
@@ -418,7 +418,7 @@ T& linear_linked_list<T>::back()
 }
 
 template <typename T>
-const T& linear_linked_list<T>::back() const
+const T& double_linked_list<T>::back() const
 {
     throw_if_null(tail);
 
@@ -428,50 +428,50 @@ const T& linear_linked_list<T>::back() const
 /****** ITERATORS ******/
 
 template <typename T>
-typename linear_linked_list<T>::iterator
-linear_linked_list<T>::begin()
+typename double_linked_list<T>::iterator
+double_linked_list<T>::begin()
 {
     return iterator(head);
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator 
-linear_linked_list<T>::begin() const
+typename double_linked_list<T>::const_iterator 
+double_linked_list<T>::begin() const
 {
     return const_iterator(head);
 }
 
 template <typename T>
-typename linear_linked_list<T>::iterator
-linear_linked_list<T>::end()
+typename double_linked_list<T>::iterator
+double_linked_list<T>::end()
 {
     return iterator(nullptr);
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator 
-linear_linked_list<T>::end() const
+typename double_linked_list<T>::const_iterator 
+double_linked_list<T>::end() const
 {
     return const_iterator(nullptr);
 }
 
 template <typename T>
-typename linear_linked_list<T>::iterator 
-linear_linked_list<T>::middle()
+typename double_linked_list<T>::iterator 
+double_linked_list<T>::middle()
 {
     return iterator(middle(head));
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator 
-linear_linked_list<T>::middle() const
+typename double_linked_list<T>::const_iterator 
+double_linked_list<T>::middle() const
 {
     return const_iterator(middle(head));
 }
 
 template <typename T>
-typename linear_linked_list<T>::Node* 
-linear_linked_list<T>::middle(Node* head) const
+typename double_linked_list<T>::Node* 
+double_linked_list<T>::middle(Node* head) const
 {
     if(head == nullptr || head->next == nullptr)
     {
@@ -482,8 +482,8 @@ linear_linked_list<T>::middle(Node* head) const
 }
 
 template <typename T>
-typename linear_linked_list<T>::Node* 
-linear_linked_list<T>::middle(Node* slow, Node* fast) const
+typename double_linked_list<T>::Node* 
+double_linked_list<T>::middle(Node* slow, Node* fast) const
 {
     return (fast == nullptr || (fast = fast->next) == nullptr) 
            ? slow : middle(slow->next, fast->next);
@@ -492,7 +492,7 @@ linear_linked_list<T>::middle(Node* slow, Node* fast) const
 /****** COMPARISON OPERATORS ******/
 
 template <typename T>
-bool linear_linked_list<T>::operator==(const self_type& rhs) const
+bool double_linked_list<T>::operator==(const self_type& rhs) const
 {
     // Compare sizes first
     if (rhs.size() != size())
@@ -516,14 +516,14 @@ bool linear_linked_list<T>::operator==(const self_type& rhs) const
 }
 
 template <typename T>
-bool linear_linked_list<T>::operator!=(const self_type& rhs) const
+bool double_linked_list<T>::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
 
 template <typename T>
-typename linear_linked_list<T>::self_type& 
-linear_linked_list<T>::operator=(self_type copy)
+typename double_linked_list<T>::self_type& 
+double_linked_list<T>::operator=(self_type copy)
 {
     // Swap ownership of resources with the copy
     swap(copy);
@@ -533,7 +533,7 @@ linear_linked_list<T>::operator=(self_type copy)
 }
 
 template <typename T>
-void linear_linked_list<T>::swap(self_type& origin)
+void double_linked_list<T>::swap(self_type& origin)
 {
     using std::swap;
 
@@ -544,7 +544,7 @@ void linear_linked_list<T>::swap(self_type& origin)
 }
 
 template <typename T>
-void linear_linked_list<T>::throw_if_null(Node* node) const
+void double_linked_list<T>::throw_if_null(Node* node) const
 {
     if(node)
     {
@@ -560,8 +560,8 @@ ITERATOR CLASS
 
 /* Operator Overloads */
 template <typename T>
-typename linear_linked_list<T>::const_iterator& 
-linear_linked_list<T>::const_iterator::operator++()
+typename double_linked_list<T>::const_iterator& 
+double_linked_list<T>::const_iterator::operator++()
 {
     // reassign node member to point to the next element in the container
     node = node->next;
@@ -569,8 +569,8 @@ linear_linked_list<T>::const_iterator::operator++()
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_iterator
-linear_linked_list<T>::const_iterator::operator++(int)
+typename double_linked_list<T>::const_iterator
+double_linked_list<T>::const_iterator::operator++(int)
 {
     // Create a copy to satisfy postfix incrementation requirements
     self_type copy = self_type(*this);
@@ -579,42 +579,42 @@ linear_linked_list<T>::const_iterator::operator++(int)
 }
 
 template <typename T>
-bool linear_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
+bool double_linked_list<T>::const_iterator::operator==(const self_type& rhs) const
 {
     // Iterators are equal if they point to the same memory address
     return node == rhs.node;
 }
 
 template <typename T>
-bool linear_linked_list<T>::const_iterator::operator!=(const self_type& rhs) const
+bool double_linked_list<T>::const_iterator::operator!=(const self_type& rhs) const
 {
     return !(*this == rhs);
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_reference 
-linear_linked_list<T>::const_iterator::operator*() const
+typename double_linked_list<T>::const_reference 
+double_linked_list<T>::const_iterator::operator*() const
 {
     return node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::const_pointer
-linear_linked_list<T>::const_iterator::operator->() const
+typename double_linked_list<T>::const_pointer
+double_linked_list<T>::const_iterator::operator->() const
 {
     return &node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::reference
-linear_linked_list<T>::iterator::operator*() 
+typename double_linked_list<T>::reference
+double_linked_list<T>::iterator::operator*() 
 {
     return this->node->data;
 }
 
 template <typename T>
-typename linear_linked_list<T>::pointer
-linear_linked_list<T>::iterator::operator->()
+typename double_linked_list<T>::pointer
+double_linked_list<T>::iterator::operator->()
 {
     return &this->node->data;
 }
