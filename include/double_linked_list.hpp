@@ -26,6 +26,7 @@ https://github.com/AlexanderJDupree/LinkedListsCPP
 #include <algorithm> // std::swap
 #include <stdexcept> // std::logic_error
 #include <initializer_list>  // std::initializer_list
+#include <iterator>
 
 template <typename T>
 class double_linked_list
@@ -33,19 +34,23 @@ class double_linked_list
   public:
 
     // forward declaration
-    class const_forward_iterator;
-    class forward_iterator;
+    class const_bidirectional_iterator;
+    class bidirectional_iterator;
 
     /* Type definitions */
-    typedef T                      value_type;
-    typedef T*                     pointer;
-    typedef T&                     reference;
-    typedef const T&               const_reference;
-    typedef const T*               const_pointer;
-    typedef size_t                 size_type;
-    typedef forward_iterator       iterator;
-    typedef const_forward_iterator const_iterator;
-    typedef double_linked_list<T>  self_type;
+    typedef T                       value_type;
+    typedef T*                      pointer;
+    typedef T&                      reference;
+    typedef const T&                const_reference;
+    typedef const T*                const_pointer;
+    typedef size_t                  size_type;
+    typedef double_linked_list<T>   self_type;
+
+    typedef bidirectional_iterator                iterator;
+    typedef const_bidirectional_iterator          const_iterator;
+    typedef std::reverse_iterator<iterator>       reverse_iterator;
+    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
 
     /****** CONSTRUCTORS ******/
 
@@ -144,8 +149,14 @@ class double_linked_list
     iterator begin();
     const_iterator begin() const;
 
+    reverse_iterator rbegin();
+    const_reverse_iterator rbegin() const;
+
     iterator end();
     const_iterator end() const;
+
+    reverse_iterator rend();
+    const_reverse_iterator rend() const;
 
     // Travels the list two nodes at a time to find the middle. O(n) complexity.
     iterator middle();
@@ -153,7 +164,7 @@ class double_linked_list
 
     /****** COMPARISON OPERATORS ******/
 
-    // Compares sizes, then comapres each element of the list for equality
+    // Compares sizes, then compares each element of the list for equality
     bool operator==(const self_type& rhs) const;
 
     // returns the logical NOT of the equality comparison
@@ -188,7 +199,7 @@ class double_linked_list
 
         value_type data;
         Node* next;
-
+        Node* prev;
     };
 
     Node* head;
@@ -226,32 +237,33 @@ class double_linked_list
     public:
 
     /*
-    @class: const_forward_iterator
+    @class: const_bidirectional_iterator
     
-    @brief: The const_forward_iterator is a read-only abstraction of the node 
-            pointer. The const_forward_iterator provides methods for inspecting
-            data, and incrementation. This iterator type does not support 
-            decrementation or random access
+    @brief: The const_bidirectional_iterator is a read-only abstraction of the node 
+            pointer. The const_bidirectional_iterator provides methods for inspecting
+            data, and incrementation as well as decrementation. 
 
             Because the iterator does not manage any resources and it's only 
             member is a pointer, we allow the use of the DEFAULT destructor, 
             copy constructor, and copy-assignment operator.
     */
-    class const_forward_iterator
+    class const_bidirectional_iterator
     {
       public:
 
-        typedef const_forward_iterator  self_type;
+        typedef const_bidirectional_iterator  self_type;
 
         /* Constructors */
 
         // default constructor points the iterator to nullptr
-        const_forward_iterator(Node* ptr = nullptr) : node(ptr) {}
+        const_bidirectional_iterator(Node* ptr = nullptr) : node(ptr) {}
 
         /* Operator Overloads */
 
         self_type& operator++(); // Prefix ++
         self_type operator++(int); // Postfix ++
+        self_type& operator--(); // Prefix --
+        self_type operator--(int); // Postfix --
 
         const_reference operator*() const;
         const_pointer operator->() const;
@@ -267,22 +279,14 @@ class double_linked_list
         Node* node;
     };
 
-    /*
-    @class: forward_iterator
-    
-    @brief: The forward_iterator is a read/write abstraction of the node 
-            pointer. The forward_iterator inherits all methods from the 
-            const_forward_iterator but overrides the reference operators
-            to allow the client to mutate data
-    */
-    class forward_iterator : public const_forward_iterator
+    class bidirectional_iterator : public const_bidirectional_iterator
     {
       public:
 
         /* Type definitions */
-        typedef forward_iterator    self_type;
+        typedef bidirectional_iterator    self_type;
 
-        forward_iterator(Node* ptr = nullptr) : const_forward_iterator(ptr) {}
+        bidirectional_iterator(Node* ptr = nullptr) : const_bidirectional_iterator(ptr) {}
 
         reference operator*();
 
