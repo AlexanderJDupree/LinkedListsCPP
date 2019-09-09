@@ -85,8 +85,10 @@ class double_linked_list
 
     // Copies the front element onto the out_param and removes it
     reference pop_front(reference out_param);
-    // NOTE: There is no pop_back method for the singly linked list, as the 
-    // time complexity for pop_back is O(n). Therefore pop_front is encouraged
+
+    // TODO Implement pop_back methods
+    self_type& pop_back();
+    reference pop_back(reference out_param);
 
     // Removes each element from the container
     self_type& clear();
@@ -109,6 +111,7 @@ class double_linked_list
     template <class Compare>
     self_type& merge(self_type& list, Compare&& comp);
 
+    // TODO review erase and remove complexity for doubly linked list
     iterator erase_after(iterator pos);
 
     // Removes all items matching target, returns number of items removed

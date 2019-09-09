@@ -79,8 +79,27 @@ struct is_seven
     }
 };
 
+// Iterates over list and compares list elements to expected elements.
+template <typename T, class InputIterator>
+void assert_list_construction(linked_list<T> list, InputIterator begin, InputIterator end)
+{
+    for(auto item : list)
+    {
+        REQUIRE(item == *(begin++));
+    }
+    // Ensures input list was checked thoroughly
+    REQUIRE(begin == end);
+
+#ifdef DOUBLE_LINKED_LIST
+    // TODO Add reversed sequence check on doubly linked lists
+#endif
+
+};
+
 TEST_CASE("Constructing linked_list objects", "[constructors]")
 {
+    int nums[] = {1, 2, 3, 4, 5};
+     
     SECTION("Default construction")
     {
         linked_list<int> list;
@@ -98,17 +117,9 @@ TEST_CASE("Constructing linked_list objects", "[constructors]")
     }
     SECTION("Range based construction on a populated array")
     {
-        int nums[] = {1, 2, 3, 4, 5};
-
         linked_list<int> list(nums, nums + 5);
 
-        linked_list<int>::const_iterator it;
-        int i = 0;
-        for(it = list.begin(); it != list.end(); ++it)
-        {
-            bool assert = *it == nums[i++];
-            REQUIRE(assert);
-        }
+        assert_list_construction(list, nums, nums + 5);
     }
     SECTION("Ranged based construction with a standard container")
     {
@@ -116,31 +127,22 @@ TEST_CASE("Constructing linked_list objects", "[constructors]")
 
         linked_list<int> list(nums.begin(), nums.end());
 
-        std::vector<int>::iterator iter = nums.begin();
-        for(auto num : list)
-        {
-            REQUIRE(num == *(iter++));
-        }
+        assert_list_construction(list, nums.begin(), nums.end());
+
     }
     SECTION("Initializer list construction")
     {
         linked_list<int> list { 1, 2, 3, 4, 5 };
-        int i = 0;
-        for(auto num : list)
-        {
-            REQUIRE(num == ++i);
-        }
+        
+        assert_list_construction(list, nums, nums + 5);
     }
     SECTION("Move Construction")
     {
+
         linked_list<int> origin { 1, 2, 3, 4, 5 };
         linked_list<int> moved_list(std::move(origin));
 
-        int i = 0;
-        for (auto num : moved_list)
-        {
-            REQUIRE(num == ++i);
-        }
+        assert_list_construction(moved_list, nums, nums + 5);
         REQUIRE(origin.empty());
     }
 }

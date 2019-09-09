@@ -134,22 +134,20 @@ linear_linked_list<T>& linear_linked_list<T>::push_back(Node* node)
 template <typename T>
 linear_linked_list<T>& linear_linked_list<T>::pop_front()
 {
-    if (empty())
+    if (!empty())
     {
-        return *this;
+        Node* temp = head->next;
+
+        // Edge case, there is only one element in the list
+        if (tail == head)
+        {
+            tail = temp;
+        }
+
+        delete head;
+
+        head = temp;
     }
-
-    Node* temp = head->next;
-
-    // Edge case, there is only one element in the list
-    if (tail == head)
-    {
-        tail = temp;
-    }
-
-    delete head;
-
-    head = temp;
 
     return *this;
 }
